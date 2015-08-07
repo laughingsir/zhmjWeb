@@ -1,0 +1,827 @@
+{
+    "total": 137,
+    "rows": [
+        {
+            "count": 1,
+            "desc": "元宝",
+            "itemName": "money_gold",
+            "name": "元宝"
+        },
+        {
+            "count": 1,
+            "desc": "银币",
+            "itemName": "money_silver",
+            "name": "银币"
+        },
+        {
+            "count": 1,
+            "desc": "产出于竞技场和魔王降临，用于兑换高阶武将将魂",
+            "itemName": "money_jjc",
+            "name": "荣誉"
+        },
+        {
+            "count": 1,
+            "desc": "产出于攻城拔寨，用于高阶武将将魂",
+            "itemName": "money_gcbz",
+            "name": "声望"
+        },
+        {
+            "count": 1,
+            "desc": "产出于王者竞技场，用于兑换高阶武将将魂",
+            "itemName": "money_wz",
+            "name": "功勋"
+        },
+        {
+            "count": 1,
+            "desc": "卖钱吧，有商人在收集这个,使用或出售可获得1000银币",
+            "itemName": "item_xiaohao_huanqian1",
+            "name": "玉胚"
+        },
+        {
+            "count": 1,
+            "desc": "卖钱吧，有商人在收集这个,使用或出售可获得5000两银币",
+            "itemName": "item_xiaohao_huanqian2",
+            "name": "瓷器"
+        },
+        {
+            "count": 1,
+            "desc": "卖钱吧，有商人在收集这个,使用或出售可获得10000两银币",
+            "itemName": "item_xiaohao_huanqian3",
+            "name": "金如意"
+        },
+        {
+            "count": 1,
+            "desc": "卖钱吧，有商人在收集这个,使用或出售可获得50000两银币",
+            "itemName": "item_xiaohao_huanqian4",
+            "name": "白玉龟"
+        },
+        {
+            "count": 1,
+            "desc": "卖钱吧，有商人在收集这个,使用或出售可获得100000两银币",
+            "itemName": "item_xiaohao_huanqian5",
+            "name": "镶金盏"
+        },
+        {
+            "count": 1,
+            "desc": "使用获得30点经验",
+            "itemName": "item_xiaohao_jingyan_1",
+            "name": "经验药水"
+        },
+        {
+            "count": 1,
+            "desc": "使用获得100点经验",
+            "itemName": "item_xiaohao_jingyan_2",
+            "name": "经验药水"
+        },
+        {
+            "count": 1,
+            "desc": "使用获得200点经验",
+            "itemName": "item_xiaohao_jingyan_3",
+            "name": "经验药水"
+        },
+        {
+            "count": 1,
+            "desc": "使用获得500点经验",
+            "itemName": "item_xiaohao_jingyan_4",
+            "name": "经验药水"
+        },
+        {
+            "count": 1,
+            "desc": "使用获得1000点经验",
+            "itemName": "item_xiaohao_jingyan_5",
+            "name": "经验药水"
+        },
+        {
+            "count": 1,
+            "desc": "使用获得1500点经验",
+            "itemName": "item_xiaohao_jingyan_6",
+            "name": "经验药水"
+        },
+        {
+            "count": 1,
+            "desc": "可以扫荡副本和列传关卡",
+            "itemName": "item_xiaohao_saodangling",
+            "name": "扫荡令"
+        },
+        {
+            "count": 1,
+            "desc": "路见不平一声吼，聊天记录来一发",
+            "itemName": "item_xiaohao_xiaolaba",
+            "name": "小喇叭"
+        },
+        {
+            "count": 1,
+            "desc": "低阶武器材料",
+            "itemName": "wep_mat_1_1",
+            "name": "青铜"
+        },
+        {
+            "count": 1,
+            "desc": "中阶武器材料",
+            "itemName": "wep_mat_1_2",
+            "name": "黄铜锭"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫1的武器材料",
+            "itemName": "wep_mat_1_3",
+            "name": "赤金锭"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫2的武器材料",
+            "itemName": "wep_mat_1_4",
+            "name": "乌金锭"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫3的武器材料",
+            "itemName": "wep_mat_1_5",
+            "name": "寒钢锭"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫4的武器材料",
+            "itemName": "wep_mat_1_6",
+            "name": "玄铁锭"
+        },
+        {
+            "count": 1,
+            "desc": "低阶武器材料",
+            "itemName": "wep_mat_2_1",
+            "name": "落羽岑木"
+        },
+        {
+            "count": 1,
+            "desc": "中阶武器材料",
+            "itemName": "wep_mat_2_2",
+            "name": "渍纹枫木"
+        },
+        {
+            "count": 1,
+            "desc": "高阶武将材料",
+            "itemName": "wep_mat_2_3",
+            "name": "玉仙柳木"
+        },
+        {
+            "count": 1,
+            "desc": "低阶护甲材料",
+            "itemName": "arm_mat_1_1",
+            "name": "鸽羽"
+        },
+        {
+            "count": 1,
+            "desc": "中阶护甲材料",
+            "itemName": "arm_mat_1_2",
+            "name": "百灵羽"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫1的护甲材料",
+            "itemName": "arm_mat_1_3",
+            "name": "鹤羽"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫2的护甲材料",
+            "itemName": "arm_mat_1_4",
+            "name": "隼羽"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫3的护甲材料",
+            "itemName": "arm_mat_1_5",
+            "name": "鹰羽"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫4的护甲材料",
+            "itemName": "arm_mat_1_6",
+            "name": "凤羽"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到橙的护甲材料",
+            "itemName": "arm_mat_1_7",
+            "name": "龙鳞"
+        },
+        {
+            "count": 1,
+            "desc": "低阶护甲材料",
+            "itemName": "arm_mat_2_1",
+            "name": "元气晶石"
+        },
+        {
+            "count": 1,
+            "desc": "中阶护甲材料",
+            "itemName": "arm_mat_2_2",
+            "name": "红曜晶石"
+        },
+        {
+            "count": 1,
+            "desc": "高阶护甲材料",
+            "itemName": "arm_mat_2_3",
+            "name": "力量晶石"
+        },
+        {
+            "count": 1,
+            "desc": "低阶饰品材料",
+            "itemName": "acc_mat_1_1",
+            "name": "绿松石"
+        },
+        {
+            "count": 1,
+            "desc": "中阶饰品材料",
+            "itemName": "acc_mat_1_2",
+            "name": "玉石"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫1的饰品材料",
+            "itemName": "acc_mat_1_3",
+            "name": "黄翡翠"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫2的饰品材料",
+            "itemName": "acc_mat_1_4",
+            "name": "鸡血石"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫3的饰品材料",
+            "itemName": "acc_mat_1_5",
+            "name": "天降石"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到紫4的饰品材料",
+            "itemName": "acc_mat_1_6",
+            "name": "月光宝石"
+        },
+        {
+            "count": 1,
+            "desc": "升阶到橙的饰品材料",
+            "itemName": "acc_mat_1_7",
+            "name": "冰彩玉髓"
+        },
+        {
+            "count": 1,
+            "desc": "低阶饰品材料",
+            "itemName": "acc_mat_2_1",
+            "name": "山羊角"
+        },
+        {
+            "count": 1,
+            "desc": "中阶饰品材料",
+            "itemName": "acc_mat_2_2",
+            "name": "狼牙"
+        },
+        {
+            "count": 1,
+            "desc": "高阶饰品材料",
+            "itemName": "acc_mat_2_3",
+            "name": "象牙"
+        },
+        {
+            "count": 1,
+            "desc": "曹操专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_caocao",
+            "name": "倚天剑图纸"
+        },
+        {
+            "count": 1,
+            "desc": "刘备专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_liubei",
+            "name": "鸳鸯剑图纸"
+        },
+        {
+            "count": 1,
+            "desc": "甄宓专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhenmi",
+            "name": "湛泸剑图纸"
+        },
+        {
+            "count": 1,
+            "desc": "周瑜专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhouyu",
+            "name": "火神剑图纸"
+        },
+        {
+            "count": 1,
+            "desc": "陈宫专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_chengong",
+            "name": "鸠羽剑图纸"
+        },
+        {
+            "count": 1,
+            "desc": "貂蝉专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_diaochan",
+            "name": "百花凤鸣图纸"
+        },
+        {
+            "count": 1,
+            "desc": "鲁肃专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_lusu",
+            "name": "凤羽扇图纸"
+        },
+        {
+            "count": 1,
+            "desc": "陆逊专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_luxun",
+            "name": "火神扇图纸"
+        },
+        {
+            "count": 1,
+            "desc": "王异专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_wangyi",
+            "name": "凤羽留香图纸"
+        },
+        {
+            "count": 1,
+            "desc": "王元姬专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_wangyuanji",
+            "name": "风魂扇图纸"
+        },
+        {
+            "count": 1,
+            "desc": "荀彧专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_xunyu",
+            "name": "降世扇图纸"
+        },
+        {
+            "count": 1,
+            "desc": "徐庶专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_xushu",
+            "name": "孔羽扇图纸"
+        },
+        {
+            "count": 1,
+            "desc": "于吉专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_yuji",
+            "name": "雷鸣杖图纸"
+        },
+        {
+            "count": 1,
+            "desc": "张角专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhangjiao",
+            "name": "大贤杖图纸"
+        },
+        {
+            "count": 1,
+            "desc": "董卓单刀专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_dongzhuo",
+            "name": "焚世刀图纸"
+        },
+        {
+            "count": 1,
+            "desc": "吕蒙单刀专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_lvmeng",
+            "name": "新亭侯刀图纸"
+        },
+        {
+            "count": 1,
+            "desc": "孙坚单刀专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_sunjian",
+            "name": "古锭刀图纸"
+        },
+        {
+            "count": 1,
+            "desc": "许褚单刀专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_xuchu",
+            "name": "虎痴刀图纸"
+        },
+        {
+            "count": 1,
+            "desc": "关羽专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_guanyu",
+            "name": "青龙偃月图纸"
+        },
+        {
+            "count": 1,
+            "desc": "张辽专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhangliao",
+            "name": "逞威霸门图纸"
+        },
+        {
+            "count": 1,
+            "desc": "华雄专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_huaxiong",
+            "name": "锯灵斧图纸"
+        },
+        {
+            "count": 1,
+            "desc": "陈到专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_chendao",
+            "name": "錾金枪图纸"
+        },
+        {
+            "count": 1,
+            "desc": "吕布专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_lvbu",
+            "name": "方天画戟图纸"
+        },
+        {
+            "count": 1,
+            "desc": "吕玲绮专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_lvlingqi",
+            "name": "如意金丝图纸"
+        },
+        {
+            "count": 1,
+            "desc": "孙策专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_sunce",
+            "name": "霸王枪图纸"
+        },
+        {
+            "count": 1,
+            "desc": "张飞专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhangfei",
+            "name": "丈八蛇矛图纸"
+        },
+        {
+            "count": 1,
+            "desc": "黄忠专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_huangzhong",
+            "name": "万石图纸"
+        },
+        {
+            "count": 1,
+            "desc": "孙尚香专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_sunshangxiang",
+            "name": "龙舌图纸"
+        },
+        {
+            "count": 1,
+            "desc": "太史慈专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_taishici",
+            "name": "落日图纸"
+        },
+        {
+            "count": 1,
+            "desc": "张颌专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhanghe",
+            "name": "鸩羽图纸"
+        },
+        {
+            "count": 1,
+            "desc": "陈宫为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_chengong",
+            "name": "陈宫"
+        },
+        {
+            "count": 1,
+            "desc": "张角为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_zhangjiao",
+            "name": "张角"
+        },
+        {
+            "count": 1,
+            "desc": "于吉为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_yuji",
+            "name": "于吉"
+        },
+        {
+            "count": 1,
+            "desc": "吕玲琦为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_lvlingqi",
+            "name": "吕玲琦"
+        },
+        {
+            "count": 1,
+            "desc": "貂蝉为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_diaochan",
+            "name": "貂蝉"
+        },
+        {
+            "count": 1,
+            "desc": "吕布为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_lvbu",
+            "name": "吕布"
+        },
+        {
+            "count": 1,
+            "desc": "董卓为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_dongzhuo",
+            "name": "董卓"
+        },
+        {
+            "count": 1,
+            "desc": "华雄为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_huaxiong",
+            "name": "华雄"
+        },
+        {
+            "count": 1,
+            "desc": "荀彧为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_xunyu",
+            "name": "荀彧"
+        },
+        {
+            "count": 1,
+            "desc": "张郃为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_zhanghe",
+            "name": "张郃"
+        },
+        {
+            "count": 1,
+            "desc": "曹操为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_caocao",
+            "name": "曹操"
+        },
+        {
+            "count": 1,
+            "desc": "甄宓为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_zhenmi",
+            "name": "甄宓"
+        },
+        {
+            "count": 1,
+            "desc": "王元姬为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_wangyuanji",
+            "name": "王元姬"
+        },
+        {
+            "count": 1,
+            "desc": "大乔为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_wangyi",
+            "name": "大乔"
+        },
+        {
+            "count": 1,
+            "desc": "许褚为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_xuchu",
+            "name": "许褚"
+        },
+        {
+            "count": 1,
+            "desc": "张辽为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_zhangliao",
+            "name": "张辽"
+        },
+        {
+            "count": 1,
+            "desc": "徐庶为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_xushu",
+            "name": "徐庶"
+        },
+        {
+            "count": 1,
+            "desc": "刘备为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_liubei",
+            "name": "刘备"
+        },
+        {
+            "count": 1,
+            "desc": "张飞为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_zhangfei",
+            "name": "张飞"
+        },
+        {
+            "count": 1,
+            "desc": "黄忠为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_huangzhong",
+            "name": "黄忠"
+        },
+        {
+            "count": 1,
+            "desc": "关羽为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_guanyu",
+            "name": "关羽"
+        },
+        {
+            "count": 1,
+            "desc": "陈到为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_chendao",
+            "name": "陈到"
+        },
+        {
+            "count": 1,
+            "desc": "孙策为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_sunce",
+            "name": "孙策"
+        },
+        {
+            "count": 1,
+            "desc": "陆逊为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_luxun",
+            "name": "陆逊"
+        },
+        {
+            "count": 1,
+            "desc": "鲁肃为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_lusu",
+            "name": "鲁肃"
+        },
+        {
+            "count": 1,
+            "desc": "吕蒙为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_lvmeng",
+            "name": "吕蒙"
+        },
+        {
+            "count": 1,
+            "desc": "孙尚香为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_sunshangxiang",
+            "name": "孙尚香"
+        },
+        {
+            "count": 1,
+            "desc": "太史慈为2星武将,招降其需要30个将魂",
+            "itemName": "wujiang_taishici",
+            "name": "太史慈"
+        },
+        {
+            "count": 1,
+            "desc": "孙坚为1星武将,招降其需要10个将魂",
+            "itemName": "wujiang_sunjian",
+            "name": "孙坚"
+        },
+        {
+            "count": 1,
+            "desc": "周瑜为3星武将,招降其需要70个将魂",
+            "itemName": "wujiang_zhouyu",
+            "name": "周瑜"
+        },
+        {
+            "count": 1,
+            "desc": "陈宫为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_chengong",
+            "name": "陈宫将魂"
+        },
+        {
+            "count": 1,
+            "desc": "张角为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_zhangjiao",
+            "name": "张角将魂"
+        },
+        {
+            "count": 1,
+            "desc": "于吉为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_yuji",
+            "name": "于吉将魂"
+        },
+        {
+            "count": 1,
+            "desc": "吕玲琦为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_lvlingqi",
+            "name": "吕玲琦将魂"
+        },
+        {
+            "count": 1,
+            "desc": "貂蝉为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_diaochan",
+            "name": "貂蝉将魂"
+        },
+        {
+            "count": 1,
+            "desc": "吕布为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_lvbu",
+            "name": "吕布将魂"
+        },
+        {
+            "count": 1,
+            "desc": "董卓为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_dongzhuo",
+            "name": "董卓将魂"
+        },
+        {
+            "count": 1,
+            "desc": "华雄为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_huaxiong",
+            "name": "华雄将魂"
+        },
+        {
+            "count": 1,
+            "desc": "荀彧为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_xunyu",
+            "name": "荀彧将魂"
+        },
+        {
+            "count": 1,
+            "desc": "张郃为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_zhanghe",
+            "name": "张郃将魂"
+        },
+        {
+            "count": 1,
+            "desc": "曹操为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_caocao",
+            "name": "曹操将魂"
+        },
+        {
+            "count": 1,
+            "desc": "甄宓为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_zhenmi",
+            "name": "甄宓将魂"
+        },
+        {
+            "count": 1,
+            "desc": "王元姬为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_wangyuanji",
+            "name": "王元姬将魂"
+        },
+        {
+            "count": 1,
+            "desc": "大乔为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_wangyi",
+            "name": "大乔将魂"
+        },
+        {
+            "count": 1,
+            "desc": "许褚为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_xuchu",
+            "name": "许褚将魂"
+        },
+        {
+            "count": 1,
+            "desc": "张辽为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_zhangliao",
+            "name": "张辽将魂"
+        },
+        {
+            "count": 1,
+            "desc": "徐庶为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_xushu",
+            "name": "徐庶将魂"
+        },
+        {
+            "count": 1,
+            "desc": "刘备为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_liubei",
+            "name": "刘备将魂"
+        },
+        {
+            "count": 1,
+            "desc": "张飞为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_zhangfei",
+            "name": "张飞将魂"
+        },
+        {
+            "count": 1,
+            "desc": "黄忠为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_huangzhong",
+            "name": "黄忠将魂"
+        },
+        {
+            "count": 1,
+            "desc": "关羽为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_guanyu",
+            "name": "关羽将魂"
+        },
+        {
+            "count": 1,
+            "desc": "陈到为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_chendao",
+            "name": "陈到将魂"
+        },
+        {
+            "count": 1,
+            "desc": "孙策为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_sunce",
+            "name": "孙策将魂"
+        },
+        {
+            "count": 1,
+            "desc": "陆逊为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_luxun",
+            "name": "陆逊将魂"
+        },
+        {
+            "count": 1,
+            "desc": "鲁肃为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_lusu",
+            "name": "鲁肃将魂"
+        },
+        {
+            "count": 1,
+            "desc": "吕蒙为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_lvmeng",
+            "name": "吕蒙将魂"
+        },
+        {
+            "count": 1,
+            "desc": "孙尚香为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_sunshangxiang",
+            "name": "孙尚香将魂"
+        },
+        {
+            "count": 1,
+            "desc": "太史慈为2星武将,招降其需要30个将魂",
+            "itemName": "soul_wujiang_taishici",
+            "name": "太史慈将魂"
+        },
+        {
+            "count": 1,
+            "desc": "孙坚为1星武将,招降其需要10个将魂",
+            "itemName": "soul_wujiang_sunjian",
+            "name": "孙坚将魂"
+        },
+        {
+            "count": 1,
+            "desc": "周瑜为3星武将,招降其需要70个将魂",
+            "itemName": "soul_wujiang_zhouyu",
+            "name": "周瑜将魂"
+        }
+    ]
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>审核邮件</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="auditMailForm" method="post" style="height:auto">
+	    	服务器:<input class="easyui-combobox" id="auditMailZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'auto',
+					loadFilter:zoneFilterWithAll,
+					onLoadSuccess:selectAuditMailFirstZone
+				">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="queryMailList()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="auditMailGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onLoadSuccess:auditMailGridLoadSuccess">
+		<thead>
+			<tr>
+				<th data-options="field:'zones',width:120,formatter:formatMailZones">分区</th>
+				<th data-options="field:'players',width:150,formatter:formatMailPlayers">对象</th>
+				<th data-options="field:'items',width:200,formatter:formatMailItems">道具</th>
+				<th data-options="field:'reason',width:200,align:'center'">原因</th>
+				<th data-options="field:'addPerson',width:80,align:'center'">添加人员</th>
+				<th data-options="field:'auditTime',width:150,align:'center'">审核时间</th>
+				<th data-options="field:'mailId',width:200,align:'center',halign:'center',formatter:formatAuditMailOper">操作</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+			loadAllZone();
+			loadItemsObj();
+		});
+		
+		function auditMailGridLoadSuccess(data){
+			$('.auditMailCls').linkbutton({text:'审核通过',iconCls:'icon-ok'});  
+			$('.deleteMailCls').linkbutton({text:'删除',iconCls:'icon-cancel'});  
+		}
+		
+		function queryMailList(){
+			var data = {
+				zone : $('#auditMailZoneCombo').combobox('getValue'),
+			};
+		    submitData('QueryMailList',data,
+                function (result) {
+			        $('#auditMailGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: result});
+			    }    
+            );  
+		}
+		
+		function selectAuditMailFirstZone(){
+			var data = $("#auditMailZoneCombo").combobox('getData');
+			$("#auditMailZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function formatMailZones(val,row){
+			return transZones(val);
+		}
+		
+		function formatMailPlayers(val,row){
+			var result = transPlayers(val);
+			if(result == "") return "全服";
+			return result;
+		}
+		
+		
+		function formatMailItems(val,row){
+			return transItems(val);
+		}
+		
+		function formatAuditMailOper(val, row){
+			if(row.audited){
+				return row.auditPerson + "(审核完成)";
+			}
+			return '<a href="#" class="auditMailCls" onclick="auditMail(\''+val+'\')"></a>' + '&nbsp;&nbsp;&nbsp;&nbsp;' +
+				   '<a href="#" class="deleteMailCls" onclick="deleteMail(\''+val+'\')"></a>'; 
+		}
+		
+		function auditMail(mailId){
+			showConfirm("发送邮件操作不可恢复，请谨慎操作，确定审核完成吗？",function(){
+				var data = {
+					auditType : 0,
+					mailId :mailId,
+				};
+			    submitData('AuditMail',data,
+	                function (result) {
+				        if(result.success == true){
+				        	showMessageF("审核成功",function(){
+				        		queryMailList();
+				        	});
+				        }
+				    }    
+	            ); 
+            }); 
+		}
+		
+		function deleteMail(mailId){
+			showConfirm("确定删除记录吗？",function(){
+				var data = {
+					auditType : 1,
+					mailId :mailId,
+				};
+			    submitData('AuditMail',data,
+	                function (result) {
+				        if(result.success == true){
+				        	showMessageF("删除成功",function(){
+				        		queryMailList();
+				        	});
+				        }
+				    }    
+	            );  
+			});
+		}
+	</script>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>发送邮件</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+   
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%,height:auto">
+		<div style="padding:10px 60px 20px 60px">
+	    <form id="sendMailForm" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>发送方式:</td>
+	    			<td>
+	    				<input class="easyui-combobox" id="sendMailType" data-options="
+							data:allZone,
+							valueField:'id',
+							textField:'name',
+							panelHeight:'auto',
+							loadFilter:zoneFilterWithAll,
+							onChange:sendMailTypeChange,
+							onLoadSuccess:selectSendMailFirstZone
+						">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">发送玩家：</td>
+	    			<td style="vertical-align:top">
+	    				<a href="#" id = "sendMailAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" sendMailOpenPlayerWindow()">添加玩家</a><br/><br/>
+	    				<input class="easyui-textbox" id="txtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+	    				
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">道具：</td>
+	    			<td>
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" sendMailOpenItemWindow()">添加道具</a><br/><br/>
+	    				<input class="easyui-textbox" id="txtItems" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">发送者：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendMailSender" value="管理员" style="width:200px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">邮件标题：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendMailTitle" value="系统赠送" style="width:200px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">邮件内容：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendMailContent" data-options="multiline:true" value="" style="width:200px;height:100px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">原因：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendMailReason" data-options="multiline:true" value="" style="width:200px;height:100px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan = 2 style = "text-align:center">
+	    				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitSendMailForm()">保存</a>
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    </div>
+	</div>
+	 <div id="sendMailItemWindow" class="easyui-window" title="添加道具" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:800px;height:350px;padding:10px;">
+			<table id="sendmaildg" class="easyui-datagrid" title="" style="width:750px;height:auto"
+					data-options="
+						singleSelect: false,
+						url: '../config/item.json',
+						method:'get',
+						onDblClickCell: onClickCell,
+						collapsible:true,
+						onSelect:ItemsChange,
+						onUnselect:ItemsChange,
+						onSelectAll:ItemsChange,
+						onUnselectAll:ItemsChange
+					">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field:'name'" width="20%">名称</th>
+						<th data-options="field:'desc'" width="70%">描述</th>
+						<th data-options="field:'count',editor:'numberbox'" width="10%">数量</th>
+					</tr>
+				</thead>
+			</table>	
+		</div>
+		<div id="sendMailPlayerWindow" class="easyui-window" title="添加玩家" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:700px;height:400px;padding:10px;">
+			<form id="sendMailQueryPlayerForm" method="post" style="height:auto">
+	    	查询类型:<select id="sendMailQueryType" class="easyui-combobox" style="width:100px;">
+							<option value="0" selected>玩家账号</option>
+							<option value="1">昵称</option>
+						</select>
+			关键字:<input id="sendMailKeyWord" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="sendMailQueryPlayers()" style="width:80px">查询</a>
+		</form>
+			<table id="sendmailQueryPlayerGrid"  class="easyui-datagrid" title="" style="width:650px;height:auto;"
+					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onSelect:PlayersChange,
+										onUnselect:PlayersChange,
+										onSelectAll:PlayersChange,
+										onUnselectAll:PlayersChange,
+										">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field:'playerId'" width="45%">玩家账号</th>
+						<th data-options="field:'nickName'" width="45%">昵称</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		
+	<script>
+		var mailPlayerNames;
+		var mailPlayers;
+		var mailItems;
+		
+		$(function(){
+			mailPlayerNames = [];
+			mailPlayers = [];
+			mailItems = [];
+			loadAllZone();
+		});
+		
+		function sendMailTypeChange(){
+			mailPlayerNames = [];
+			mailPlayers = [];
+			$("#txtPlayers").textbox('setValue','');			
+			if($("#sendMailType").combobox('getValue') == "all"){
+				$("#sendMailAddPlayerBtn").linkbutton('disable',true);
+			}else{
+				$("#sendMailAddPlayerBtn").linkbutton('enable',true);
+			}
+		}
+		
+		function selectSendMailFirstZone(){
+			var data = $("#sendMailType").combobox('getData');
+			$("#sendMailType").combobox('select',data[0].id);
+		}
+		
+		function sendMailQueryPlayers(){
+			var data = {
+				zones : [$('#sendMailType').combobox('getValue')],
+				queryType : $('#sendMailQueryType').combobox('getValue'),
+				keyWord : $('#sendMailKeyWord').val(),
+			};
+		    $('#sendMailQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
+				function () {  
+                    if($("#sendMailKeyWord").val().trim()==""){
+						alert("请输入关键字");
+						$("#sendMailKeyWord").focus();
+						return false;
+					}
+                },function (result) {
+                	$("#sendmailQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
+						data: result
+					});
+			    }    
+            ));  
+		}
+		
+		
+		function PlayersChange(){
+			var rows = $("#sendmailQueryPlayerGrid").datagrid('getSelections');
+			for(var i=0; i<rows.length; i++){
+				var exist = false;
+				for(var j=0; j<mailPlayers.length; j++){
+					if(mailPlayers[j].playerId == rows[i].playerId){
+						exist = true;
+						break;
+					}
+				}
+				if(!exist){
+					mailPlayers.push({ playerId: rows[i].playerId, nickName: rows[i].nickName });
+			    	mailPlayerNames.push(rows[i].nickName + "("+rows[i].playerId+")");
+				}
+			}
+			$("#txtPlayers").textbox('setValue',mailPlayerNames.join('\n'));
+		}
+		
+		
+		function ItemsChange(){
+			mailItems = [];
+			var itemNames = [];
+			var rows = $('#sendmaildg').datagrid('getSelections');
+			for(var i=0; i<rows.length; i++){
+			    mailItems.push({ itemName: rows[i].itemName, count: rows[i].count });
+			    itemNames.push(rows[i].name + "("+rows[i].count+"个)");
+			}
+			$("#txtItems").textbox('setValue',itemNames.join('\n'));
+			//alert(items.join('\n'));
+		}
+	
+		function submitSendMailForm(){
+			var sendType = $('#sendMailType').combobox('getValue');
+			var data = {
+				sendType : sendType == "all" ? 0 : 1,
+				zones : getSelectedZone("sendMailType"),
+				players : mailPlayers,
+				items : mailItems,
+				addPerson : getManagerInfo().username,
+				reason : $('#sendMailReason').val(),
+				sender : $('#sendMailSender').val(),
+				title : $('#sendMailTitle').val(),
+				content : $('#sendMailContent').val()
+			};
+			 $('#sendMailForm').form('submit',submit("sendmail", data,
+			 	function () {  
+                    if(data.sendType != 0 && mailPlayers.length == 0){
+						showWarning("非全服发送时需选择服务器对应的玩家");
+						return false;
+					}
+                },  
+                function (data) {
+			        if(data.success == true){
+			            showMessage("发送成功");
+			        }
+			   }
+            ));  
+		}
+		$.extend($.fn.datagrid.methods, {
+			editCell: function(jq,param){
+				return jq.each(function(){
+					var opts = $(this).datagrid('options');
+					var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
+					for(var i=0; i<fields.length; i++){
+						var col = $(this).datagrid('getColumnOption', fields[i]);
+						col.editor1 = col.editor;
+						if (fields[i] != param.field){
+							col.editor = null;
+						}
+					}
+					$(this).datagrid('beginEdit', param.index);
+					for(var i=0; i<fields.length; i++){
+						var col = $(this).datagrid('getColumnOption', fields[i]);
+						col.editor = col.editor1;
+					}
+				});
+			}
+		});
+		
+		var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true;}
+			if ($('#sendmaildg').datagrid('validateRow', editIndex)){
+				$('#sendmaildg').datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onClickCell(index, field){
+			if (endEditing()){
+				$('#sendmaildg').datagrid('selectRow', index)
+						.datagrid('editCell', {index:index,field:field});
+				editIndex = index;
+			}
+		}
+		function sendMailOpenPlayerWindow(){
+			$("#sendMailKeyWord").textbox('setValue','');	
+			$("#sendmailQueryPlayerGrid").datagrid('loadData',{total:0,rows:[]});
+			$('#sendMailPlayerWindow').window('open');
+		}
+		function sendMailOpenItemWindow(){
+			$('#sendMailItemWindow').window('open');
+		}
+	</script>
+	</div>
+  </body>
+</html>

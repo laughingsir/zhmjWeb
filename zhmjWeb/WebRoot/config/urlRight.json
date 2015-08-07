@@ -1,0 +1,58 @@
+[
+    {
+        "right": "QueryManagerList",
+        "name": "查询用户列表"
+    },
+    {
+        "right": "AddManager",
+        "name": "添加用户"
+    },
+    {
+        "right": "ChangePassword",
+        "name": "修改密码"
+    },
+    {
+        "right": "ChangeRight",
+        "name": "修改权限"
+    },
+    {
+        "right": "SendMail",
+        "name": "添加邮件"
+    },
+    {
+        "right": "AuditMail",
+        "name": "审核邮件"
+    },
+    {
+        "right": "QueryMailList",
+        "name": "查询邮件列表"
+    },
+    {
+        "right": "QueryPlayerInfo",
+        "name": "查询玩家详细信息"
+    },
+    {
+        "right": "QueryPlayerInfoList",
+        "name": "查询玩家列表"
+    },
+    {
+        "right": "AddNotice",
+        "name": "发布公告"
+    },
+    {
+        "right": "QueryNoticeList",
+        "name": "查询公告列表"
+    },
+    {
+        "right": "HandleNotice",
+        "name": "处理公告"
+    },
+    {
+        "right": "DeleteExpireNotice",
+        "name": "删除过期公告"
+    },
+    {
+        "right": "Repay",
+        "name": "补偿充值玩家"
+    }
+]

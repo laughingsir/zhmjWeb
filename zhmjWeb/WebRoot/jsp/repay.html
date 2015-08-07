@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>补偿充值玩家</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+   
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%,height:auto">
+		<div style="padding:10px 60px 20px 60px">
+	    <form id="repayForm" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>发送方式:</td>
+	    			<td>
+	    				<input class="easyui-combobox" id="repayType" data-options="
+							data:allZone,
+							valueField:'id',
+							textField:'name',
+							panelHeight:'auto',
+							loadFilter:zoneFilter,
+							onChange:repayTypeChange,
+							onLoadSuccess:selectrepayFirstZone
+						">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">发送玩家：</td>
+	    			<td style="vertical-align:top">
+	    				<a href="#" id = "repayAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" repayOpenPlayerWindow()">添加玩家</a><br/><br/>
+	    				<input class="easyui-textbox" id="repayTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+	    				
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">VIP等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repayVipLevel" data-options="min:0,max:18" value="" style="width:200px">  (改变VIP等级)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">充值金额：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="repayPayMoney" value="" style="width:200px">  (改变充值金额)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">元宝：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="repayGold" value="" style="width:200px">  (增加元宝)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">月卡：</td>
+	    			<td>
+	    				<select id="repayMonthCard" class="easyui-combobox" style="width:100px;">
+							<option value=false selected>否</option>
+							<option value=true>是</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">成长基金：</td>
+	    			<td>
+	    				<select id="repayGrowthFund" class="easyui-combobox" style="width:100px;">
+							<option value=false selected>否</option>
+							<option value=true>是</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan = 2 style = "text-align:center">
+	    				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitrepayForm()">提交</a>
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    </div>
+	</div>
+		<div id="repayPlayerWindow" class="easyui-window" title="添加玩家" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:700px;height:400px;padding:10px;">
+			<form id="repayQueryPlayerForm" method="post" style="height:auto">
+	    	查询类型:<select id="repayQueryType" class="easyui-combobox" style="width:100px;">
+							<option value="0" selected>玩家账号</option>
+							<option value="1">昵称</option>
+						</select>
+			关键字:<input id="repayKeyWord" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="repayQueryPlayers()" style="width:80px">查询</a>
+		</form>
+			<table id="repayQueryPlayerGrid"  class="easyui-datagrid" title="" style="width:650px;height:auto;"
+					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onSelect:PlayersChange,
+										onUnselect:PlayersChange,
+										onSelectAll:PlayersChange,
+										onUnselectAll:PlayersChange,
+										">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field:'playerId'" width="45%">玩家账号</th>
+						<th data-options="field:'nickName'" width="45%">昵称</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		
+	<script>
+		var repayPlayers;
+		
+		$(function(){
+			repayPlayerNames = [];
+			repayPlayers = [];
+			repayItems = [];
+			loadAllZone();
+		});
+		
+		function repayTypeChange(){
+			repayPlayerNames = [];
+			repayPlayers = [];
+			$("#repayTxtPlayers").textbox('setValue','');			
+			if($("#repayType").combobox('getValue') == "all"){
+				$("#repayAddPlayerBtn").linkbutton('disable',true);
+			}else{
+				$("#repayAddPlayerBtn").linkbutton('enable',true);
+			}
+		}
+		
+		function selectrepayFirstZone(){
+			var data = $("#repayType").combobox('getData');
+			$("#repayType").combobox('select',data[0].id);
+		}
+		
+		function repayQueryPlayers(){
+			var data = {
+				zones : [$('#repayType').combobox('getValue')],
+				queryType : $('#repayQueryType').combobox('getValue'),
+				keyWord : $('#repayKeyWord').val(),
+			};
+		    $('#repayQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
+				function () {  
+                    if($("#repayKeyWord").val().trim()==""){
+						alert("请输入关键字");
+						$("#repayKeyWord").focus();
+						return false;
+					}
+                },function (result) {
+                	$("#repayQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
+						data: result
+					});
+			    }    
+            ));  
+		}
+		
+		
+		function PlayersChange(){
+			var rows = $("#repayQueryPlayerGrid").datagrid('getSelections');
+			for(var i=0; i<rows.length; i++){
+				var exist = false;
+				for(var j=0; j<repayPlayers.length; j++){
+					if(repayPlayers[j] == rows[i].playerId){
+						exist = true;
+						break;
+					}
+				}
+				if(!exist){
+					repayPlayers.push(rows[i].playerId);
+			    	repayPlayerNames.push(rows[i].nickName + "("+rows[i].playerId+")");
+				}
+			}
+			$("#repayTxtPlayers").textbox('setValue',repayPlayerNames.join('\n'));
+		}
+	
+		function submitrepayForm(){
+			showConfirm("发送邮件操作不可恢复，请谨慎操作，确定审核完成吗？",function(){
+				var data = {
+					zone :  $('#repayType').combobox('getValue'),
+					players : repayPlayers,
+					vipLevel : $('#repayVipLevel').val(),
+					payMoney : $('#repayPayMoney').val(),
+					gold : $('#repayGold').val(),
+					monthCard : $('#repayMonthCard').combobox('getValue'),
+					growthFund : $('#repayGrowthFund').combobox('getValue')
+				};
+				 $('#repayForm').form('submit',submit("Repay", data,
+				 	function () {  
+	                    if(repayPlayers.length == 0){
+							showWarning("请选择服务器对应的玩家");
+							return false;
+						}
+	                },  
+	                function (data) {
+				        if(data.success == true){
+				            showMessage("补偿成功");
+				        }
+				   }
+	            ));  
+			});
+		}
+		function repayOpenPlayerWindow(){
+			$("#repayKeyWord").textbox('setValue','');	
+			$("#repayQueryPlayerGrid").datagrid('loadData',{total:0,rows:[]});
+			$('#repayPlayerWindow').window('open');
+		}
+	</script>
+	</div>
+  </body>
+</html>

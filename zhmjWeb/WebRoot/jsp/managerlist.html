@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>发送邮件</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="managerListForm" method="post" style="height:auto">
+			账号:<input id="managerListUserName" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitManagerListForm()" style="width:80px">查询</a>
+	    	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" showAddManagerWindow()">添加用户</a>	    	
+	    </form>
+	    </div>
+	<table id="managerListGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'username',width:100">账号</th>
+				<th data-options="field:'menuRights',width:200,formatter:formatMunuRight">菜单权限</th>
+				<th data-options="field:'urlRights',width:200,formatter:formatUrlRight">操作权限</th>
+				<th data-options="field:'zones',width:200,formatter:formatAllZone">管理分区</th>
+				<th data-options="field:'oper',width:200,align:'center',halign:'center',formatter:formatChangeRight">操作</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<div id="addManagerDialog" class="easyui-dialog" title="添加用户" data-options="closed:true,modal:true" style="width:700px;height:400px;padding:10px;">
+		<form id="addManagerForm" method="post" style="height:auto">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td  style="vertical-align:top">账号：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="addManagerUsername" style="width:200px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">菜单权限：</td>
+	    			<td id="menuRightTd" style="vertical-align:top"></td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">操作权限：</td>
+	    			<td id="urlRightTd" style="vertical-align:top"></td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">管理分区：</td>
+	    			<td id="allZoneTd" style="vertical-align:top"></td>
+	    		</tr>
+	    	</table>
+	    	
+	    	
+		</form>
+	</div>
+	<script>
+		
+		$(function(){
+			loadConfig();
+		});
+		
+		function getManagerData(){
+			var selectedMenuRights = [];
+			var selectedUrlRights = [];
+			var selectedZones = [];
+			$('input[name="cbMenuRight"]:checked').each(function(){
+				selectedMenuRights.push($(this).val());
+			});
+			$('input[name="cbUrlRight"]:checked').each(function(){
+				selectedUrlRights.push($(this).val());
+			});
+			$('input[name="cbAllZone"]:checked').each(function(){
+				selectedZones.push($(this).val());
+			});
+			return {
+				username : $('#addManagerUsername').val().trim(),
+				menuRights : selectedMenuRights,
+				urlRights : selectedUrlRights,
+				zones : selectedZones
+			};
+		}
+		
+		function checkManagerData(data){
+			if(data.username == ""){
+				showWarning("账号不能为空");
+				return false;
+			}
+			if(data.menuRights.length == 0){
+				showWarning("请至少选择一个菜单权限");
+				return false;
+			}
+			if(data.urlRights.length == 0){
+				showWarning("请至少选择一个操作权限");
+				return false;
+			}
+			if(data.zones.length == 0){
+				showWarning("请至少选择一个管理分区");
+				return false;
+			}
+			return true;
+		}
+		
+		function changeRight(){
+			var data = getManagerData();
+			if(!checkManagerData(data)){
+				return;
+			}
+			submitData("ChangeRight",data,function(result){
+				if(result.status == 0){
+					showMessageF("修改权限成功",function(){
+						$('#addManagerDialog').dialog('close');
+						submitManagerListForm();
+					});
+				}else if(result.status == 1){
+					showError("修改权限失败，该账号不存在");
+				}
+			});
+		}
+		
+		function addManager(){
+			var data = getManagerData();
+			if(!checkManagerData(data)){
+				return;
+			}
+			submitData("AddManager",data,function(result){
+				if(result.status == 0){
+					showMessageF("添加成功",function(){
+						$('#addManagerDialog').dialog('close');
+						submitManagerListForm();
+					});
+				}else if(result.status == 1){
+					showError("添加失败，该账号已存在");
+				}
+			});
+		}
+		
+		function changeRightWindow(index){
+			$('#managerListGrid').datagrid('selectRow',index);
+		    var row = $('#managerListGrid').datagrid('getSelected');  
+		    if (row){  
+		    	$('#addManagerUsername').textbox('setValue',row.username).textbox('disable');
+		        $('#menuRightTd').html(generateMenuRightCheckBox(row.menuRights));
+				$('#urlRightTd').html(generateUrlRightCheckBox(row.urlRights));
+				$('#allZoneTd').html(generateAllZoneCheckBox(row.zones));
+				$('#addManagerDialog').dialog({iconCls:'icon-edit',buttons:[{
+					text:'修改',
+					iconCls:'icon-edit',
+					handler:function(){
+						changeRight();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#addManagerDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','修改权限');  
+		    }  
+		}
+		
+		function showAddManagerWindow(){
+			$('#addManagerUsername').textbox('setValue','').textbox('enable');
+			$('#menuRightTd').html(generateMenuRightCheckBox(null));
+			$('#urlRightTd').html(generateUrlRightCheckBox(null));
+			$('#allZoneTd').html(generateAllZoneCheckBox(null));
+			$('#addManagerDialog').dialog({iconCls:'icon-add',buttons:[{
+					text:'添加',
+					iconCls:'icon-add',
+					handler:function(){
+						addManager();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#addManagerDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','添加用户');
+		}
+		
+		function generateMenuRightCheckBox(menuRights){
+			var val = '';
+			for(var i = 0; i < menuRight.length; i++){
+				var right = menuRight[i];
+				var exist = menuRights!=null ? checkMenuRights(right.right,menuRights) : false;
+				val += "<input type='checkbox' value='"+right.right+"' name='cbMenuRight' "+(exist == true ? "checked" : "")+">"+right.name+"</input>";
+				if((i+1) % 4 == 0){
+					val += "<br/>";
+				}
+			}
+			return val;
+		}
+		
+		function checkMenuRights(val,menuRights){
+			for(var j = 0; j < menuRights.length; j++){
+				if(menuRights[j] == val){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function generateUrlRightCheckBox(urlRights){
+			var val = '';
+			for(var i = 0; i < urlRight.length; i++){
+				var right = urlRight[i];
+				var exist = urlRights != null ? checkUrlRights(right.right,urlRights) : false;
+				val += "<input type='checkbox' value='"+right.right+"' name='cbUrlRight' "+(exist == true ? "checked" : "")+">"+right.name+"</input>";
+				if((i+1) % 4 == 0){
+					val += "<br/>";
+				}
+			}
+			return val;
+		}
+		
+		function checkUrlRights(val,urlRights){
+			for(var j = 0; j < urlRights.length; j++){
+				if(urlRights[j] == val){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function generateAllZoneCheckBox(zones){
+			var val = '';
+			for(var i = 0; i < allZone.length; i++){
+				var zone = allZone[i];
+				var exist = zones != null ? checkZones(zone.id,zones) :false;
+				val += "<input type='checkbox' value='"+zone.id+"' name='cbAllZone' "+(exist == true ? "checked" : "")+">"+zone.name+"</input>";
+				if((i+1) % 4 == 0){
+					val += "<br/>";
+				}
+			}
+			return val;
+		}
+		
+		function checkZones(val,zones){
+			for(var j = 0; j < zones.length; j++){
+				if(zones[j] == val){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function submitManagerListForm(){
+			var data = {
+				username : $('#managerListUserName').val(),
+			};
+		    submitData('QueryManagerList',data,function (result) {
+			        $('#managerListGrid').datagrid({loadFilter:pagerFilter}).datagrid({
+			        	data: result,
+			        	onLoadSuccess:function(data){  
+        								$('.managerEditcls').linkbutton({text:'修改权限',iconCls:'icon-edit'});  
+    								  } 
+			        });
+			    }    
+            );
+		}
+		
+		function formatMunuRight(val,row){			
+			if(val == null) return '';
+			var returnVal = '';
+			for(var i = 0; i < val.length; i++){
+				var right = checkMenuRight(val[i]);
+				if(right != null){
+					returnVal += right.name + '<br>';
+				}
+			}
+			return returnVal;
+		}
+		
+		function checkMenuRight(val){
+			for(var j = 0; j < menuRight.length; j++){
+				var right = menuRight[j];
+				if(right.right == val){
+					return right;
+				}
+			}
+			return null;
+		}
+		
+		function formatUrlRight(val,row){			
+			if(val == null) return '';
+			var returnVal = '';
+			for(var i = 0; i < val.length; i++){
+				var right = checkUrlRight(val[i]);
+				if(right != null){
+					returnVal += right.name + '<br>';
+				}
+			}
+			return returnVal;
+		}
+		
+		function checkUrlRight(val){
+			for(var j = 0; j < urlRight.length; j++){
+				var right = urlRight[j];
+				if(right.right == val){
+					return right;
+				}
+			}
+			return null;
+		}
+		
+		function formatAllZone(val,row){			
+			if(val == null) return '';
+			return transZones(val);
+		}
+		
+		function formatChangeRight(val,row, index){		
+			return '<a href="#" class="managerEditcls" onclick="changeRightWindow('+index+')"></a>'; 
+		}
+	</script>
+	</div>
+  </body>
+</html>

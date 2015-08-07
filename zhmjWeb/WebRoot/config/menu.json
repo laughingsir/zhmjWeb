@@ -1,0 +1,78 @@
+[
+    {
+        "id": 1,
+        "text": "客服管理",
+        "iconCls": "icon-ok",
+        "attributes": {
+                    	"right": "01"
+                	  },
+        "children": [
+        	{
+                "id": 11,
+                "text": "查询玩家信息",
+                "attributes": {
+                    "target": "queryplayer.html",
+                    "right": "0101"
+                }
+            },
+            {
+                "id": 12,
+                "text": "添加邮件",
+                "attributes": {
+                    "target": "sendmail.html",
+                    "right": "0102"
+                }
+            },
+            {
+                "id": 13,
+                "text": "审核邮件",
+                "attributes": {
+                    "target": "auditmail.html",
+                    "right": "0103"
+                }
+            },
+            {
+                "id": 14,
+                "text": "发布公告",
+                "attributes": {
+                    "target": "noticelist.html",
+                    "right": "0104"
+                }
+            },
+            {
+                "id": 15,
+                "text": "补偿充值玩家",
+                "attributes": {
+                    "target": "repay.html",
+                    "right": "0105"
+                }
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "text": "系统管理",
+        "iconCls": "icon-ok",
+        "attributes": {
+                    	"right": "02"
+                	  },
+        "children": [
+            {
+                "id": 21,
+                "text": "用户管理",
+                "attributes": {
+                    "target": "managerlist.html",
+                    "right": "0201"
+                }
+            },
+            {
+                "id": 22,
+                "text": "修改密码",
+                "attributes": {
+                    "target": "changepassword.html",
+                    "right": "0202"
+                }
+            }
+        ]
+    }
+]

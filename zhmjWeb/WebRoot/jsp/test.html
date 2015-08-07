@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>test.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+    <select id="sendmailQueryPlayerGrid" class="easyui-combogrid" style="width:600px" data-options="
+									panelWidth: 600,
+									multiple:true,
+									idField: 'playerId',
+									textField: 'nickName',
+									method: 'post',
+									columns: [[
+										{field:'ck',checkbox:true},
+										{field:'playerId',title:'玩家账号',width:80},
+										{field:'nickName',title:'昵称',width:100},
+									]],
+									fitColumns: true,
+									pagination: true,
+								">
+							</select>
+							<form id="sendMailQueryPlayerForm" method="post" style="height:auto">
+	    	服务器:
+	    	<select id="sendMailZoneCombo" class="easyui-combobox" style="width:100px;">
+				<option value="102">test--1服</option>
+				<option value="103">test--2服</option>
+			</select>
+	    	查询类型:<select id="sendMailQueryType" class="easyui-combobox" style="width:100px;">
+							<option value="0" selected>玩家账号</option>
+							<option value="1">昵称</option>
+						</select>
+			关键字:<input id="sendMailKeyWord" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="sendMailQueryPlayers()" style="width:80px">查询</a>
+		</form>
+		<script type="text/javascript">
+
+function PlayersChange(){
+			var rows = $("#sendmailQueryPlayerGrid").datagrid('getSelections');
+			for(var i=0; i<rows.length; i++){
+				var exist = false;
+				for(var j=0; j<playerIds.length; j++){
+					if(playerIds[j] == rows[i].playerId){
+						exist = true;
+						break;
+					}
+				}
+				if(!exist){
+					playerIds.push(rows[i].playerId);
+			    	players.push(rows[i].nickName + "("+rows[i].playerId+")");
+				}
+			}
+		}
+	function sendMailQueryPlayers(){
+			var data = {
+				zones : [$('#sendMailZoneCombo').combobox('getValue')],
+				queryType : $('#sendMailQueryType').combobox('getValue'),
+				keyWord : $('#sendMailKeyWord').val(),
+			};
+		    $('#sendMailQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
+				function () {  
+                    if($("#sendMailKeyWord").val().trim()==""){
+						alert("请输入关键字");
+						$("#sendMailKeyWord").focus();
+						return false;
+					}
+                },function (result) {
+                	$("#sendmailQueryPlayerGrid").combogrid("grid").datagrid({loadFilter:pagerFilter}).datagrid({
+						data: result
+					});
+			    }    
+            ));  
+		}
+</script>
+  </body>
+</html>
+
