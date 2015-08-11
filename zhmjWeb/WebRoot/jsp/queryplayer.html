@@ -18,8 +18,9 @@
 					onLoadSuccess:selectQueryPlayerFirstZone
 				">
 	    	查询类型:<select id="queryType" class="easyui-combobox" style="width:100px;">
-							<option value="0" selected>玩家账号</option>
-							<option value="1">昵称</option>
+	    					<option value=-1 selected>全服</option>
+							<option value=0>玩家账号</option>
+							<option value=1>昵称</option>
 						</select>
 			关键字:<input id="keyWord" class="easyui-textbox" type="text" >			
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitQueryPlayerForm()" style="width:80px">查询</a>
@@ -70,6 +71,18 @@
 		}
 		
 		function submitQueryPlayerForm(){
+			if($('#queryType').combobox('getValue') == -1){
+				$.messager.confirm("提示", "确定查询全服玩家吗？", function (sure) {
+			        if(sure){
+			        	submitQueryPlayer();
+			        }
+			    });
+			}else{
+				submitQueryPlayer();
+			}
+		}
+		
+		function submitQueryPlayer(){
 			var data = {
 				zones : [$('#zoneCombo').combobox('getValue')],
 				queryType : $('#queryType').combobox('getValue'),
@@ -77,12 +90,12 @@
 			};
 		    $('#queryPlayerForm').form('submit', submit('QueryPlayerInfo',data,
 				function () {  
-                    if($("#keyWord").val().trim()==""){
-						showWarningF("请输入关键字",function(){
-							$("#keyWord").focus();
-						});
-						return false;
-					}
+                    if($('#queryType').combobox('getValue') != -1 && $("#keyWord").val().trim()==""){
+                        showWarningF("请输入关键字",function(){
+                            $("#keyWord").focus();
+                        });
+                        return false;
+                    }
                 },function (result) {
 			        $('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: result});
 			    }    

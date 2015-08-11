@@ -36,19 +36,19 @@
 	    		<tr>
 	    			<td  style="vertical-align:top">VIP等级：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="repayVipLevel" data-options="min:0,max:18" value="" style="width:200px">  (改变VIP等级)
+	    				<input class="easyui-numberbox" id="repayVipLevel" data-options="min:-1,max:18" value="-1" style="width:200px">  (改变VIP等级，-1表示不变)
 					</td>
 	    		</tr>
 	    		<tr>
 	    			<td  style="vertical-align:top">充值金额：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="repayPayMoney" data-options="min:0" value="" style="width:200px">  (改变充值金额)
+	    				<input class="easyui-numberbox" id="repayPayMoney" data-options="min:-1" value="-1" style="width:200px">  (改变充值金额，-1表示不变)
 					</td>
 	    		</tr>
 	    		<tr>
 	    			<td  style="vertical-align:top">元宝：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="repayGold" data-options="min:0" value="" style="width:200px">  (增加元宝)
+	    				<input class="easyui-numberbox" id="repayGold" data-options="min:0" value="" style="width:200px">  (增加元宝，负数为减)
 					</td>
 	    		</tr>
 	    		<tr>
@@ -67,6 +67,36 @@
 							<option value=false selected>否</option>
 							<option value=true>是</option>
 						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">银币：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repaySilver" data-options="" value="" style="width:200px">  (增加银币，负数为减)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">体力：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repayPower" data-options="" value="" style="width:200px">  (增加体力，负数为减)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">竞技场币：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repayJJC" data-options="" value="" style="width:200px">  (增加竞技场币，负数为减)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">攻城拔寨币：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repayGCBZ" data-options="" value="" style="width:200px">  (增加攻城拔寨币，负数为减)
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">王者之战币：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repayWZ" data-options="" value="" style="width:200px">  (增加王者之战币，负数为减)
 					</td>
 	    		</tr>
 	    		<tr>
@@ -178,7 +208,12 @@
 					payMoney : $('#repayPayMoney').val(),
 					gold : $('#repayGold').val(),
 					monthCard : $('#repayMonthCard').combobox('getValue'),
-					growthFund : $('#repayGrowthFund').combobox('getValue')
+					growthFund : $('#repayGrowthFund').combobox('getValue'),
+					silver : $('#repaySilver').val(),
+					power : $('#repayPower').val(),
+					jjc : $('#repayJJC').val(),
+					gcbz : $('#repayGCBZ').val(),
+					wz : $('#repayWZ').val(),
 				};
 				 $('#repayForm').form('submit',submit("Repay", data,
 				 	function () {  
