@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>添加武将</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+   
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%,height:auto">
+		<div style="padding:10px 60px 20px 60px">
+	    <form id="addWuJiangForm" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>服务器:</td>
+	    			<td colspan = "5">
+	    				<input class="easyui-combobox" id="addWuJiangType" data-options="
+							data:allZone,
+							valueField:'id',
+							textField:'name',
+							panelHeight:'auto',
+							loadFilter:zoneFilter,
+							onChange:addWuJiangTypeChange,
+							onLoadSuccess:selectaddWuJiangFirstZone
+						">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">玩家：</td>
+	    			<td style="vertical-align:top" colspan = "5">
+	    				<a href="#" id = "addWuJiangAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" addWuJiangOpenPlayerWindow()">添加玩家</a><br/><br/>
+	    				<input class="easyui-textbox" id="addWuJiangTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">武将：</td>
+	    			<td colspan="2">
+	    				<input class="easyui-combobox" id="addWuJiangNames"
+							data-options="
+									url: '../config/wujiang.json',
+									method:'get',
+									valueField:'itemName',
+									textField:'name',
+									multiple:true,
+									panelHeight:'200'
+							">
+					</td>
+					<td  style="vertical-align:top">斩千数量：</td>
+	    			<td colspan="2">
+	    				<input class="easyui-numberbox" id="addWuJiangKillCount" data-options="min:0" value="0" style="width:100px">
+					</td>
+	    		</tr>
+	    		<tr>	    			
+					<td  style="vertical-align:top">斩千等级：</td>
+	    			<td>
+	    				<select id="addWuJiangKillLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=0 selected>0</option>
+							<option value=1>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+							<option value=6>6</option>
+							<option value=7>7</option>
+							<option value=8>8</option>
+							<option value=9>9</option>
+							<option value=10>10</option>
+							<option value=11>11</option>
+							<option value=12>12</option>
+							<option value=13>13</option>
+							<option value=14>14</option>
+							<option value=15>15</option>
+						</select>
+					</td>
+					<td  style="vertical-align:top">武将星级：</td>
+	    			<td>
+	    				<select id="addWuJiangStar" class="easyui-combobox" style="width:50px;">
+	    					<option value=0 selected>初始</option>
+							<option value=1>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+						</select>
+					</td>
+	    			<td  style="vertical-align:top">武将等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangLevel" data-options="min:1,max:70" value="1" style="width:50px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">武器阶级：</td>
+	    			<td>
+	    				<select id="addWuJiangWeaponBreakLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=0 selected>0</option>
+							<option value=1>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+							<option value=6>6</option>
+							<option value=7>7</option>
+							<option value=8>8</option>
+							<option value=9>9</option>
+							<option value=10>10</option>
+							<option value=11>11</option>
+							<option value=12>12</option>
+							<option value=13>13</option>
+						</select>
+					</td>
+					<td  style="vertical-align:top">装备阶级：</td>
+	    			<td>
+	    				<select id="addWuJiangClothBreakLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=0 selected>0</option>
+							<option value=1>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+							<option value=6>6</option>
+							<option value=7>7</option>
+							<option value=8>8</option>
+							<option value=9>9</option>
+							<option value=10>10</option>
+							<option value=11>11</option>
+							<option value=12>12</option>
+							<option value=13>13</option>
+						</select>
+					</td>
+					<td  style="vertical-align:top">饰品阶级：</td>
+	    			<td>
+	    				<select id="addWuJiangAccBreakLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=0 selected>0</option>
+							<option value=1>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+							<option value=6>6</option>
+							<option value=7>7</option>
+							<option value=8>8</option>
+							<option value=9>9</option>
+							<option value=10>10</option>
+							<option value=11>11</option>
+							<option value=12>12</option>
+							<option value=13>13</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">武器等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangWeaponLevel" data-options="min:1,max:70" value="1" style="width:50px">
+					</td>
+					<td  style="vertical-align:top">装备等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangClothLevel" data-options="min:1,max:70" value="1" style="width:50px">
+					</td>
+					<td  style="vertical-align:top">饰品等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangAccLevel" data-options="min:1,max:70" value="1" style="width:50px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">主动技能：</td>
+	    			<td>
+	    				<select id="addWuJiangActiveSkillBreakLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=1 selected>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+						</select>
+					</td>
+					<td  style="vertical-align:top">被动技能1：</td>
+	    			<td>
+	    				<select id="addWuJiangAutoSkill1BreakLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=1 selected>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+						</select>
+					</td>
+					<td  style="vertical-align:top">被动技能2：</td>
+	    			<td>
+	    				<select id="addWuJiangAutoSkill2BreakLevel" class="easyui-combobox" style="width:50px;">
+	    					<option value=1 selected>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan = 2 style = "text-align:center">
+	    				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitaddWuJiangForm()">提交</a>
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    </div>
+	</div>
+		<div id="addWuJiangPlayerWindow" class="easyui-window" title="添加玩家" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:700px;height:400px;padding:10px;">
+			<form id="addWuJiangQueryPlayerForm" method="post" style="height:auto">
+	    	查询类型:<select id="addWuJiangQueryType" class="easyui-combobox" style="width:100px;">
+							<option value="0" selected>玩家账号</option>
+							<option value="1">昵称</option>
+						</select>
+			关键字:<input id="addWuJiangKeyWord" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="addWuJiangQueryPlayers()" style="width:80px">查询</a>
+		</form>
+			<table id="addWuJiangQueryPlayerGrid"  class="easyui-datagrid" title="" style="width:650px;height:auto;"
+					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,
+										onSelect:addWuJiangPlayersChange,
+										onUnselect:addWuJiangPlayersChange,
+										onSelectAll:addWuJiangPlayersChange,
+										onUnselectAll:addWuJiangPlayersChange,
+										">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field:'playerId'" width="45%">玩家账号</th>
+						<th data-options="field:'nickName'" width="45%">昵称</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		
+	<script>
+		var addWuJiangPlayers;
+		
+		$(function(){
+			addWuJiangPlayerNames = [];
+			addWuJiangPlayers = [];
+			loadAllZone();
+		});
+		
+		function addWuJiangTypeChange(){
+			addWuJiangPlayerNames = [];
+			addWuJiangPlayers = [];
+			$("#addWuJiangTxtPlayers").textbox('setValue','');			
+			if($("#addWuJiangType").combobox('getValue') == "all"){
+				$("#addWuJiangAddPlayerBtn").linkbutton('disable',true);
+			}else{
+				$("#addWuJiangAddPlayerBtn").linkbutton('enable',true);
+			}
+		}
+		
+		function selectaddWuJiangFirstZone(){
+			var data = $("#addWuJiangType").combobox('getData');
+			$("#addWuJiangType").combobox('select',data[0].id);
+		}
+		
+		function addWuJiangQueryPlayers(){
+			var data = {
+				zones : [$('#addWuJiangType').combobox('getValue')],
+				queryType : $('#addWuJiangQueryType').combobox('getValue'),
+				keyWord : $('#addWuJiangKeyWord').val(),
+			};
+		    $('#addWuJiangQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
+				function () {  
+                    if($("#addWuJiangKeyWord").val().trim()==""){
+						alert("请输入关键字");
+						$("#addWuJiangKeyWord").focus();
+						return false;
+					}
+                },function (result) {
+                	$("#addWuJiangQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
+						data: result
+					});
+			    }    
+            ));  
+		}
+		
+		
+		function addWuJiangPlayersChange(){
+			var rows = $("#addWuJiangQueryPlayerGrid").datagrid('getSelections');
+			for(var i=0; i<rows.length; i++){
+				var exist = false;
+				for(var j=0; j<addWuJiangPlayers.length; j++){
+					if(addWuJiangPlayers[j] == rows[i].playerId){
+						exist = true;
+						break;
+					}
+				}
+				if(!exist){
+					addWuJiangPlayers.push(rows[i].playerId);
+			    	addWuJiangPlayerNames.push(rows[i].nickName + "("+rows[i].playerId+")");
+				}
+			}
+			$("#addWuJiangTxtPlayers").textbox('setValue',addWuJiangPlayerNames.join('\n'));
+		}
+	
+		function submitaddWuJiangForm(){
+			showConfirm("操作不可恢复，请谨慎操作，确定提交吗？",function(){
+				var data = {
+					zone :  $('#addWuJiangType').combobox('getValue'),
+					players : addWuJiangPlayers,
+					wuJiangNames : $('#addWuJiangNames').combobox('getValues'),
+					level : $('#addWuJiangLevel').val(),
+					star : $('#addWuJiangStar').combobox('getValue'),
+					weaponBreakLevel : $('#addWuJiangWeaponBreakLevel').combobox('getValue'),
+					clothBreakLevel : $('#addWuJiangClothBreakLevel').combobox('getValue'),
+					accBreakLevel : $('#addWuJiangAccBreakLevel').combobox('getValue'),
+					weaponLevel : $('#addWuJiangWeaponLevel').val(),
+					clothLevel : $('#addWuJiangClothLevel').val(),
+					accLevel : $('#addWuJiangAccLevel').val(),
+					activeSkillBreakLevel : $('#addWuJiangActiveSkillBreakLevel').combobox('getValue'),
+					autoSkill1BreakLevel : $('#addWuJiangAutoSkill1BreakLevel').combobox('getValue'),
+					autoSkill2BreakLevel : $('#addWuJiangAutoSkill2BreakLevel').combobox('getValue'),
+					killLevel : $('#addWuJiangKillLevel').combobox('getValue'),
+					killCount : $('#addWuJiangKillCount').val()
+				};
+				 $('#addWuJiangForm').form('submit',submit("AddWuJiang", data,
+				 	function () {  
+	                    if(addWuJiangPlayers.length == 0){
+							showWarning("请选择服务器对应的玩家");
+							return false;
+						}
+						if($('#addWuJiangNames').combobox('getValues').length == 0){
+							showWarning("请选择武将");
+							return false;
+						}
+	                },  
+	                function (data) {
+				        if(data.success == true){
+				            showMessage("添加成功");
+				        }
+				   }
+	            ));  
+			});
+		}
+		function addWuJiangOpenPlayerWindow(){
+			$("#addWuJiangKeyWord").textbox('setValue','');	
+			$("#addWuJiangQueryPlayerGrid").datagrid('loadData',{total:0,rows:[]});
+			$('#addWuJiangPlayerWindow').window('open');
+		}
+	</script>
+	</div>
+  </body>
+</html>
