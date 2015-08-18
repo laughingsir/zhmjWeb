@@ -46,6 +46,14 @@
                     "target": "repay.html",
                     "right": "0105"
                 }
+            },
+            {
+                "id": 16,
+                "text": "添加武将",
+                "attributes": {
+                    "target": "addwujiang.html",
+                    "right": "0106"
+                }
             }
         ]
     },

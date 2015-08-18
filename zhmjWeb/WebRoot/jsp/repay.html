@@ -12,7 +12,7 @@
 	    <form id="repayForm" method="post">
 	    	<table cellpadding="5">
 	    		<tr>
-	    			<td>发送方式:</td>
+	    			<td>服务器:</td>
 	    			<td>
 	    				<input class="easyui-combobox" id="repayType" data-options="
 							data:allZone,
@@ -26,7 +26,7 @@
 					</td>
 	    		</tr>
 	    		<tr>
-	    			<td style="vertical-align:top">发送玩家：</td>
+	    			<td style="vertical-align:top">玩家：</td>
 	    			<td style="vertical-align:top">
 	    				<a href="#" id = "repayAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" repayOpenPlayerWindow()">添加玩家</a><br/><br/>
 	    				<input class="easyui-textbox" id="repayTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
@@ -42,13 +42,13 @@
 	    		<tr>
 	    			<td  style="vertical-align:top">充值金额：</td>
 	    			<td>
-	    				<input class="easyui-textbox" id="repayPayMoney" value="" style="width:200px">  (改变充值金额)
+	    				<input class="easyui-numberbox" id="repayPayMoney" data-options="min:0" value="" style="width:200px">  (改变充值金额)
 					</td>
 	    		</tr>
 	    		<tr>
 	    			<td  style="vertical-align:top">元宝：</td>
 	    			<td>
-	    				<input class="easyui-textbox" id="repayGold" value="" style="width:200px">  (增加元宝)
+	    				<input class="easyui-numberbox" id="repayGold" data-options="min:0" value="" style="width:200px">  (增加元宝)
 					</td>
 	    		</tr>
 	    		<tr>
@@ -88,10 +88,11 @@
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="repayQueryPlayers()" style="width:80px">查询</a>
 		</form>
 			<table id="repayQueryPlayerGrid"  class="easyui-datagrid" title="" style="width:650px;height:auto;"
-					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onSelect:PlayersChange,
-										onUnselect:PlayersChange,
-										onSelectAll:PlayersChange,
-										onUnselectAll:PlayersChange,
+					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,
+										onSelect:repayPlayersChange,
+										onUnselect:repayPlayersChange,
+										onSelectAll:repayPlayersChange,
+										onUnselectAll:repayPlayersChange,
 										">
 				<thead>
 					<tr>
@@ -109,7 +110,6 @@
 		$(function(){
 			repayPlayerNames = [];
 			repayPlayers = [];
-			repayItems = [];
 			loadAllZone();
 		});
 		
@@ -151,7 +151,7 @@
 		}
 		
 		
-		function PlayersChange(){
+		function repayPlayersChange(){
 			var rows = $("#repayQueryPlayerGrid").datagrid('getSelections');
 			for(var i=0; i<rows.length; i++){
 				var exist = false;
@@ -170,7 +170,7 @@
 		}
 	
 		function submitrepayForm(){
-			showConfirm("发送邮件操作不可恢复，请谨慎操作，确定审核完成吗？",function(){
+			showConfirm("操作不可恢复，请谨慎操作，确定提交吗？",function(){
 				var data = {
 					zone :  $('#repayType').combobox('getValue'),
 					players : repayPlayers,

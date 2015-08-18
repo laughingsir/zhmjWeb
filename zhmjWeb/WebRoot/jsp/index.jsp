@@ -69,12 +69,16 @@ $(document).ready(function () {
                	 	return result;
                 }
             });
-            /*$('#tb').tabs('add', {
+            
+        });
+        
+function defaultCheck(){
+/*$('#tb').tabs('add', {
                         		title:  '发布公告',
                         		href: 'noticelist.html',
                         		closable: true
                     		}); */
-        });
+}
         
 function checkRight(node){
 	var menuRights = managerInfo.menuRights;

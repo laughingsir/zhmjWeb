@@ -37,7 +37,7 @@
 	    			<td  style="vertical-align:top">道具：</td>
 	    			<td>
 	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" sendMailOpenItemWindow()">添加道具</a><br/><br/>
-	    				<input class="easyui-textbox" id="txtItems" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+	    				<input class="easyui-textbox" id="sendMailTxtItems" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
 					</td>
 	    		</tr>
 	    		<tr>
@@ -81,10 +81,10 @@
 						method:'get',
 						onDblClickCell: onClickCell,
 						collapsible:true,
-						onSelect:ItemsChange,
-						onUnselect:ItemsChange,
-						onSelectAll:ItemsChange,
-						onUnselectAll:ItemsChange
+						onSelect:sendMailItemsChange,
+						onUnselect:sendMailItemsChange,
+						onSelectAll:sendMailItemsChange,
+						onUnselectAll:sendMailItemsChange
 					">
 				<thead>
 					<tr>
@@ -106,10 +106,11 @@
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="sendMailQueryPlayers()" style="width:80px">查询</a>
 		</form>
 			<table id="sendmailQueryPlayerGrid"  class="easyui-datagrid" title="" style="width:650px;height:auto;"
-					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onSelect:PlayersChange,
-										onUnselect:PlayersChange,
-										onSelectAll:PlayersChange,
-										onUnselectAll:PlayersChange,
+					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,
+										onSelect:sendMailPlayersChange,
+										onUnselect:sendMailPlayersChange,
+										onSelectAll:sendMailPlayersChange,
+										onUnselectAll:sendMailPlayersChange,
 										">
 				<thead>
 					<tr>
@@ -171,7 +172,7 @@
 		}
 		
 		
-		function PlayersChange(){
+		function sendMailPlayersChange(){
 			var rows = $("#sendmailQueryPlayerGrid").datagrid('getSelections');
 			for(var i=0; i<rows.length; i++){
 				var exist = false;
@@ -190,7 +191,7 @@
 		}
 		
 		
-		function ItemsChange(){
+		function sendMailItemsChange(){
 			mailItems = [];
 			var itemNames = [];
 			var rows = $('#sendmaildg').datagrid('getSelections');
@@ -198,7 +199,7 @@
 			    mailItems.push({ itemName: rows[i].itemName, count: rows[i].count });
 			    itemNames.push(rows[i].name + "("+rows[i].count+"个)");
 			}
-			$("#txtItems").textbox('setValue',itemNames.join('\n'));
+			$("#sendMailTxtItems").textbox('setValue',itemNames.join('\n'));
 			//alert(items.join('\n'));
 		}
 	
