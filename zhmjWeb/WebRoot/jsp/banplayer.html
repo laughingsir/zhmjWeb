@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>查询玩家信息</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="banPlayerForm" method="post" style="height:auto">
+	    	服务器:<input class="easyui-combobox" id="banPlayerZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'auto',
+					loadFilter:zoneFilter,
+					onLoadSuccess:selectBanPlayerFirstZone
+				">
+	    	查询类型:<select id="banPlayerQueryType" class="easyui-combobox" style="width:100px;">
+	    					<option value=-1 selected>全服</option>
+							<option value=0>玩家账号</option>
+							<option value=1>昵称</option>
+						</select>
+			关键字:<input id="banPlayerKeyWord" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitQueryBanPlayerForm()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="banPlayerGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onLoadSuccess:banPlayerGridLoadSuccess">
+		<thead>
+			<tr>
+				<th data-options="field:'playerId',width:100">玩家账号</th>
+				<th data-options="field:'nickName',width:100">昵称</th>
+				<th data-options="field:'vipLevel',width:60,align:'center'">VIP等级</th>
+				<th data-options="field:'level',width:60,align:'center'">等级</th>
+				<th data-options="field:'payGold',width:60,align:'center'">充值元宝</th>
+				<th data-options="field:'bindingGold',width:60,align:'center'">绑定元宝</th>
+				<th data-options="field:'silver',width:100,align:'center'">银币</th>
+				<th data-options="field:'power',width:60,align:'center'">体力</th>
+				<th data-options="field:'regTime',width:120">注册时间</th>
+				<th data-options="field:'banned',width:200,height: 80,align:'center',halign:'center',formatter:formatBanPlayerOper,styler:banPlayerStyler">操作</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<div id="banPlayerDialog" class="easyui-dialog" title="封禁玩家" data-options="closed:true,modal:true" style="width:500px;height:300px;padding:10px;">
+		<form id="banPlayerForm" method="post" style="height:auto">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td  style="vertical-align:top">封禁小时：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="banPlayerHour" data-options="min:1" value="1" style="width:200px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">原因：</td>
+	    			<td style="vertical-align:top">
+	    				<input type="radio" name="rbBanPlayerReason" value="发布非法信息、虚假信息">发布非法信息、虚假信息</input>
+	    				<input type="radio" name="rbBanPlayerReason" value="发表涉及政治、法令等信息">发表涉及政治、法令等信息</input><br>
+	    				<input type="radio" name="rbBanPlayerReason" value="诈骗">诈骗</input>
+	    				<input type="radio" name="rbBanPlayerReason" value="非法昵称">非法昵称</input>
+	    				<input type="radio" name="rbBanPlayerReason" value="外挂">外挂</input>
+	    				<input type="radio" name="rbBanPlayerReason" value="其他">其他</input><br>
+	    				<div id="divReason" style="display:none">
+	    					<font style="color:red">*</font><input class="easyui-textbox" id="txtBanPlayerReason" data-options="multiline:true" style="width:350px;height:100px">
+	    				</div>
+					</td>
+	    		</tr>
+	    	</table>
+		</form>
+	</div>
+	<script>
+		$(function(){
+			loadAllZone();
+			$('input[name="rbBanPlayerReason"]').change(function(){
+				if($('input[name="rbBanPlayerReason"]:checked').val() == "其他"){
+					$('#divReason').show();
+					$('#txtBanPlayerReason').textbox('setValue','');
+				}else{
+					$('#divReason').hide();
+				}
+			});
+		});
+		
+		function selectBanPlayerFirstZone(){
+			var data = $("#banPlayerZoneCombo").combobox('getData');
+			$("#banPlayerZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function submitQueryBanPlayerForm(){
+			if($('#banPlayerQueryType').combobox('getValue') == -1){
+				$.messager.confirm("提示", "确定查询全服玩家吗？", function (sure) {
+			        if(sure){
+			        	submitQueryBanPlayer();
+			        }
+			    });
+			}else{
+				submitQueryBanPlayer();
+			}
+		}
+		
+		function submitQueryBanPlayer(){
+			var data = {
+				zones : [$('#banPlayerZoneCombo').combobox('getValue')],
+				queryType : $('#banPlayerQueryType').combobox('getValue'),
+				keyWord : $('#banPlayerKeyWord').val().trim(),
+			};
+		    $('#banPlayerForm').form('submit', submit('QueryPlayerInfo',data,
+				function () {  
+                    if($('#banPlayerQueryType').combobox('getValue') != -1 && $("#banPlayerKeyWord").val().trim()==""){
+                        showWarningF("请输入关键字",function(){
+                            $("#banPlayerKeyWord").focus();
+                        });
+                        return false;
+                    }
+                },function (result) {
+			        $('#banPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: result});
+			    }    
+            ));  
+		}
+		
+		function banPlayerStyler(val, row ,index){
+			return 'height:60px;';
+		}
+		
+		function formatBanPlayerOper(val, row){
+			if(row.banned){
+				if(row.silenced){
+					return '<a href="#" class="unSilencePlayerCls" onclick="unBanPlayer(1,\''+row.playerId+'\')"></a>' +'&nbsp;&nbsp;&nbsp;&nbsp;' + 
+						'<a href="#" class="unBanPlayerCls" onclick="unBanPlayer(0,\''+row.playerId+'\')"></a>';
+				}else{
+					return '<a href="#" class="silencePlayerCls" onclick="banPlayer(1,\''+row.playerId+'\')"></a>' +'&nbsp;&nbsp;&nbsp;&nbsp;' + 
+						'<a href="#" class="unBanPlayerCls" onclick="unBanPlayer(0,\''+row.playerId+'\')"></a>';
+				}
+			}else{
+				if(row.silenced){
+					return '<a href="#" class="unSilencePlayerCls" onclick="unBanPlayer(1,\''+row.playerId+'\')"></a>' +'&nbsp;&nbsp;&nbsp;&nbsp;' + 
+						'<a href="#" class="banPlayerCls" onclick="banPlayer(0, \''+row.playerId+'\')"></a>';
+				}else{
+					return '<a href="#" class="silencePlayerCls" onclick="banPlayer(1,\''+row.playerId+'\')"></a>' +'&nbsp;&nbsp;&nbsp;&nbsp;' + 
+						'<a href="#" class="banPlayerCls" onclick="banPlayer(0, \''+row.playerId+'\')"></a>';
+				}
+			}
+			
+			return str; 
+		}
+		
+		function banPlayerGridLoadSuccess(data){
+			$('.banPlayerCls').linkbutton({text:'封号',iconCls:'icon-cancel'});  
+			$('.silencePlayerCls').linkbutton({text:'禁言',iconCls:'icon-cancel'}); 
+			$('.unBanPlayerCls').linkbutton({text:'解除封号',iconCls:'icon-ok'});  
+			$('.unSilencePlayerCls').linkbutton({text:'解除禁言',iconCls:'icon-ok'}); 
+		}
+		
+		function banPlayer(banType, playerId){
+			var btnText = banType == 0 ? '封号' : '禁言';
+			$('#banPlayerHour').textbox('setValue','1');
+			$('#txtBanPlayerReason').textbox('setValue','');
+			$('#banPlayerDialog').dialog({iconCls:'icon-ok',buttons:[{
+					text:btnText,
+					iconCls:'icon-ok',
+					handler:function(){
+						doBanPlayer(banType, playerId);
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#banPlayerDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','封禁玩家');
+		}
+		
+		function checkBanPlayerData(){
+			if($('input[name="rbBanPlayerReason"]:checked').val() == undefined){
+				showWarning("请选择封禁原因");
+				return false;
+			}
+			if($('input[name="rbBanPlayerReason"]:checked').val() == "其他" && 
+			   $('#txtBanPlayerReason').val() == ""){
+				showWarning("请输入具体原因");
+				return false;
+			}
+			return true;
+		}
+		
+		function doBanPlayer(banType, playerId){
+			if(!checkBanPlayerData()) return;
+			var btnText = banType == 0 ? '封号' : '禁言';
+			var reasonText = $('input[name="rbBanPlayerReason"]:checked').val();
+			if(reasonText == "其他"){
+				reasonText = $('#txtBanPlayerReason').val();
+			}
+			showConfirm("确定"+btnText+"吗？",function(){
+				var data = {
+					banType : banType,
+					zone : $('#banPlayerZoneCombo').combobox('getValue'),
+					playerId : playerId,
+					hour:  $('#banPlayerHour').val(),
+					reason:  reasonText,
+				};
+			    submitData('BanPlayer',data,
+	                function (result) {
+				        if(result.status == 1){
+				        	showMessageF(btnText + "成功",function(){
+				        		$('#banPlayerDialog').dialog('close');
+				        		submitQueryBanPlayer();
+				        	});
+				        }
+				    }    
+	            );  
+			});
+		}
+		
+		function unBanPlayer(banType, playerId){
+			var btnText = banType == 0 ? '封号' : '禁言';
+			showConfirm("确定解除"+btnText+"吗？",function(){
+				var data = {
+					banType : banType,
+					zone : $('#banPlayerZoneCombo').combobox('getValue'),
+					playerId : playerId,
+				};
+			    submitData('UnBanPlayer',data,
+	                function (result) {
+				        if(result.status == 1){
+				        	showMessageF("解除"+btnText+"成功",function(){
+				        		submitQueryBanPlayer();
+				        	});
+				        }
+				    }    
+	            );  
+			});
+		}
+	</script>
+	</div>
+  </body>
+</html>
