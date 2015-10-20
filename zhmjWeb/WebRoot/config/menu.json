@@ -80,6 +80,14 @@
                     "target": "changepassword.html",
                     "right": "0202"
                 }
+            },
+            {
+                "id": 23,
+                "text": "封号禁言",
+                "attributes": {
+                    "target": "banplayer.html",
+                    "right": "0203"
+                }
             }
         ]
     }

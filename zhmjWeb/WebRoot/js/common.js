@@ -80,21 +80,11 @@ function submit (controller,data,validFunc,successFunc) {
 					}
                     return validFunc();
                 },   
-                success: function (data) {
-						if(data == "session过期，请重新登录！"){
-							clearSession();
-							alert("session过期，请重新登录！");
-			                location = '../login.jsp';
-						}else if(data == "您没有此权限，请联系管理员！"){
-							alert("您没有此权限，请联系管理员！");
-						}
-						result = $.parseJSON(data);
-						if(successFunc != null){
-							successFunc(result);
-						}
-			    },
+                success: function(data){
+                	commonSuccessFunc(data, successFunc);
+                },
 			    onLoadError:function(){
-			    	alert("服务器错误");
+			    	alert("未知错误");
                 }
             };
 }
@@ -104,20 +94,27 @@ function submitData (controller,data,successFunc){
         type: "POST",
         url: serverUrl,
         data: getParameter(controller,data),
-        success:  function (data) {
-			if(data == "session过期，请重新登录！"){
-				clearSession();
-				alert("session过期，请重新登录！");
-                location = '../login.jsp';
-			}else if(data == "您没有此权限，请联系管理员！"){
-				alert("您没有此权限，请联系管理员！");
-			}
-			result = $.parseJSON(data);
-			if(successFunc != null){
-				successFunc(result);
-			}
-        },
+        success: function(data){
+        	commonSuccessFunc(data, successFunc);
+        }
     });
+}
+
+function commonSuccessFunc(data, successFunc){
+	if(data == "session过期，请重新登录！"){
+		clearSession();
+		alert("session过期，请重新登录！");
+        location = '../login.jsp';
+	}else if(data == "您没有此权限，请联系管理员！"){
+		alert("您没有此权限，请联系管理员！");
+	}else if(data.substr(0,5) == ("error")){
+		alert(data);
+	}else{
+		result = $.parseJSON(data);
+		if(successFunc != null){
+			successFunc(result);
+		}
+	}
 }
 
 function loadGrid (controller,data,successFunc,errorFunc) {

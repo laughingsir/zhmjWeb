@@ -58,5 +58,13 @@
     {
         "right": "AddWuJiang",
         "name": "添加武将"
+    },
+    {
+        "right": "BanPlayer",
+        "name": "封号禁言"
+    },
+    {
+        "right": "UnBanPlayer",
+        "name": "解除封号禁言"
     }
 ]

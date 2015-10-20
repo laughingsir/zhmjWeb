@@ -143,7 +143,6 @@
 				return;
 			}
 			var data = getNoticeData();
-			alert(JSON.stringify(data));
 			submitData("AddNotice",data,function(result){
 				if(result.success == true){
 					showMessageF("发布成功",function(){
@@ -159,7 +158,6 @@
 				return;
 			}
 			var data = {handleType:0,noticeId:noticeId,notice:getNoticeData()};
-			alert(JSON.stringify(data));
 			submitData("HandleNotice",data,function(result){
 				if(result.success == true){
 					showMessageF("修改成功",function(){

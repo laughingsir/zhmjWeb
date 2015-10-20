@@ -100,6 +100,12 @@
 					</td>
 	    		</tr>
 	    		<tr>
+	    			<td  style="vertical-align:top">玩家等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="repayLevel" data-options="min:0,max:70" value="0" style="width:200px">  (改变玩家等级，为0表示不变)
+					</td>
+	    		</tr>
+	    		<tr>
 	    			<td colspan = 2 style = "text-align:center">
 	    				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitrepayForm()">提交</a>
 					</td>
@@ -214,6 +220,7 @@
 					jjc : $('#repayJJC').val(),
 					gcbz : $('#repayGCBZ').val(),
 					wz : $('#repayWZ').val(),
+					level : $('#repayLevel').val(),
 				};
 				 $('#repayForm').form('submit',submit("Repay", data,
 				 	function () {  

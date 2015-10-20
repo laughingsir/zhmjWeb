@@ -9,7 +9,7 @@
 	<div class="easyui-panel" title="" style="width:100%">
 		<div style="padding:10px">
 	    <form id="queryPlayerForm" method="post" style="height:auto">
-	    	服务器:<input class="easyui-combobox" id="zoneCombo" data-options="
+	    	服务器:<input class="easyui-combobox" id="queryPlayerZoneCombo" data-options="
 					data:allZone,
 					valueField:'id',
 					textField:'name',
@@ -17,12 +17,12 @@
 					loadFilter:zoneFilter,
 					onLoadSuccess:selectQueryPlayerFirstZone
 				">
-	    	查询类型:<select id="queryType" class="easyui-combobox" style="width:100px;">
+	    	查询类型:<select id="queryPlayerQueryType" class="easyui-combobox" style="width:100px;">
 	    					<option value=-1 selected>全服</option>
 							<option value=0>玩家账号</option>
 							<option value=1>昵称</option>
 						</select>
-			关键字:<input id="keyWord" class="easyui-textbox" type="text" >			
+			关键字:<input id="queryPlayerKeyWord" class="easyui-textbox" type="text" >			
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitQueryPlayerForm()" style="width:80px">查询</a>
 	    </form>
 	    </div>
@@ -30,7 +30,7 @@
 			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
 		<thead>
 			<tr>
-				<th data-options="field:'playerId',width:80">玩家账号</th>
+				<th data-options="field:'playerId',width:100">玩家账号</th>
 				<th data-options="field:'nickName',width:100">昵称</th>
 				<th data-options="field:'vipLevel',width:60,align:'center'">VIP等级</th>
 				<th data-options="field:'level',width:60,align:'center'">等级</th>
@@ -66,12 +66,12 @@
 		});
 		
 		function selectQueryPlayerFirstZone(){
-			var data = $("#zoneCombo").combobox('getData');
-			$("#zoneCombo").combobox('select',data[0].id);
+			var data = $("#queryPlayerZoneCombo").combobox('getData');
+			$("#queryPlayerZoneCombo").combobox('select',data[0].id);
 		}
 		
 		function submitQueryPlayerForm(){
-			if($('#queryType').combobox('getValue') == -1){
+			if($('#queryPlayerQueryType').combobox('getValue') == -1){
 				$.messager.confirm("提示", "确定查询全服玩家吗？", function (sure) {
 			        if(sure){
 			        	submitQueryPlayer();
@@ -84,15 +84,15 @@
 		
 		function submitQueryPlayer(){
 			var data = {
-				zones : [$('#zoneCombo').combobox('getValue')],
-				queryType : $('#queryType').combobox('getValue'),
-				keyWord : $('#keyWord').val().trim(),
+				zones : [$('#queryPlayerZoneCombo').combobox('getValue')],
+				queryType : $('#queryPlayerQueryType').combobox('getValue'),
+				keyWord : $('#queryPlayerKeyWord').val().trim(),
 			};
 		    $('#queryPlayerForm').form('submit', submit('QueryPlayerInfo',data,
 				function () {  
-                    if($('#queryType').combobox('getValue') != -1 && $("#keyWord").val().trim()==""){
+                    if($('#queryPlayerQueryType').combobox('getValue') != -1 && $("#queryPlayerKeyWord").val().trim()==""){
                         showWarningF("请输入关键字",function(){
-                            $("#keyWord").focus();
+                            $("#queryPlayerKeyWord").focus();
                         });
                         return false;
                     }
