@@ -29,11 +29,15 @@
     },
     {
         "right": "QueryPlayerInfo",
-        "name": "查询玩家详细信息"
+        "name": "查询玩家列表--详细信息"
     },
     {
         "right": "QueryPlayerInfoList",
-        "name": "查询玩家列表"
+        "name": "查询玩家列表--简要信息"
+    },
+    {
+        "right": "QueryPlayerWuJiang",
+        "name": "查询玩家武将信息"
     },
     {
         "right": "AddNotice",

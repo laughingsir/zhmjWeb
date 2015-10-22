@@ -44,18 +44,33 @@
 		</thead>
 	</table>
 	</div>
-	<div id="queryPlayerWuJiangWindow" class="easyui-window" title="武将详细信息" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:650px;height:400px;padding:10px;">
-			<table id="wujiangGrid" class="easyui-datagrid" title="" style="width:600px;height:auto"
+	<div id="queryPlayerWuJiangWindow" class="easyui-window" title="武将详细信息" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:1310px;height:800px;padding:10px;">
+			<table id="queryPlayerWuJiangGrid" class="easyui-datagrid" title="" style="width:1260px;height:auto"
 					data-options="
 						singleSelect: true,
 						collapsible:true,
 					">
 				<thead>
 					<tr>
-						<th data-options="field:'name'" width="25%">名称</th>
-						<th data-options="field:'level'" width="25%">等级</th>
-						<th data-options="field:'star'" width="25%">星级</th>
-						<th data-options="field:'fight'" width="25%">战斗力</th>
+						<th data-options="field:'name'" width="60">名称</th>
+						<th data-options="field:'fight'" width="70">战斗力</th>
+						<th data-options="field:'level'" width="40">等级</th>
+						<th data-options="field:'star'" width="40">星级</th>
+						<th data-options="field:'weaponBreakLevel',formatter:formatEquipBreakLevel" width="50">武器阶</th>
+						<th data-options="field:'weaponLevel'" width="60">武器等级</th>
+						<th data-options="field:'clothBreakLevel',formatter:formatEquipBreakLevel" width="50">装备阶</th>
+						<th data-options="field:'clothLevel'" width="60">装备等级</th>
+						<th data-options="field:'accBreakLevel',formatter:formatEquipBreakLevel" width="50">饰品阶</th>
+						<th data-options="field:'accLevel'" width="60">饰品等级</th>
+						<th data-options="field:'activeSkillBreakLevel',formatter:formatStarColor" width="70">主动技能阶</th>
+						<th data-options="field:'activeSkillLevel'" width="80">主动技能等级</th>
+						<th data-options="field:'autoSkill1BreakLevel',formatter:formatStarColor" width="75">被动技能1阶</th>
+						<th data-options="field:'autoSkill1Level'" width="85">被动技能1等级</th>
+						<th data-options="field:'autoSkill2BreakLevel',formatter:formatStarColor" width="75">被动技能2阶</th>
+						<th data-options="field:'autoSkill2Level'" width="85">被动技能2等级</th>
+						<th data-options="field:'killLevel'" width="60">斩千等级</th>
+						<th data-options="field:'killCount'" width="60">斩杀数量</th>
+						<th data-options="field:'fightSouls',formatter:formatShowFightSoul">战魂</th>
 					</tr>
 				</thead>
 			</table>	
@@ -105,13 +120,81 @@
 		function showWuJiangWindow(index){
 			$('#queryPlayerGrid').datagrid('selectRow',index);
 		    var row = $('#queryPlayerGrid').datagrid('getSelected');
-		    $('#queryPlayerWuJiangWindow').window('open');
-		    var data = {total:row.wuJiangs.length,rows:row.wuJiangs};
-		    $('#wujiangGrid').datagrid('loadData',{total:row.wuJiangs.length,rows:row.wuJiangs});
+		    if(row.wuJiangs.length > 0){
+		    	doShowWuJiangWindow(row.wuJiangs);
+		    }else{
+		    	var data = {zone:$('#queryPlayerZoneCombo').combobox('getValue'),playerId:row.playerId};
+			    submitData("QueryPlayerWuJiang",data,
+	                function (result) {
+	                	row.wuJiangs = result.wuJiangs;
+				        doShowWuJiangWindow(result.wuJiangs);
+				    }    
+	            );  
+		    }
+		}
+		
+		function doShowWuJiangWindow(wuJiangs){
+			$('#queryPlayerWuJiangWindow').window('open');
+		    var data = {total:wuJiangs.length,rows:wuJiangs};
+		    $('#queryPlayerWuJiangGrid').datagrid('loadData',data);
 		}
 		
 		function formatShowWuJiang(val, row, index){
 			return '<a href="#" onclick="showWuJiangWindow(\''+index+'\')">查看武将详细信息</a>';
+		}
+		
+		function formatShowFightSoul(val, row, index){
+			if(val == null) return '';
+			var str = '';
+			for(var i = 0; i < val.length; i++){
+				var fightSoul = val[i];
+				if(fightSoul != null){
+					str += formatFightSoulType(fightSoul.type) + " " + formatStarColor(fightSoul.star) + " " + fightSoul.level + "级<br>";
+				}
+			}
+			return str;
+		}
+		
+		function formatFightSoulType(val){
+			switch(val){
+				case 1:return "金战魂";
+				case 2:return "木战魂";
+				case 3:return "水战魂";
+				case 4:return "火战魂";
+				case 5:return "土战魂";
+				default:return "";
+			}
+		}
+		
+		function formatStarColor(val){
+			switch(val){
+				case 1:return "白色";
+				case 2:return "<font color='green'>绿色</font>";
+				case 3:return "<font color='blue'>蓝色</font>";
+				case 4:return "<font color='purple'>紫色</font>";
+				case 5:return "<font color='orange'>橙色</font>";
+				default:return "";
+			}
+		}
+		
+		function formatEquipBreakLevel(val){
+			switch(val){
+				case 0:return "白色";
+				case 1:return "<font color='green'>绿色</font>";
+				case 2:return "<font color='green'>绿色+1</font>";
+				case 3:return "<font color='green'>绿色+2</font>";
+				case 4:return "<font color='blue'>蓝色</font>";
+				case 5:return "<font color='blue'>蓝色+1</font>";
+				case 6:return "<font color='blue'>蓝色+2</font>";
+				case 7:return "<font color='blue'>蓝色+3</font>";
+				case 8:return "<font color='purple'>紫色</font>";
+				case 9:return "<font color='purple'>紫色+1</font>";
+				case 10:return "<font color='purple'>紫色+2</font>";
+				case 11:return "<font color='purple'>紫色+3</font>";
+				case 12:return "<font color='purple'>紫色+4</font>";
+				case 13:return "<font color='orange'>橙色</font>";
+				default:return "";
+			}
 		}
 	</script>
 	</div>

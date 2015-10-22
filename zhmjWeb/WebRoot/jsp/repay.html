@@ -28,7 +28,8 @@
 	    		<tr>
 	    			<td style="vertical-align:top">玩家：</td>
 	    			<td style="vertical-align:top">
-	    				<a href="#" id = "repayAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" repayOpenPlayerWindow()">添加玩家</a><br/><br/>
+	    				<a href="#" id = "repayAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" repayOpenPlayerWindow()">添加玩家</a>
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick=" repayClearPlayer()">清除玩家</a><br/><br/>
 	    				<input class="easyui-textbox" id="repayTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
 	    				
 	    			</td>
@@ -158,6 +159,12 @@
 			}else{
 				$("#repayAddPlayerBtn").linkbutton('enable',true);
 			}
+		}
+		
+		function repayClearPlayer(){
+			repayPlayerNames = [];
+			repayPlayers = [];
+			$("#repayTxtPlayers").textbox('setValue',repayPlayerNames.join('\n'));
 		}
 		
 		function selectrepayFirstZone(){

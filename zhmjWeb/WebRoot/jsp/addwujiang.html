@@ -28,7 +28,8 @@
 	    		<tr>
 	    			<td style="vertical-align:top">玩家：</td>
 	    			<td style="vertical-align:top" colspan = "5">
-	    				<a href="#" id = "addWuJiangAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" addWuJiangOpenPlayerWindow()">添加玩家</a><br/><br/>
+	    				<a href="#" id = "addWuJiangAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" addWuJiangOpenPlayerWindow()">添加玩家</a>
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick=" addWuJiangClearPlayer()">清除玩家</a><br/><br/>
 	    				<input class="easyui-textbox" id="addWuJiangTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
 	    			</td>
 	    		</tr>
@@ -53,7 +54,7 @@
 	    		<tr>	    			
 					<td  style="vertical-align:top">斩千等级：</td>
 	    			<td>
-	    				<select id="addWuJiangKillLevel" class="easyui-combobox" style="width:50px;">
+	    				<select id="addWuJiangKillLevel" class="easyui-combobox" style="width:70px;">
 	    					<option value=0 selected>0</option>
 							<option value=1>1</option>
 							<option value=2>2</option>
@@ -74,7 +75,7 @@
 					</td>
 					<td  style="vertical-align:top">武将星级：</td>
 	    			<td>
-	    				<select id="addWuJiangStar" class="easyui-combobox" style="width:50px;">
+	    				<select id="addWuJiangStar" class="easyui-combobox" style="width:70px;">
 	    					<option value=0 selected>初始</option>
 							<option value=1>1</option>
 							<option value=2>2</option>
@@ -85,113 +86,135 @@
 					</td>
 	    			<td  style="vertical-align:top">武将等级：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="addWuJiangLevel" data-options="min:1,max:70" value="1" style="width:50px">
+	    				<input class="easyui-numberbox" id="addWuJiangLevel" data-options="min:1,max:70" value="1" style="width:70px">
 					</td>
 	    		</tr>
 	    		<tr>
 	    			<td  style="vertical-align:top">武器阶级：</td>
 	    			<td>
-	    				<select id="addWuJiangWeaponBreakLevel" class="easyui-combobox" style="width:50px;">
-	    					<option value=0 selected>0</option>
-							<option value=1>1</option>
-							<option value=2>2</option>
-							<option value=3>3</option>
-							<option value=4>4</option>
-							<option value=5>5</option>
-							<option value=6>6</option>
-							<option value=7>7</option>
-							<option value=8>8</option>
-							<option value=9>9</option>
-							<option value=10>10</option>
-							<option value=11>11</option>
-							<option value=12>12</option>
-							<option value=13>13</option>
+	    				<select id="addWuJiangWeaponBreakLevel" class="easyui-combobox" style="width:70px;">
+	    					<option value=0 selected>白色</option>
+							<option value=1>绿色</option>
+							<option value=2>绿色+1</option>
+							<option value=3>绿色+2</option>
+							<option value=4>蓝色</option>
+							<option value=5>蓝色+1</option>
+							<option value=6>蓝色+2</option>
+							<option value=7>蓝色+3</option>
+							<option value=8>紫色</option>
+							<option value=9>紫色+1</option>
+							<option value=10>紫色+2</option>
+							<option value=11>紫色+3</option>
+							<option value=12>紫色+4</option>
+							<option value=13>橙色</option>
 						</select>
 					</td>
 					<td  style="vertical-align:top">装备阶级：</td>
 	    			<td>
-	    				<select id="addWuJiangClothBreakLevel" class="easyui-combobox" style="width:50px;">
-	    					<option value=0 selected>0</option>
-							<option value=1>1</option>
-							<option value=2>2</option>
-							<option value=3>3</option>
-							<option value=4>4</option>
-							<option value=5>5</option>
-							<option value=6>6</option>
-							<option value=7>7</option>
-							<option value=8>8</option>
-							<option value=9>9</option>
-							<option value=10>10</option>
-							<option value=11>11</option>
-							<option value=12>12</option>
-							<option value=13>13</option>
+	    				<select id="addWuJiangClothBreakLevel" class="easyui-combobox" style="width:70px;">
+	    					<option value=0 selected>白色</option>
+							<option value=1>绿色</option>
+							<option value=2>绿色+1</option>
+							<option value=3>绿色+2</option>
+							<option value=4>蓝色</option>
+							<option value=5>蓝色+1</option>
+							<option value=6>蓝色+2</option>
+							<option value=7>蓝色+3</option>
+							<option value=8>紫色</option>
+							<option value=9>紫色+1</option>
+							<option value=10>紫色+2</option>
+							<option value=11>紫色+3</option>
+							<option value=12>紫色+4</option>
+							<option value=13>橙色</option>
 						</select>
 					</td>
 					<td  style="vertical-align:top">饰品阶级：</td>
 	    			<td>
-	    				<select id="addWuJiangAccBreakLevel" class="easyui-combobox" style="width:50px;">
-	    					<option value=0 selected>0</option>
-							<option value=1>1</option>
-							<option value=2>2</option>
-							<option value=3>3</option>
-							<option value=4>4</option>
-							<option value=5>5</option>
-							<option value=6>6</option>
-							<option value=7>7</option>
-							<option value=8>8</option>
-							<option value=9>9</option>
-							<option value=10>10</option>
-							<option value=11>11</option>
-							<option value=12>12</option>
-							<option value=13>13</option>
+	    				<select id="addWuJiangAccBreakLevel" class="easyui-combobox" style="width:70px;">
+	    					<option value=0 selected>白色</option>
+							<option value=1>绿色</option>
+							<option value=2>绿色+1</option>
+							<option value=3>绿色+2</option>
+							<option value=4>蓝色</option>
+							<option value=5>蓝色+1</option>
+							<option value=6>蓝色+2</option>
+							<option value=7>蓝色+3</option>
+							<option value=8>紫色</option>
+							<option value=9>紫色+1</option>
+							<option value=10>紫色+2</option>
+							<option value=11>紫色+3</option>
+							<option value=12>紫色+4</option>
+							<option value=13>橙色</option>
 						</select>
 					</td>
 	    		</tr>
 	    		<tr>
 	    			<td  style="vertical-align:top">武器等级：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="addWuJiangWeaponLevel" data-options="min:1,max:70" value="1" style="width:50px">
+	    				<input class="easyui-numberbox" id="addWuJiangWeaponLevel" data-options="min:1,max:70" value="1" style="width:70px">
 					</td>
 					<td  style="vertical-align:top">装备等级：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="addWuJiangClothLevel" data-options="min:1,max:70" value="1" style="width:50px">
+	    				<input class="easyui-numberbox" id="addWuJiangClothLevel" data-options="min:1,max:70" value="1" style="width:70px">
 					</td>
 					<td  style="vertical-align:top">饰品等级：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="addWuJiangAccLevel" data-options="min:1,max:70" value="1" style="width:50px">
+	    				<input class="easyui-numberbox" id="addWuJiangAccLevel" data-options="min:1,max:70" value="1" style="width:70px">
 					</td>
 	    		</tr>
 	    		<tr>
-	    			<td  style="vertical-align:top">主动技能：</td>
+	    			<td  style="vertical-align:top">主动技能阶级：</td>
 	    			<td>
-	    				<select id="addWuJiangActiveSkillBreakLevel" class="easyui-combobox" style="width:50px;">
-	    					<option value=1 selected>1</option>
-							<option value=2>2</option>
-							<option value=3>3</option>
-							<option value=4>4</option>
-							<option value=5>5</option>
+	    				<select id="addWuJiangActiveSkillBreakLevel" class="easyui-combobox" style="width:70px;">
+	    					<option value=1 selected>白色</option>
+							<option value=2>绿色</option>
+							<option value=3>蓝色</option>
+							<option value=4>紫色</option>
+							<option value=5>橙色</option>
 						</select>
 					</td>
-					<td  style="vertical-align:top">被动技能1：</td>
+					<td  style="vertical-align:top">被动技能1阶级：</td>
 	    			<td>
-	    				<select id="addWuJiangAutoSkill1BreakLevel" class="easyui-combobox" style="width:50px;">
-	    					<option value=1 selected>1</option>
-							<option value=2>2</option>
-							<option value=3>3</option>
-							<option value=4>4</option>
-							<option value=5>5</option>
+	    				<select id="addWuJiangAutoSkill1BreakLevel" class="easyui-combobox" style="width:70px;">
+	    					<option value=1 selected>白色</option>
+							<option value=2>绿色</option>
+							<option value=3>蓝色</option>
+							<option value=4>紫色</option>
+							<option value=5>橙色</option>
 						</select>
 					</td>
-					<td  style="vertical-align:top">被动技能2：</td>
+					<td  style="vertical-align:top">被动技能2阶级：</td>
 	    			<td>
-	    				<select id="addWuJiangAutoSkill2BreakLevel" class="easyui-combobox" style="width:50px;">
-	    					<option value=1 selected>1</option>
-							<option value=2>2</option>
-							<option value=3>3</option>
-							<option value=4>4</option>
-							<option value=5>5</option>
+	    				<select id="addWuJiangAutoSkill2BreakLevel" class="easyui-combobox" style="width:70px;">
+	    					<option value=1 selected>白色</option>
+							<option value=2>绿色</option>
+							<option value=3>蓝色</option>
+							<option value=4>紫色</option>
+							<option value=5>橙色</option>
 						</select>
 					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">主动技能等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangActiveSkillLevel" data-options="min:1,max:70" value="1" style="width:70px">
+					</td>
+					<td  style="vertical-align:top">被动技能1等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangAutoSkill1Level" data-options="min:1,max:70" value="1" style="width:70px">
+					</td>
+					<td  style="vertical-align:top">被动技能2等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangAutoSkill2Level" data-options="min:1,max:70" value="1" style="width:70px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">战魂：</td>
+	    			<td style="vertical-align:top" colspan = "5">
+	    				<a href="#" id = "addWuJiangAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" addWuJiangOpenAddFightSoulDialog()">添加战魂</a>
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick=" addWuJiangClearFightSoul()">清除战魂</a><br/><br/>
+	    				<input class="easyui-textbox" id="addWuJiangFightSoulText" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td colspan = 2 style = "text-align:center">
@@ -227,15 +250,78 @@
 				</thead>
 			</table>
 		</div>
+	<div id="addWuJiangFightSoulDialog" class="easyui-dialog" title="添加战魂" data-options="closed:true,modal:true" style="width:500px;height:300px;padding:10px;">
+		<form id="addWuJiangFightSoulForm" method="post" style="height:auto">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td  style="vertical-align:top">位置：</td>
+	    			<td>
+	    				<select id="addWuJiangFightSoulPos" class="easyui-combobox" style="width:70px;">
+	    					<option value=1 selected>1</option>
+							<option value=2>2</option>
+							<option value=3>3</option>
+							<option value=4>4</option>
+							<option value=5>5</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">类型：</td>
+	    			<td>
+	    				<select id="addWuJiangFightSoulType" class="easyui-combobox" style="width:70px;">
+	    					<option value=1 selected>金战魂</option>
+							<option value=2>木战魂</option>
+							<option value=3>水战魂</option>
+							<option value=4>火战魂</option>
+							<option value=5>土战魂</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">阶级：</td>
+	    			<td>
+	    				<select id="addWuJiangFightSoulStar" class="easyui-combobox" style="width:70px;">
+	    					<option value=1 selected>白色</option>
+							<option value=2>绿色</option>
+							<option value=3>蓝色</option>
+							<option value=4>紫色</option>
+							<option value=5>橙色</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">等级：</td>
+	    			<td>
+	    				<input class="easyui-numberbox" id="addWuJiangFightSoulLevel" data-options="min:1,max:10" value="1" style="width:70px">
+					</td>
+	    		</tr>
+	    	</table>
+		</form>
+	</div>
 		
 	<script>
 		var addWuJiangPlayers;
+		var addWuJiangFightSouls;
 		
 		$(function(){
 			addWuJiangPlayerNames = [];
 			addWuJiangPlayers = [];
+			addWuJiangFightSouls = [];
+			addWuJiangFightSoulNames = [];
 			loadAllZone();
 		});
+		
+		function addWuJiangClearPlayer(){
+			addWuJiangPlayerNames = [];
+			addWuJiangPlayers = [];
+			$("#addWuJiangTxtPlayers").textbox('setValue',addWuJiangPlayerNames.join('\n'));
+		}
+		
+		function addWuJiangClearFightSoul(){
+			addWuJiangFightSouls = [];
+			addWuJiangFightSoulNames = [];
+			$("#addWuJiangFightSoulText").textbox('setValue',addWuJiangFightSoulNames.join('\n'));
+		}
 		
 		function addWuJiangTypeChange(){
 			addWuJiangPlayerNames = [];
@@ -310,8 +396,12 @@
 					activeSkillBreakLevel : $('#addWuJiangActiveSkillBreakLevel').combobox('getValue'),
 					autoSkill1BreakLevel : $('#addWuJiangAutoSkill1BreakLevel').combobox('getValue'),
 					autoSkill2BreakLevel : $('#addWuJiangAutoSkill2BreakLevel').combobox('getValue'),
+					activeSkillLevel : $('#addWuJiangActiveSkillLevel').val(),
+					autoSkill1Level : $('#addWuJiangAutoSkill1Level').val(),
+					autoSkill2Level : $('#addWuJiangAutoSkill2Level').val(),
 					killLevel : $('#addWuJiangKillLevel').combobox('getValue'),
-					killCount : $('#addWuJiangKillCount').val()
+					killCount : $('#addWuJiangKillCount').val(),
+					fightSouls : addWuJiangFightSouls
 				};
 				 $('#addWuJiangForm').form('submit',submit("AddWuJiang", data,
 				 	function () {  
@@ -336,6 +426,45 @@
 			$("#addWuJiangKeyWord").textbox('setValue','');	
 			$("#addWuJiangQueryPlayerGrid").datagrid('loadData',{total:0,rows:[]});
 			$('#addWuJiangPlayerWindow').window('open');
+		}
+		
+		function addWuJiangOpenAddFightSoulDialog(){
+			$('#addWuJiangFightSoulDialog').dialog({iconCls:'icon-add',buttons:[{
+					text:'添加',
+					iconCls:'icon-ok',
+					handler:function(){
+						doAddFightSoul();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#addWuJiangFightSoulDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','添加战魂');
+		}
+		
+		function doAddFightSoul(){
+			var data = {
+				pos : $('#addWuJiangFightSoulPos').combobox('getValue'),
+				type : $('#addWuJiangFightSoulType').combobox('getValue'),
+				star : $('#addWuJiangFightSoulStar').combobox('getValue'),
+				level : $('#addWuJiangFightSoulLevel').val()
+			}
+			var exist = false;
+			for(var j=0; j<addWuJiangFightSouls.length; j++){
+				if(addWuJiangFightSouls[j].pos == data.pos){
+					exist = true;
+					break;
+				}
+			}	
+			if(!exist){
+				addWuJiangFightSouls.push(data);
+			    addWuJiangFightSoulNames.push("位置" + data.pos + " " + $('#addWuJiangFightSoulType').combobox('getText') + " " + $('#addWuJiangFightSoulStar').combobox('getText') + " " + data.level + "级");
+				$("#addWuJiangFightSoulText").textbox('setValue',addWuJiangFightSoulNames.join('\n'));
+			}else{
+				alert("位置" + data.pos + "已添加！");
+			}
 		}
 	</script>
 	</div>
