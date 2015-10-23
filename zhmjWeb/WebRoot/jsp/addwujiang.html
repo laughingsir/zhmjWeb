@@ -341,7 +341,7 @@
 		
 		function addWuJiangQueryPlayers(){
 			var data = {
-				zones : [$('#addWuJiangType').combobox('getValue')],
+				zone : $('#addWuJiangType').combobox('getValue'),
 				queryType : $('#addWuJiangQueryType').combobox('getValue'),
 				keyWord : $('#addWuJiangKeyWord').val(),
 			};
@@ -354,7 +354,7 @@
 					}
                 },function (result) {
                 	$("#addWuJiangQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: result
+						data: getListData(result.players)
 					});
 			    }    
             ));  
@@ -415,7 +415,7 @@
 						}
 	                },  
 	                function (data) {
-				        if(data.success == true){
+				        if(data.status == 1){
 				            showMessage("添加成功");
 				        }
 				   }

@@ -174,7 +174,7 @@
 		
 		function repayQueryPlayers(){
 			var data = {
-				zones : [$('#repayType').combobox('getValue')],
+				zone : $('#repayType').combobox('getValue'),
 				queryType : $('#repayQueryType').combobox('getValue'),
 				keyWord : $('#repayKeyWord').val(),
 			};
@@ -187,7 +187,7 @@
 					}
                 },function (result) {
                 	$("#repayQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: result
+						data: getListData(result.players)
 					});
 			    }    
             ));  
@@ -237,7 +237,7 @@
 						}
 	                },  
 	                function (data) {
-				        if(data.success == true){
+				        if(data.status == 1){
 				            showMessage("补偿成功");
 				        }
 				   }

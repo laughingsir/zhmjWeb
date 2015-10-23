@@ -99,7 +99,7 @@
 		
 		function submitQueryPlayer(){
 			var data = {
-				zones : [$('#queryPlayerZoneCombo').combobox('getValue')],
+				zone : $('#queryPlayerZoneCombo').combobox('getValue'),
 				queryType : $('#queryPlayerQueryType').combobox('getValue'),
 				keyWord : $('#queryPlayerKeyWord').val().trim(),
 			};
@@ -112,7 +112,7 @@
                         return false;
                     }
                 },function (result) {
-			        $('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: result});
+			        $('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.players)});
 			    }    
             ));  
 		}
@@ -135,8 +135,7 @@
 		
 		function doShowWuJiangWindow(wuJiangs){
 			$('#queryPlayerWuJiangWindow').window('open');
-		    var data = {total:wuJiangs.length,rows:wuJiangs};
-		    $('#queryPlayerWuJiangGrid').datagrid('loadData',data);
+		    $('#queryPlayerWuJiangGrid').datagrid('loadData',getListData(wuJiangs));
 		}
 		
 		function formatShowWuJiang(val, row, index){

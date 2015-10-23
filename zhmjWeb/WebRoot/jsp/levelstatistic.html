@@ -54,7 +54,7 @@
 		
 		function submitQueryPlayerForm(){
 			var data = {
-				zones : [$('#zoneCombo').combobox('getValue')],
+				zone : $('#zoneCombo').combobox('getValue'),
 				queryType : $('#queryType').combobox('getValue'),
 				keyWord : $('#keyWord').val().trim(),
 			};
@@ -67,7 +67,7 @@
 						return false;
 					}
                 },function (result) {
-			        $('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: result});
+			        $('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.players)});
 			    }    
             ));  
 		}

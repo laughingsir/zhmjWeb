@@ -167,7 +167,7 @@
 		
 		function sendMailQueryPlayers(){
 			var data = {
-				zones : [$('#sendMailType').combobox('getValue')],
+				zone : $('#sendMailType').combobox('getValue'),
 				queryType : $('#sendMailQueryType').combobox('getValue'),
 				keyWord : $('#sendMailKeyWord').val(),
 			};
@@ -180,7 +180,7 @@
 					}
                 },function (result) {
                 	$("#sendmailQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: result
+						data: getListData(result.players)
 					});
 			    }    
             ));  
@@ -239,7 +239,7 @@
 					}
                 },  
                 function (data) {
-			        if(data.success == true){
+			        if(data.status == 1){
 			            showMessage("发送成功");
 			        }
 			   }

@@ -117,6 +117,10 @@ function commonSuccessFunc(data, successFunc){
 	}
 }
 
+function getListData(data){
+	return {total:data.length,rows:data};
+}
+
 function loadGrid (controller,data,successFunc,errorFunc) {
 	return {    
                 url: serverUrl,  

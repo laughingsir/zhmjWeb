@@ -1,5 +1,4 @@
 {
-    "total": 137,
     "rows": [
         {
             "count": 1,
@@ -15,19 +14,19 @@
         },
         {
             "count": 1,
-            "desc": "产出于竞技场和魔王降临，用于兑换高阶武将将魂",
+            "desc": "产出于竞技场和魔王降临，用于兑换高阶武将魂石",
             "itemName": "money_jjc",
             "name": "荣誉"
         },
         {
             "count": 1,
-            "desc": "产出于攻城拔寨，用于高阶武将将魂",
+            "desc": "产出于攻城拔寨，用于高阶武将魂石",
             "itemName": "money_gcbz",
             "name": "声望"
         },
         {
             "count": 1,
-            "desc": "产出于王者竞技场，用于兑换高阶武将将魂",
+            "desc": "产出于王者竞技场，用于兑换高阶武将魂石",
             "itemName": "money_wz",
             "name": "功勋"
         },
@@ -465,363 +464,514 @@
         },
         {
             "count": 1,
-            "desc": "陈宫为1星武将,招降其需要10个将魂",
+            "desc": "赵云专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhaoyun",
+            "name": "龙胆亮银图纸"
+        },
+        {
+            "count": 1,
+            "desc": "祝融专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_zhurong",
+            "name": "焚天弓图纸"
+        },
+        {
+            "count": 1,
+            "desc": "使用随机获得一个蜀国武将将魂",
+            "itemName": "box_soul_shu",
+            "name": "蜀国将魂宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用随机获得一个魏国武将将魂",
+            "itemName": "box_soul_wei",
+            "name": "魏国将魂宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用随机获得一个吴国武将将魂",
+            "itemName": "box_soul_wu",
+            "name": "吴国将魂宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用随机获得一个群雄武将将魂",
+            "itemName": "box_soul_qun",
+            "name": "群雄将魂宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用随机获得一个武将将魂",
+            "itemName": "box_soul_all",
+            "name": "将魂宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个绿色装备进阶材料",
+            "itemName": "box_mat_1",
+            "name": "初级材料宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个蓝色装备进阶材料",
+            "itemName": "box_mat_2",
+            "name": "中级材料宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个紫色装备进阶材料",
+            "itemName": "box_mat_3",
+            "name": "高级材料宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个高级紫色装备进阶材料",
+            "itemName": "box_mat_4",
+            "name": "顶级材料宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个白色战魂",
+            "itemName": "box_fightsoul_1",
+            "name": "白色战魂礼包"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个绿色战魂",
+            "itemName": "box_fightsoul_2",
+            "name": "绿色战魂礼包"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个蓝色战魂",
+            "itemName": "box_fightsoul_3",
+            "name": "蓝色战魂礼包"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个紫色战魂",
+            "itemName": "box_fightsoul_4",
+            "name": "紫色战魂礼包"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得一个橙色战魂",
+            "itemName": "box_fightsoul_5",
+            "name": "橙色战魂礼包"
+        },
+        {
+            "count": 1,
+            "desc": "铜质财宝箱",
+            "itemName": "box_silver_1",
+            "name": "铜质财宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "银质财宝箱",
+            "itemName": "box_silver_2",
+            "name": "银质财宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "使用后随机获得500~1000万银币",
+            "itemName": "box_silver_3",
+            "name": "金质财宝箱"
+        },
+        {
+            "count": 1,
+            "desc": "封印灵魂的咒符，使用后获得100点斩杀数",
+            "itemName": "item_xiaohao_zhanqian_1",
+            "name": "初级斩魂符"
+        },
+        {
+            "count": 1,
+            "desc": "封印灵魂的咒符，使用后获得500点斩杀数",
+            "itemName": "item_xiaohao_zhanqian_2",
+            "name": "中级斩魂符"
+        },
+        {
+            "count": 1,
+            "desc": "封印灵魂的咒符，使用后获得1000点斩杀数",
+            "itemName": "item_xiaohao_zhanqian_3",
+            "name": "高级斩魂符"
+        },
+        {
+            "count": 1,
+            "desc": "",
             "itemName": "wujiang_chengong",
             "name": "陈宫"
         },
         {
             "count": 1,
-            "desc": "张角为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_zhangjiao",
             "name": "张角"
         },
         {
             "count": 1,
-            "desc": "于吉为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_yuji",
             "name": "于吉"
         },
         {
             "count": 1,
-            "desc": "吕玲琦为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_lvlingqi",
             "name": "吕玲琦"
         },
         {
             "count": 1,
-            "desc": "貂蝉为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_diaochan",
             "name": "貂蝉"
         },
         {
             "count": 1,
-            "desc": "吕布为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_lvbu",
             "name": "吕布"
         },
         {
             "count": 1,
-            "desc": "董卓为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_dongzhuo",
             "name": "董卓"
         },
         {
             "count": 1,
-            "desc": "华雄为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_huaxiong",
             "name": "华雄"
         },
         {
             "count": 1,
-            "desc": "荀彧为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_xunyu",
             "name": "荀彧"
         },
         {
             "count": 1,
-            "desc": "张郃为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_zhanghe",
             "name": "张郃"
         },
         {
             "count": 1,
-            "desc": "曹操为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_caocao",
             "name": "曹操"
         },
         {
             "count": 1,
-            "desc": "甄宓为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_zhenmi",
             "name": "甄宓"
         },
         {
             "count": 1,
-            "desc": "王元姬为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_wangyuanji",
             "name": "王元姬"
         },
         {
             "count": 1,
-            "desc": "大乔为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_wangyi",
             "name": "大乔"
         },
         {
             "count": 1,
-            "desc": "许褚为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_xuchu",
             "name": "许褚"
         },
         {
             "count": 1,
-            "desc": "张辽为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_zhangliao",
             "name": "张辽"
         },
         {
             "count": 1,
-            "desc": "徐庶为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_xushu",
             "name": "徐庶"
         },
         {
             "count": 1,
-            "desc": "刘备为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_liubei",
             "name": "刘备"
         },
         {
             "count": 1,
-            "desc": "张飞为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_zhangfei",
             "name": "张飞"
         },
         {
             "count": 1,
-            "desc": "黄忠为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_huangzhong",
             "name": "黄忠"
         },
         {
             "count": 1,
-            "desc": "关羽为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_guanyu",
             "name": "关羽"
         },
         {
             "count": 1,
-            "desc": "陈到为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_chendao",
             "name": "陈到"
         },
         {
             "count": 1,
-            "desc": "孙策为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_sunce",
             "name": "孙策"
         },
         {
             "count": 1,
-            "desc": "陆逊为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_luxun",
             "name": "陆逊"
         },
         {
             "count": 1,
-            "desc": "鲁肃为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_lusu",
             "name": "鲁肃"
         },
         {
             "count": 1,
-            "desc": "吕蒙为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_lvmeng",
             "name": "吕蒙"
         },
         {
             "count": 1,
-            "desc": "孙尚香为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_sunshangxiang",
             "name": "孙尚香"
         },
         {
             "count": 1,
-            "desc": "太史慈为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "wujiang_taishici",
             "name": "太史慈"
         },
         {
             "count": 1,
-            "desc": "孙坚为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "wujiang_sunjian",
             "name": "孙坚"
         },
         {
             "count": 1,
-            "desc": "周瑜为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "wujiang_zhouyu",
-            "name": "周瑜"
+            "name": "赵云"
         },
         {
             "count": 1,
-            "desc": "陈宫为1星武将,招降其需要10个将魂",
+            "desc": "",
+            "itemName": "wujiang_zhurong",
+            "name": "祝融"
+        },
+        {
+            "count": 1,
+            "desc": "",
             "itemName": "soul_wujiang_chengong",
             "name": "陈宫将魂"
         },
         {
             "count": 1,
-            "desc": "张角为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_zhangjiao",
             "name": "张角将魂"
         },
         {
             "count": 1,
-            "desc": "于吉为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_yuji",
             "name": "于吉将魂"
         },
         {
             "count": 1,
-            "desc": "吕玲琦为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_lvlingqi",
             "name": "吕玲琦将魂"
         },
         {
             "count": 1,
-            "desc": "貂蝉为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_diaochan",
             "name": "貂蝉将魂"
         },
         {
             "count": 1,
-            "desc": "吕布为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_lvbu",
             "name": "吕布将魂"
         },
         {
             "count": 1,
-            "desc": "董卓为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_dongzhuo",
             "name": "董卓将魂"
         },
         {
             "count": 1,
-            "desc": "华雄为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_huaxiong",
             "name": "华雄将魂"
         },
         {
             "count": 1,
-            "desc": "荀彧为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_xunyu",
             "name": "荀彧将魂"
         },
         {
             "count": 1,
-            "desc": "张郃为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_zhanghe",
             "name": "张郃将魂"
         },
         {
             "count": 1,
-            "desc": "曹操为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_caocao",
             "name": "曹操将魂"
         },
         {
             "count": 1,
-            "desc": "甄宓为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_zhenmi",
             "name": "甄宓将魂"
         },
         {
             "count": 1,
-            "desc": "王元姬为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_wangyuanji",
             "name": "王元姬将魂"
         },
         {
             "count": 1,
-            "desc": "大乔为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_wangyi",
             "name": "大乔将魂"
         },
         {
             "count": 1,
-            "desc": "许褚为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_xuchu",
             "name": "许褚将魂"
         },
         {
             "count": 1,
-            "desc": "张辽为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_zhangliao",
             "name": "张辽将魂"
         },
         {
             "count": 1,
-            "desc": "徐庶为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_xushu",
             "name": "徐庶将魂"
         },
         {
             "count": 1,
-            "desc": "刘备为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_liubei",
             "name": "刘备将魂"
         },
         {
             "count": 1,
-            "desc": "张飞为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_zhangfei",
             "name": "张飞将魂"
         },
         {
             "count": 1,
-            "desc": "黄忠为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_huangzhong",
             "name": "黄忠将魂"
         },
         {
             "count": 1,
-            "desc": "关羽为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_guanyu",
             "name": "关羽将魂"
         },
         {
             "count": 1,
-            "desc": "陈到为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_chendao",
             "name": "陈到将魂"
         },
         {
             "count": 1,
-            "desc": "孙策为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_sunce",
             "name": "孙策将魂"
         },
         {
             "count": 1,
-            "desc": "陆逊为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_luxun",
             "name": "陆逊将魂"
         },
         {
             "count": 1,
-            "desc": "鲁肃为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_lusu",
             "name": "鲁肃将魂"
         },
         {
             "count": 1,
-            "desc": "吕蒙为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_lvmeng",
             "name": "吕蒙将魂"
         },
         {
             "count": 1,
-            "desc": "孙尚香为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_sunshangxiang",
             "name": "孙尚香将魂"
         },
         {
             "count": 1,
-            "desc": "太史慈为2星武将,招降其需要30个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_taishici",
             "name": "太史慈将魂"
         },
         {
             "count": 1,
-            "desc": "孙坚为1星武将,招降其需要10个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_sunjian",
             "name": "孙坚将魂"
         },
         {
             "count": 1,
-            "desc": "周瑜为3星武将,招降其需要70个将魂",
+            "desc": "",
             "itemName": "soul_wujiang_zhouyu",
             "name": "周瑜将魂"
+        },
+        {
+            "count": 1,
+            "desc": "",
+            "itemName": "soul_wujiang_zhouyu",
+            "name": "赵云将魂"
+        },
+        {
+            "count": 1,
+            "desc": "",
+            "itemName": "soul_wujiang_zhurong",
+            "name": "祝融将魂"
         }
-    ]
+    ],
+    "total": 162
 }

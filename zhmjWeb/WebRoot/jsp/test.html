@@ -60,7 +60,7 @@ function PlayersChange(){
 		}
 	function sendMailQueryPlayers(){
 			var data = {
-				zones : [$('#sendMailZoneCombo').combobox('getValue')],
+				zone : $('#sendMailZoneCombo').combobox('getValue'),
 				queryType : $('#sendMailQueryType').combobox('getValue'),
 				keyWord : $('#sendMailKeyWord').val(),
 			};
@@ -73,7 +73,7 @@ function PlayersChange(){
 					}
                 },function (result) {
                 	$("#sendmailQueryPlayerGrid").combogrid("grid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: result
+						data: getListData(result.players)
 					});
 			    }    
             ));  
