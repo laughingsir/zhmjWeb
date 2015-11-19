@@ -144,7 +144,7 @@
 			}
 			var data = getNoticeData();
 			submitData("AddNotice",data,function(result){
-				if(result.success == true){
+				if(result.status == 1){
 					showMessageF("发布成功",function(){
 						$('#addNoticeDialog').dialog('close');
 						submitNoticeListForm();
@@ -159,7 +159,7 @@
 			}
 			var data = {handleType:0,noticeId:noticeId,notice:getNoticeData()};
 			submitData("HandleNotice",data,function(result){
-				if(result.success == true){
+				if(result.status == 1){
 					showMessageF("修改成功",function(){
 						$('#addNoticeDialog').dialog('close');
 						submitNoticeListForm();
@@ -168,12 +168,14 @@
 			});
 		}
 		
-		function deleteNotice(noticeId){
+		function deleteNotice(index){
+			$('#noticeListGrid').datagrid('selectRow',index);
+		    var notice = $('#noticeListGrid').datagrid('getSelected');  
 			showConfirm("确定删除公告吗？",function(){
-				var data = {handleType:1,noticeId:noticeId};
+				var data = {handleType:1,noticeId:notice.noticeId,notice:notice};
 			    submitData("HandleNotice",data,
 	                function (result) {
-				        if(result.success == true){
+				        if(result.status == 1){
 				        	showMessageF("删除成功",function(){
 				        		submitNoticeListForm();
 				        	});
@@ -185,10 +187,10 @@
 		
 		function deleteExpireNotice(){
 			showConfirm("确定删除所有过期公告吗？",function(){
-				var data = {data:""};
+				var data = {zones:getSelectedZone("addNoticeZone")};
 			    submitData("DeleteExpireNotice",data,
 	                function (result) {
-				        if(result.success == true){
+				        if(result.status == 1){
 				        	showMessageF("删除成功",function(){
 				        		submitNoticeListForm();
 				        	});
@@ -204,6 +206,7 @@
 		    if (row){  
 		    	$('#addNoticeType').combobox('select',row.noticeType);
 		    	$('#addNoticeZone').combobox('select',row.zones.length > 1 ? 'all' : row.zones[0]);
+		    	$('#addNoticeZone').combobox('disable',true);
 		    	$('#addNoticeStartTime').datetimebox('setValue',row.startTime);
 		    	$('#addNoticeEndTime').datetimebox('setValue',row.endTime);
 		    	$('#addNoticeContent').textbox('setValue',row.content);
@@ -227,6 +230,7 @@
 		function addNoticeWindow(){
 			$('#addNoticeType').combobox('select','0');
 			$('#addNoticeZone').combobox('select','all');
+			$('#addNoticeZone').combobox('enable',true);
 		    $('#addNoticeStartTime').datetimebox('setValue',Date());
 		    $('#addNoticeEndTime').datetimebox('setValue',Date());
 		    $('#addNoticeContent').textbox('setValue','');
@@ -249,11 +253,11 @@
 		
 		function submitNoticeListForm(){
 			var data = {
-				zone : $('#queryNoticeZoneCombo').combobox('getValue')
+				zones : getSelectedZone("queryNoticeZoneCombo")
 			};
 		    submitData('QueryNoticeList',data,function (result) {
 			        $('#noticeListGrid').datagrid({loadFilter:pagerFilter}).datagrid({
-			        	data: result,
+			        	data: getListData(result.notices),
 			        	onLoadSuccess:function(data){  
         								$('.noticeEditcls').linkbutton({text:'修改公告',iconCls:'icon-edit'});  
         								$('.noticeDelcls').linkbutton({text:'删除',iconCls:'icon-cancel'}); 
@@ -279,7 +283,7 @@
 		
 		function formatHandleNotice(val, row, index){
 			return '<a href="#" class="noticeEditcls" onclick="changeNoticeWindow(\''+index+'\')"></a>' + '&nbsp;&nbsp;&nbsp;&nbsp;' +
-				   '<a href="#" class="noticeDelcls" onclick="deleteNotice(\''+val+'\')"></a>'; 
+				   '<a href="#" class="noticeDelcls" onclick="deleteNotice(\''+index+'\')"></a>'; 
 		}
 	</script>
 	</div>

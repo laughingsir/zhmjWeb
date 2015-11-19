@@ -476,6 +476,12 @@
         },
         {
             "count": 1,
+            "desc": "孟获专属武器图纸",
+            "itemName": "wep_mat_1_wujiang_menghuo",
+            "name": "兽神拳套图纸"
+        },
+        {
+            "count": 1,
             "desc": "使用随机获得一个蜀国武将将魂",
             "itemName": "box_soul_shu",
             "name": "蜀国将魂宝箱"
@@ -593,6 +599,12 @@
             "desc": "封印灵魂的咒符，使用后获得1000点斩杀数",
             "itemName": "item_xiaohao_zhanqian_3",
             "name": "高级斩魂符"
+        },
+        {
+            "count": 1,
+            "desc": "随机获得大量道具",
+            "itemName": "box_thanksgiving",
+            "name": "感恩节宝箱"
         },
         {
             "count": 1,
@@ -771,7 +783,7 @@
         {
             "count": 1,
             "desc": "",
-            "itemName": "wujiang_zhouyu",
+            "itemName": "wujiang_zhaoyun",
             "name": "赵云"
         },
         {
@@ -779,6 +791,12 @@
             "desc": "",
             "itemName": "wujiang_zhurong",
             "name": "祝融"
+        },
+        {
+            "count": 1,
+            "desc": "",
+            "itemName": "wujiang_menghuo",
+            "name": "孟获"
         },
         {
             "count": 1,
@@ -963,7 +981,7 @@
         {
             "count": 1,
             "desc": "",
-            "itemName": "soul_wujiang_zhouyu",
+            "itemName": "soul_wujiang_zhaoyun",
             "name": "赵云将魂"
         },
         {
@@ -971,7 +989,13 @@
             "desc": "",
             "itemName": "soul_wujiang_zhurong",
             "name": "祝融将魂"
+        },
+        {
+            "count": 1,
+            "desc": "",
+            "itemName": "soul_wujiang_menghuo",
+            "name": "孟获将魂"
         }
     ],
-    "total": 162
+    "total": 166
 }

@@ -18,8 +18,7 @@
 					onLoadSuccess:selectBanPlayerFirstZone
 				">
 	    	查询类型:<select id="banPlayerQueryType" class="easyui-combobox" style="width:100px;">
-	    					<option value=-1 selected>全服</option>
-							<option value=0>玩家账号</option>
+							<option value=0 selected>玩家账号</option>
 							<option value=1>昵称</option>
 						</select>
 			关键字:<input id="banPlayerKeyWord" class="easyui-textbox" type="text" >			
@@ -89,33 +88,29 @@
 		}
 		
 		function submitQueryBanPlayerForm(){
-			if($('#banPlayerQueryType').combobox('getValue') == -1){
-				$.messager.confirm("提示", "确定查询全服玩家吗？", function (sure) {
-			        if(sure){
-			        	submitQueryBanPlayer();
-			        }
-			    });
-			}else{
-				submitQueryBanPlayer();
-			}
+			submitQueryBanPlayer();
 		}
 		
 		function submitQueryBanPlayer(){
 			var data = {
-				zones : [$('#banPlayerZoneCombo').combobox('getValue')],
+				zone : $('#banPlayerZoneCombo').combobox('getValue'),
 				queryType : $('#banPlayerQueryType').combobox('getValue'),
 				keyWord : $('#banPlayerKeyWord').val().trim(),
 			};
 		    $('#banPlayerForm').form('submit', submit('QueryPlayerInfo',data,
 				function () {  
-                    if($('#banPlayerQueryType').combobox('getValue') != -1 && $("#banPlayerKeyWord").val().trim()==""){
-                        showWarningF("请输入关键字",function(){
+                    if($("#banPlayerKeyWord").val().trim()==""){
+                        showWarningF("请输入玩家账号",function(){
                             $("#banPlayerKeyWord").focus();
                         });
                         return false;
                     }
                 },function (result) {
-			        $('#banPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: result});
+			        if(result.players.length > 0){
+                		$('#banPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.players)});
+                	}else{
+                		alert("未查询到玩家数据");
+                	}
 			    }    
             ));  
 		}

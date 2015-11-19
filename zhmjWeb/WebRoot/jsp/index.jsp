@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-	<title>主公无双管理中心</title>
+	<title>龙将斩千管理中心</title>
   <link rel="stylesheet" href="../easyui/themes/default/easyui.css" type="text/css"></link>
   <link rel="stylesheet" href="../easyui/themes/icon.css" type="text/css"></link>
   <link rel="stylesheet" href="../easyui/demo/demo.css" type="text/css"></link>
@@ -15,7 +15,7 @@
   
   
  <body class="easyui-layout">  
-    <div data-options="region:'north',title:'主公无双',collapsible:false" style="height:68px;">
+    <div data-options="region:'north',title:'龙将斩千',collapsible:false" style="height:68px;">
 		<div style="padding:10px;float:left">
 			<span id ="username" style="color:#0099FF;"></span>
 		</div>

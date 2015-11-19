@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>查询玩家获得元宝信息</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="playerGemGainForm" method="post" style="height:auto">
+	    	服务器:<input class="easyui-combobox" id="playerGemGainZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'auto',
+					loadFilter:zoneFilter,
+					onLoadSuccess:selectPlayerGemGainFirstZone
+				">
+			玩家账号:<input id="playerGemGainPlayerId" class="easyui-textbox" type="text" >	
+			开始时间:<input class="easyui-datebox" id="playerGemGainStartTime" style="width:160px">
+	    	结束时间:<input class="easyui-datebox" id="playerGemGainEndTime" style="width:160px">		
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitPlayerGemGainForm()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="playerGemGainGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<!--<th data-options="field:'role_name',width:100,align:'center'">昵称</th>-->
+				<th data-options="field:'item_id',width:250,align:'center',formatter:formatGemGain">获得类型</th>
+				<th data-options="field:'amount',width:80,align:'center'">获得总元宝</th>
+				<th data-options="field:'amount_ub',width:100,align:'center'">获得充值元宝</th>
+				<th data-options="field:'amount_bd',width:100,align:'center'">获得绑定元宝</th>
+				<th data-options="field:'remain_amount',width:80,align:'center'">剩余总元宝</th>
+				<th data-options="field:'remain_ub',width:100,align:'center'">剩余充值元宝</th>
+				<th data-options="field:'remain_bd',width:100,align:'center'">剩余绑定元宝</th>
+				<th data-options="field:'gain_time',width:150,align:'center',formatter:formatDate">获得时间</th>
+				<th data-options="field:'channel',width:60,align:'center'">渠道</th>
+				<th data-options="field:'sub_channel',width:200,align:'center'">子渠道</th>
+				<th data-options="field:'orderId',width:100,align:'center'">订单ID</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+			loadAllZone();
+		});
+		
+		function selectPlayerGemGainFirstZone(){
+			var data = $("#playerGemGainZoneCombo").combobox('getData');
+			$("#playerGemGainZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function submitPlayerGemGainForm(){
+			var data = {
+				zone : $("#playerGemGainZoneCombo").combobox('getValue'),
+				playerId : $("#playerGemGainPlayerId").val().trim(),
+				start : $("#playerGemGainStartTime").datebox('getValue')+" 00:00:00",
+				end : $("#playerGemGainEndTime").datebox('getValue')+" 23:59:59"
+			};
+		    $('#playerGemGainForm').form('submit', submit('QueryPlayerGemGain',data,
+				function () {  
+                    if($("#playerGemGainPlayerId").val().trim()==""){
+						showWarningF("请输入玩家账号",function(){
+							$("#playerGemGainPlayerId").focus();
+						});
+						return false;
+					}
+					var startTime = Date.parse(new Date($("#playerGemGainStartTime").datebox('getValue')+" 00:00:00"));
+					var endTime = Date.parse(new Date($("#playerGemGainEndTime").datebox('getValue')+" 23:59:59"));
+					if(isNaN(startTime)){
+						showWarning("请选择开始时间");
+						return false;
+					}
+					if(isNaN(endTime)){
+						showWarning("请选择结束时间");
+						return false;
+					}
+					if(startTime >= endTime){
+						showWarning("结束时间必须大于开始时间");
+						return false;
+					}
+                },function (result) {
+                	if(result.gemGains.length > 0){
+                		$("#playerGemGainGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.gemGains)});
+                	}else{
+                		alert("未查询到玩家获得元宝信息");
+                	}
+			    }    
+            ));  
+		}
+		
+		function formatGemGain(val, row, index){
+			if(val == null || val == undefined) return "";
+			if(val == "MonthCardGift") return "月卡奢华礼包";
+			if(val == "MonthCard") return "月卡每日奖励";
+			if(val == "NewGuide") return "新手引导";
+			if(val == "GetOnlineGift") return "在线礼包";
+			if(val == "Roulette") return "幸运转轮";
+			if(val == "RewardCaiShen") return "财神降临";
+			if(val.startWith("Task_")) return val.replace("Task","领取任务奖励");
+			if(val.startWith("com.u9time.ljzq.")) return val.replace("com.u9time.ljzq.","充值");
+			if(val.startWith("Mail_")) return val.replace("Mail","私人邮件");
+			if(val.startWith("SysMail_")) return val.replace("SysMail","系统邮件");
+			if(val.startWith("Task_")) return val.replace("Task","");
+			if(val.startWith("DaGuanReward_")) return val.replace("DaGuanReward","主线大关奖励");
+			if(val.startWith("Sign_")) return val.replace("Sign","签到");
+			if(val.startWith("HuBao_")) return val.replace("HuBao","护宝收获");
+			if(val.startWith("LueDuo_")) return val.replace("LueDuo","护宝掠夺");
+			if(val.startWith("PayGift_")) return val.replace("PayGift","充值回馈");
+			if(val.startWith("FirstPayGift_")) return val.replace("FirstPayGift","首充奖励");
+			if(val.startWith("VIPGift_")) return val.replace("VIPGift","VIP每日奖励");
+			if(val.startWith("VIPLevelGift_")) return val.replace("VIPLevelGift","VIP等级礼包");
+			if(val.startWith("GrowthFund_")) return val.replace("GrowthFund","成长基金");
+			if(val.startWith("RewardLevelGift_")) return val.replace("RewardLevelGift","等级礼包");
+			if(val.startWith("RewardLoginGift_")) return val.replace("RewardLoginGift","登录礼包");
+			if(val.startWith("GetLookForGift_")) return val.replace("GetLookForGift","元宝寻访礼包");
+			if(val.startWith("GetPayDayGift_")) return val.replace("GetPayDayGift","连续充值礼包");
+			if(val.startWith("GetFightReward_")) return val.replace("GetFightReward","战斗力礼包");
+			if(val.startWith("RewardGoalTask_")) return val.replace("RewardGoalTask","七日目标");
+			if(val.startWith("PickPacket_")) return val.replace("PickPacket","红包");
+			if(val.startWith("OpenBox_")) return val.replace("OpenBox","包裹使用宝箱");
+			return val;
+		}
+	</script>
+	</div>
+  </body>
+</html>

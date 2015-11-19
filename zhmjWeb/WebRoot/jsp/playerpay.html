@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>玩家充值信息</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="playerPayForm" method="post" style="height:auto">
+	    	服务器:<input class="easyui-combobox" id="playerPayZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'auto',
+					loadFilter:zoneFilter,
+					onLoadSuccess:selectPlayerPayFirstZone
+				">
+			玩家账号:<input id="playerPayPlayerId" class="easyui-textbox" type="text" >	
+			开始时间:<input class="easyui-datebox" id="playerPayStartTime" style="width:160px">
+	    	结束时间:<input class="easyui-datebox" id="playerPayEndTime" style="width:160px">		
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitPlayerPayForm()" style="width:80px">查询</a>
+	    	(注：开始时间、结束时间有一个为空则查询全部)
+	    </form>
+	    </div>
+	<table id="playerPayGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<!--<th data-options="field:'role_name',width:100,align:'center'">昵称</th>-->
+				<th data-options="field:'money',width:60,align:'center'">充值金额</th>
+				<th data-options="field:'amount',width:60,align:'center'">元宝数量</th>
+				<th data-options="field:'pay_time',width:150,align:'center',formatter:formatDate">充值时间</th>
+				<th data-options="field:'channel',width:60,align:'center'">渠道</th>
+				<th data-options="field:'sub_channel',width:200,align:'center'">子渠道</th>
+				<th data-options="field:'pay_channel',width:60,align:'center'">充值渠道</th>
+				<th data-options="field:'orderSN',width:100,align:'center'">订单SN</th>
+				<th data-options="field:'orderId',width:100,align:'center'">订单ID</th>
+				<th data-options="field:'productId',width:190,align:'center'">物品ID</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+			loadAllZone();
+		});
+		
+		function selectPlayerPayFirstZone(){
+			var data = $("#playerPayZoneCombo").combobox('getData');
+			$("#playerPayZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function submitPlayerPayForm(){
+			var startTime = Date.parse(new Date($("#playerPayStartTime").datebox('getValue')+" 00:00:00"));
+			var endTime = Date.parse(new Date($("#playerPayEndTime").datebox('getValue')+" 23:59:59"));
+			if(isNaN(startTime) || isNaN(endTime)){
+				startTime = "";
+				endTime = "";
+			}else{
+				startTime = $("#playerPayStartTime").datebox('getValue')+" 00:00:00";
+				endTime = $("#playerPayEndTime").datebox('getValue')+" 23:59:59";
+			}
+			var data = {
+				zone : $("#playerPayZoneCombo").combobox('getValue'),
+				playerId : $("#playerPayPlayerId").val().trim(),
+				start : startTime,
+				end : endTime
+			};
+		    $('#playerPayForm').form('submit', submit('QueryPlayerPayInfo',data,
+				function () {  
+                    if($("#playerPayPlayerId").val().trim()==""){
+						showWarningF("请输入玩家账号",function(){
+							$("#playerPayPlayerId").focus();
+						});
+						return false;
+					}
+					if(startTime != "" && endTime != "" && startTime >= endTime){
+						showWarning("结束时间必须大于开始时间");
+						return false;
+					}
+					
+                },function (result) {
+                	if(result.payInfos.length > 0){
+                		$("#playerPayGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.payInfos)});
+                	}else{
+                		alert("未查询到玩家充值信息");
+                	}
+			    }    
+            ));  
+		}
+	</script>
+	</div>
+  </body>
+</html>

@@ -229,7 +229,6 @@
 			<form id="addWuJiangQueryPlayerForm" method="post" style="height:auto">
 	    	查询类型:<select id="addWuJiangQueryType" class="easyui-combobox" style="width:100px;">
 							<option value="0" selected>玩家账号</option>
-							<option value="1">昵称</option>
 						</select>
 			关键字:<input id="addWuJiangKeyWord" class="easyui-textbox" type="text" >			
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="addWuJiangQueryPlayers()" style="width:80px">查询</a>
@@ -348,14 +347,18 @@
 		    $('#addWuJiangQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
 				function () {  
                     if($("#addWuJiangKeyWord").val().trim()==""){
-						alert("请输入关键字");
+						alert("请输入玩家账号");
 						$("#addWuJiangKeyWord").focus();
 						return false;
 					}
                 },function (result) {
-                	$("#addWuJiangQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: getListData(result.players)
-					});
+                	if(result.players.length > 0){
+                		$("#addWuJiangQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
+							data: getListData(result.players)
+						});
+                	}else{
+                		alert("未查询到玩家数据");
+                	}
 			    }    
             ));  
 		}

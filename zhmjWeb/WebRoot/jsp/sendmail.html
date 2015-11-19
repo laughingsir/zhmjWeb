@@ -102,7 +102,6 @@
 			<form id="sendMailQueryPlayerForm" method="post" style="height:auto">
 	    	查询类型:<select id="sendMailQueryType" class="easyui-combobox" style="width:100px;">
 							<option value="0" selected>玩家账号</option>
-							<option value="1">昵称</option>
 						</select>
 			关键字:<input id="sendMailKeyWord" class="easyui-textbox" type="text" >			
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="sendMailQueryPlayers()" style="width:80px">查询</a>
@@ -174,14 +173,18 @@
 		    $('#sendMailQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
 				function () {  
                     if($("#sendMailKeyWord").val().trim()==""){
-						alert("请输入关键字");
+						alert("请输入玩家账号");
 						$("#sendMailKeyWord").focus();
 						return false;
 					}
                 },function (result) {
-                	$("#sendmailQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: getListData(result.players)
-					});
+					if(result.players.length > 0){
+                		$("#sendmailQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
+							data: getListData(result.players)
+						});
+                	}else{
+                		alert("未查询到玩家数据");
+                	}
 			    }    
             ));  
 		}

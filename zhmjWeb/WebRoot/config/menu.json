@@ -90,5 +90,39 @@
                 }
             }
         ]
+    },
+    {
+        "id": 3,
+        "text": "日志查询",
+        "iconCls": "icon-ok",
+        "attributes": {
+                    	"right": "03"
+                	  },
+        "children": [
+            {
+                "id": 31,
+                "text": "玩家充值信息",
+                "attributes": {
+                    "target": "playerpay.html",
+                    "right": "0301"
+                }
+            },
+            {
+                "id": 32,
+                "text": "获得元宝信息",
+                "attributes": {
+                    "target": "playergemgain.html",
+                    "right": "0302"
+                }
+            },
+            {
+                "id": 33,
+                "text": "消费元宝信息",
+                "attributes": {
+                    "target": "playerconsume.html",
+                    "right": "0303"
+                }
+            }
+        ]
     }
 ]

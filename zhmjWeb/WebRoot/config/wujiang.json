@@ -118,5 +118,17 @@
     {
         "itemName": "wujiang_zhouyu",
         "name": "周瑜"
+    },
+    {
+        "itemName": "wujiang_zhaoyun",
+        "name": "赵云"
+    },
+    {
+        "itemName": "wujiang_zhurong",
+        "name": "祝融"
+    },
+    {
+        "itemName": "wujiang_menghuo",
+        "name": "孟获"
     }
 ]

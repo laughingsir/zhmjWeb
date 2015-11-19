@@ -72,9 +72,13 @@ function PlayersChange(){
 						return false;
 					}
                 },function (result) {
-                	$("#sendmailQueryPlayerGrid").combogrid("grid").datagrid({loadFilter:pagerFilter}).datagrid({
-						data: getListData(result.players)
-					});
+					if(result.players.length > 0){
+                		$("#sendmailQueryPlayerGrid").combogrid("grid").datagrid({loadFilter:pagerFilter}).datagrid({
+							data: getListData(result.players)
+						});
+                	}else{
+                		alert("未查询到玩家数据");
+                	}
 			    }    
             ));  
 		}

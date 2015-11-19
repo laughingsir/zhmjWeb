@@ -18,8 +18,7 @@
 					onLoadSuccess:selectQueryPlayerFirstZone
 				">
 	    	查询类型:<select id="queryPlayerQueryType" class="easyui-combobox" style="width:100px;">
-	    					<option value=-1 selected>全服</option>
-							<option value=0>玩家账号</option>
+							<option value=0 selected>玩家账号</option>
 							<option value=1>昵称</option>
 						</select>
 			关键字:<input id="queryPlayerKeyWord" class="easyui-textbox" type="text" >			
@@ -30,15 +29,15 @@
 			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
 		<thead>
 			<tr>
-				<th data-options="field:'playerId',width:100">玩家账号</th>
-				<th data-options="field:'nickName',width:100">昵称</th>
+				<th data-options="field:'playerId',width:100,align:'center'">玩家账号</th>
+				<th data-options="field:'nickName',width:100,align:'center'">昵称</th>
 				<th data-options="field:'vipLevel',width:60,align:'center'">VIP等级</th>
 				<th data-options="field:'level',width:60,align:'center'">等级</th>
 				<th data-options="field:'payGold',width:60,align:'center'">充值元宝</th>
 				<th data-options="field:'bindingGold',width:60,align:'center'">绑定元宝</th>
 				<th data-options="field:'silver',width:100,align:'center'">银币</th>
 				<th data-options="field:'power',width:60,align:'center'">体力</th>
-				<th data-options="field:'regTime',width:120">注册时间</th>
+				<th data-options="field:'regTime',width:200,align:'center'">注册时间</th>
 				<th data-options="field:'wuJiangs',width:120,formatter:formatShowWuJiang">武将</th>
 			</tr>
 		</thead>
@@ -86,15 +85,7 @@
 		}
 		
 		function submitQueryPlayerForm(){
-			if($('#queryPlayerQueryType').combobox('getValue') == -1){
-				$.messager.confirm("提示", "确定查询全服玩家吗？", function (sure) {
-			        if(sure){
-			        	submitQueryPlayer();
-			        }
-			    });
-			}else{
-				submitQueryPlayer();
-			}
+			submitQueryPlayer();
 		}
 		
 		function submitQueryPlayer(){
@@ -105,14 +96,18 @@
 			};
 		    $('#queryPlayerForm').form('submit', submit('QueryPlayerInfo',data,
 				function () {  
-                    if($('#queryPlayerQueryType').combobox('getValue') != -1 && $("#queryPlayerKeyWord").val().trim()==""){
-                        showWarningF("请输入关键字",function(){
+                    if($("#queryPlayerKeyWord").val().trim()==""){
+                        showWarningF("请输入玩家账号",function(){
                             $("#queryPlayerKeyWord").focus();
                         });
                         return false;
                     }
                 },function (result) {
-			        $('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.players)});
+                	if(result.players.length > 0){
+                		$('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.players)});
+                	}else{
+                		alert("未查询到玩家数据");
+                	}
 			    }    
             ));  
 		}

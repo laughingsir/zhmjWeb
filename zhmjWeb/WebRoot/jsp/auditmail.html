@@ -52,7 +52,11 @@
 			};
 		    submitData('QueryMailList',data,
                 function (result) {
-			        $('#auditMailGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.mails)});
+			        if(result.mails.length > 0){
+                		$('#auditMailGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.mails)});
+                	}else{
+                		alert("未查询到邮件数据");
+                	}
 			    }    
             );  
 		}

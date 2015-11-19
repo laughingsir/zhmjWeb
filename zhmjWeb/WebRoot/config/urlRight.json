@@ -70,5 +70,17 @@
     {
         "right": "UnBanPlayer",
         "name": "解除封号禁言"
+    },
+    {
+        "right": "QueryPlayerPayInfo",
+        "name": "查询玩家充值信息"
+    },
+    {
+        "right": "QueryPlayerGemGain",
+        "name": "查询获得元宝信息"
+    },
+    {
+        "right": "QueryPlayerConsume",
+        "name": "查询消费元宝信息"
     }
 ]
