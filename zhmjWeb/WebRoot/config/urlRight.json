@@ -56,6 +56,14 @@
         "name": "删除过期公告"
     },
     {
+        "right": "QueryLoginNoticeList",
+        "name": "查询登录公告列表"
+    },
+    {
+        "right": "HandleLoginNotice",
+        "name": "处理登录公告"
+    },
+    {
         "right": "Repay",
         "name": "补偿充值玩家"
     },

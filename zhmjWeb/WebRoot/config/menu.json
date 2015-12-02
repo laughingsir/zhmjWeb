@@ -54,6 +54,14 @@
                     "target": "addwujiang.html",
                     "right": "0106"
                 }
+            },
+            {
+                "id": 17,
+                "text": "登录公告",
+                "attributes": {
+                    "target": "loginnoticelist.html",
+                    "right": "0107"
+                }
             }
         ]
     },

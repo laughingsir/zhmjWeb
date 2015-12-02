@@ -36,16 +36,16 @@
 				<th data-options="field:'remain_ub',width:100,align:'center'">剩余充值元宝</th>
 				<th data-options="field:'remain_bd',width:100,align:'center'">剩余绑定元宝</th>
 				<th data-options="field:'gain_time',width:150,align:'center',formatter:formatDate">获得时间</th>
-				<th data-options="field:'channel',width:60,align:'center'">渠道</th>
+				<th data-options="field:'channel',width:100,align:'center'">渠道</th>
 				<th data-options="field:'sub_channel',width:200,align:'center'">子渠道</th>
-				<th data-options="field:'orderId',width:100,align:'center'">订单ID</th>
+				<th data-options="field:'orderId',width:200,align:'center'">订单ID</th>
 			</tr>
 		</thead>
 	</table>
 	</div>
 	<script>
 		$(function(){
-			loadAllZone();
+			loadItemsObj();
 		});
 		
 		function selectPlayerGemGainFirstZone(){
@@ -100,11 +100,10 @@
 			if(val == "GetOnlineGift") return "在线礼包";
 			if(val == "Roulette") return "幸运转轮";
 			if(val == "RewardCaiShen") return "财神降临";
-			if(val.startWith("Task_")) return val.replace("Task","领取任务奖励");
 			if(val.startWith("com.u9time.ljzq.")) return val.replace("com.u9time.ljzq.","充值");
 			if(val.startWith("Mail_")) return val.replace("Mail","私人邮件");
 			if(val.startWith("SysMail_")) return val.replace("SysMail","系统邮件");
-			if(val.startWith("Task_")) return val.replace("Task","");
+			if(val.startWith("Task_")) return val.replace("Task","领取任务奖励");
 			if(val.startWith("DaGuanReward_")) return val.replace("DaGuanReward","主线大关奖励");
 			if(val.startWith("Sign_")) return val.replace("Sign","签到");
 			if(val.startWith("HuBao_")) return val.replace("HuBao","护宝收获");
@@ -121,7 +120,10 @@
 			if(val.startWith("GetFightReward_")) return val.replace("GetFightReward","战斗力礼包");
 			if(val.startWith("RewardGoalTask_")) return val.replace("RewardGoalTask","七日目标");
 			if(val.startWith("PickPacket_")) return val.replace("PickPacket","红包");
-			if(val.startWith("OpenBox_")) return val.replace("OpenBox","包裹使用宝箱");
+			if(val.startWith("OpenBox_")){
+				var useItem = findItem(val.substring(8));
+				if(useItem != null) return "包裹使用宝箱_" + useItem.name;
+			}
 			return val;
 		}
 	</script>

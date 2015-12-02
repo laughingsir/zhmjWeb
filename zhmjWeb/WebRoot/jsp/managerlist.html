@@ -22,6 +22,7 @@
 				<th data-options="field:'menuRights',width:200,formatter:formatMunuRight">菜单权限</th>
 				<th data-options="field:'urlRights',width:200,formatter:formatUrlRight">操作权限</th>
 				<th data-options="field:'zones',width:200,formatter:formatAllZone">管理分区</th>
+				<th data-options="field:'zoneTags',width:200,formatter:formatAllZoneTag">管理分区标识</th>
 				<th data-options="field:'oper',width:200,align:'center',halign:'center',formatter:formatChangeRight">操作</th>
 			</tr>
 		</thead>
@@ -48,6 +49,10 @@
 	    			<td  style="vertical-align:top">管理分区：</td>
 	    			<td id="allZoneTd" style="vertical-align:top"></td>
 	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">管理分区标识：</td>
+	    			<td id="allZoneTagTd" style="vertical-align:top"></td>
+	    		</tr>
 	    	</table>
 	    	
 	    	
@@ -63,6 +68,7 @@
 			var selectedMenuRights = [];
 			var selectedUrlRights = [];
 			var selectedZones = [];
+			var selectedZoneTags = [];
 			$('input[name="cbMenuRight"]:checked').each(function(){
 				selectedMenuRights.push($(this).val());
 			});
@@ -72,11 +78,15 @@
 			$('input[name="cbAllZone"]:checked').each(function(){
 				selectedZones.push($(this).val());
 			});
+			$('input[name="cbAllZoneTag"]:checked').each(function(){
+				selectedZoneTags.push($(this).val());
+			});
 			return {
 				username : $('#addManagerUsername').val().trim(),
 				menuRights : selectedMenuRights,
 				urlRights : selectedUrlRights,
-				zones : selectedZones
+				zones : selectedZones,
+				zoneTags : selectedZoneTags
 			};
 		}
 		
@@ -95,6 +105,10 @@
 			}
 			if(data.zones.length == 0){
 				showWarning("请至少选择一个管理分区");
+				return false;
+			}
+			if(data.zoneTags.length == 0){
+				showWarning("请至少选择一个管理分区标签");
 				return false;
 			}
 			return true;
@@ -142,6 +156,7 @@
 		        $('#menuRightTd').html(generateMenuRightCheckBox(row.menuRights));
 				$('#urlRightTd').html(generateUrlRightCheckBox(row.urlRights));
 				$('#allZoneTd').html(generateAllZoneCheckBox(row.zones));
+				$('#allZoneTagTd').html(generateAllZoneTagCheckBox(row.zoneTags));
 				$('#addManagerDialog').dialog({iconCls:'icon-edit',buttons:[{
 					text:'修改',
 					iconCls:'icon-edit',
@@ -163,6 +178,7 @@
 			$('#menuRightTd').html(generateMenuRightCheckBox(null));
 			$('#urlRightTd').html(generateUrlRightCheckBox(null));
 			$('#allZoneTd').html(generateAllZoneCheckBox(null));
+			$('#allZoneTagTd').html(generateAllZoneTagCheckBox(null));
 			$('#addManagerDialog').dialog({iconCls:'icon-add',buttons:[{
 					text:'添加',
 					iconCls:'icon-add',
@@ -226,7 +242,7 @@
 			var val = '';
 			for(var i = 0; i < allZone.length; i++){
 				var zone = allZone[i];
-				var exist = zones != null ? checkZones(zone.id,zones) :false;
+				var exist = zones != null ? checkZoneTags(zone.id,zones) :false;
 				val += "<input type='checkbox' value='"+zone.id+"' name='cbAllZone' "+(exist == true ? "checked" : "")+">"+zone.name+"</input>";
 				if((i+1) % 4 == 0){
 					val += "<br/>";
@@ -236,6 +252,28 @@
 		}
 		
 		function checkZones(val,zones){
+			for(var j = 0; j < zones.length; j++){
+				if(zones[j] == val){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function generateAllZoneTagCheckBox(zones){
+			var val = '';
+			for(var i = 0; i < allZoneTag.length; i++){
+				var zone = allZoneTag[i];
+				var exist = zones != null ? checkZones(zone.id,zones) :false;
+				val += "<input type='checkbox' value='"+zone.id+"' name='cbAllZoneTag' "+(exist == true ? "checked" : "")+">"+zone.name+"</input>";
+				if((i+1) % 4 == 0){
+					val += "<br/>";
+				}
+			}
+			return val;
+		}
+		
+		function checkZoneTags(val,zones){
 			for(var j = 0; j < zones.length; j++){
 				if(zones[j] == val){
 					return true;
@@ -306,6 +344,11 @@
 		function formatAllZone(val,row){			
 			if(val == null) return '';
 			return transZones(val);
+		}
+		
+		function formatAllZoneTag(val,row){			
+			if(val == null) return '';
+			return transZoneTags(val);
 		}
 		
 		function formatChangeRight(val,row, index){		

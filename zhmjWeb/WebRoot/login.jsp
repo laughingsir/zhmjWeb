@@ -39,7 +39,7 @@
 							showMessage("登录成功！");
 			                setGlobalCookie('sessionId', result.sessionId);
 			                setGlobalCookie('managerInfo', JSON.stringify(result.managerInfo));
-			                setGlobalCookie('allZone', JSON.stringify(result.allZone));
+			                sessionStorage['allZone'] = JSON.stringify(result.allZone);
 			                location = 'jsp/index.jsp';
 			            }else{
 							setGlobalCookie('sessionId', null);

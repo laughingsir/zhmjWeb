@@ -3,6 +3,7 @@ var urlRight;
 var allZone;
 var itemsObj;
 var serverUrl;
+var allZoneTag;
 
 function loadConfig(){
 	if(serverUrl == null){
@@ -20,19 +21,22 @@ function loadConfig(){
 			urlRight = data; 
 		});
 	}
-	loadAllZone();
-}
-
-function loadAllZone(){
-	if(allZone == null){
-		allZone = $.parseJSON($.cookie('allZone'));
-	}
+	loadAllZoneTag();
+	allZone = $.parseJSON(sessionStorage['allZone']);
 }
 
 function loadItemsObj(){
 	if(itemsObj == null){
 		$.getJSON("../config/item.json",function(data){
 			itemsObj = data; 
+		});
+	}
+}
+
+function loadAllZoneTag(){
+	if(allZoneTag == null){
+		$.getJSON("../config/zoneTag.json",function(data){
+			allZoneTag = data; 
 		});
 	}
 }
@@ -284,6 +288,42 @@ function findZone(zoneId){
 	return null;
 }
 
+function zoneTagFilterWithAll(data){
+	var zones = [{id:"all",name:"全部"}];
+	return getFilterZoneTags(data,zones);
+}
+
+function getFilterZoneTags(data, zones){
+	var myZones = getManagerInfo().zoneTags;
+	for(var i = 0; i < data.length; i++){
+		if(existZone(myZones, data[i].id)){
+			zones.push(data[i]);
+		}
+	}
+	return zones;
+}
+
+function transZoneTags(zones){			
+	var result = [];
+	for(var node in zones){
+		var zone = findZoneTag(zones[node]);
+		if(zone != null){
+			result.push(zone.name);
+		}
+	}
+	return result.join("<br>");
+}
+
+function findZoneTag(zoneId){
+	for(var node in allZoneTag){
+		var zone = allZoneTag[node];
+		if(zone.id == zoneId){
+			return zone;
+		}
+	}
+	return null;
+}
+
 function transPlayers(players){			
 	var result = [];
 	for(var node in players){
@@ -345,4 +385,8 @@ String.prototype.startWith=function(str){
 	else
 	  return false;
 	return true;
+};
+
+String.prototype.replaceAll  = function(s1,s2){     
+    return this.replace(new RegExp(s1,"gm"),s2);     
 };

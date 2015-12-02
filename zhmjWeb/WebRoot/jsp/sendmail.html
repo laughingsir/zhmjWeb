@@ -133,7 +133,6 @@
 			mailPlayers = [];
 			itemNames = [];
 			mailItems = [];
-			loadAllZone();
 		});
 		
 		function sendMailTypeChange(){
@@ -229,10 +228,10 @@
 				players : mailPlayers,
 				items : mailItems,
 				addPerson : getManagerInfo().username,
-				reason : $('#sendMailReason').val(),
+				reason : $('#sendMailReason').textbox('getValue'),
 				sender : $('#sendMailSender').val(),
 				title : $('#sendMailTitle').val(),
-				content : $('#sendMailContent').val()
+				content : $('#sendMailContent').textbox('getValue')
 			};
 			 $('#sendMailForm').form('submit',submit("sendmail", data,
 			 	function () {  
