@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>发布公告</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="loginNoticeListForm" method="post" style="height:auto">
+			分区标识:<input class="easyui-combobox" id="queryLoginNoticeZoneCombo" data-options="
+					data:allZoneTag,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'auto',
+					loadFilter:zoneTagFilterWithAll,
+					onLoadSuccess:selectQueryLoginNoticeFirstZone
+				">	
+			公告类型:<select id="queryLoginNoticeType" class="easyui-combobox" style="width:100px;">
+							<option value="0" selected>登录公告</option>
+							<option value="1">登录活动</option>
+						</select>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitLoginNoticeListForm()" style="width:80px">查询</a>
+	    	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" addLoginNoticeWindow()">发布公告</a>
+	    </form>
+	    </div>
+	<table id="loginNoticeListGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'noticeType',width:100,formatter:formatLoginNoticeType">公告类型</th>
+				<th data-options="field:'zoneTag',width:100,formatter:formatLoginNoticeZoneTag">分区标识</th>
+				<th data-options="field:'content',width:600,formatter:formatContent">内容</th>
+				<th data-options="field:'id',width:200,align:'center',halign:'center',formatter:formatHandleLoginNotice">操作</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<div id="addLoginNoticeDialog" class="easyui-dialog" title="发布公告" data-options="closed:true,modal:true" style="width:700px;height:400px;padding:10px;">
+		<form id="addLoginNoticeForm" method="post" style="height:auto">
+	    	<table cellpadding="5" id = "tbAddLoginNotice">
+	    		<tr>
+	    			<td>公告类型：</td>
+	    			<td>
+	    				<select id="addLoginNoticeType" class="easyui-combobox" style="width:100px;" data-options="onChange:addLoginNoticeTypeChange">
+							<option value="0" selected>登录公告</option>
+							<option value="1">登录活动</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>服务器：</td>
+	    			<td>
+	    				<input class="easyui-combobox" id="addLoginNoticeZone" data-options="
+							data:allZoneTag,
+							valueField:'id',
+							textField:'name',
+							panelHeight:'auto',
+							onLoadSuccess:selectAddLoginNoticeFirstZone
+						">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">内容：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="addLoginNoticeContent" data-options="multiline:true" value="" style="width:580px;height:200px">
+					</td>
+	    		</tr>
+	    	</table>
+		</form>
+	</div>
+	<script>
+		
+		$(function(){
+			loadAllZoneTag();
+		});
+		
+		function addLoginNoticeTypeChange(){
+			var addLoginNoticeType = $('#addLoginNoticeType').combobox('getValue');
+			if(addLoginNoticeType != 0){
+				$("#trAddLoginNoticeTime").hide();
+				$("#trAddLoginNoticeInterval").hide();
+			}else{
+				$("#trAddLoginNoticeTime").show();
+				$("#trAddLoginNoticeInterval").show();
+			}
+		}
+		
+		function selectQueryLoginNoticeFirstZone(){
+			var data = $("#queryLoginNoticeZoneCombo").combobox('getData');
+			$("#queryLoginNoticeZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function selectAddLoginNoticeFirstZone(){
+			var data = $("#addLoginNoticeZone").combobox('getData');
+			$("#addLoginNoticeZone").combobox('select',data[0].id);
+		}
+		
+		function getLoginNoticeData(){
+			return {
+				noticeType : $('#addLoginNoticeType').combobox('getValue'),
+				zoneTag : $('#addLoginNoticeZone').combobox('getValue'),
+				content : $('#addLoginNoticeContent').textbox('getValue'),
+			};
+		}
+		
+		function checkLoginNoticeData(){
+			if($('#addLoginNoticeContent').val().trim() == ""){
+				showWarning("内容不能为空");
+				return false;
+			}
+			return true;
+		}
+		
+		function addLoginNotice(){
+			if(!checkLoginNoticeData()){
+				return;
+			}
+			var data = getLoginNoticeData();
+			submitData("HandleLoginNotice",data,function(result){
+				if(result.status == 1){
+					showMessageF("发布成功",function(){
+						$('#addLoginNoticeDialog').dialog('close');
+						submitLoginNoticeListForm();
+					});
+				}
+			});
+		}
+		
+		function changeLoginNotice(loginNoticeId){
+			if(!checkLoginNoticeData()){
+				return;
+			}
+			var data = getLoginNoticeData();
+			submitData("HandleLoginNotice",data,function(result){
+				if(result.status == 1){
+					showMessageF("修改成功",function(){
+						$('#addLoginNoticeDialog').dialog('close');
+						submitLoginNoticeListForm();
+					});
+				}
+			});
+		}
+		
+		function deleteLoginNotice(index){
+			$('#loginNoticeListGrid').datagrid('selectRow',index);
+		    var loginNotice = $('#loginNoticeListGrid').datagrid('getSelected');  
+			showConfirm("确定删除公告吗？",function(){
+				var data = {handleType:1,loginNoticeId:loginNotice.loginNoticeId,loginNotice:loginNotice};
+			    submitData("HandleLoginNotice",data,
+	                function (result) {
+				        if(result.status == 1){
+				        	showMessageF("删除成功",function(){
+				        		submitLoginNoticeListForm();
+				        	});
+				        }
+				    }    
+	            );  
+			});
+		}
+		
+		function changeLoginNoticeWindow(index){
+			$('#loginNoticeListGrid').datagrid('selectRow',index);
+		    var row = $('#loginNoticeListGrid').datagrid('getSelected');  
+		    if (row){  
+		    	$('#addLoginNoticeType').combobox('select',row.noticeType);
+		    	$('#addLoginNoticeType').combobox('disable',true);
+		    	$('#addLoginNoticeZone').combobox('select',row.zoneTag);
+		    	$('#addLoginNoticeZone').combobox('disable',true);
+		    	$('#addLoginNoticeContent').textbox('setValue',row.content);		    	
+				$('#addLoginNoticeDialog').dialog({iconCls:'icon-edit',buttons:[{
+					text:'修改',
+					iconCls:'icon-edit',
+					handler:function(){
+						changeLoginNotice(row.loginNoticeId);
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#addLoginNoticeDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','修改公告');  
+		    }  
+		}
+		
+		function addLoginNoticeWindow(){
+			$('#addLoginNoticeType').combobox('select','0');
+			$('#addLoginNoticeType').combobox('enable',true);
+			$('#addLoginNoticeZone').combobox('enable',true);
+		    $('#addLoginNoticeContent').textbox('setValue','');
+			$('#addLoginNoticeDialog').dialog({iconCls:'icon-add',buttons:[{
+					text:'发布',
+					iconCls:'icon-add',
+					handler:function(){
+						addLoginNotice();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#addLoginNoticeDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','发布公告');
+		}
+		
+		
+		function submitLoginNoticeListForm(){
+			var data = {
+				loginNoticeType : $('#queryLoginNoticeType').combobox('getValue'),
+				zoneTags : getSelectedZone("queryLoginNoticeZoneCombo")
+			};
+		    submitData('QueryLoginNoticeList',data,function (result) {
+			        $('#loginNoticeListGrid').datagrid({loadFilter:pagerFilter}).datagrid({
+			        	data: getListData(result.notices),
+			        	onLoadSuccess:function(data){  
+        								$('.loginNoticeEditcls').linkbutton({text:'修改公告',iconCls:'icon-edit'});  
+        								$('.loginNoticeDelcls').linkbutton({text:'删除',iconCls:'icon-cancel'}); 
+    								  } 
+			        });
+			    }    
+            );
+		}
+		
+		function formatLoginNoticeType(val,row){			
+			if(val == 0) return '登录公告';
+			if(val == 1) return '登录活动';
+			return '';
+		}
+		
+		function formatLoginNoticeZoneTag(val,row){			
+			if(val == null) return '';
+			var zone = findZoneTag(val);
+			if(zone != null){
+				return zone.name;
+			}
+			return '';
+		}
+		
+		function formatHandleLoginNotice(val, row, index){
+			return '<a href="#" class="loginNoticeEditcls" onclick="changeLoginNoticeWindow(\''+index+'\')"></a>'; 
+		}
+	</script>
+	</div>
+  </body>
+</html>

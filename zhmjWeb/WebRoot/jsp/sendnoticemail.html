@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>发送系统邮件</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+  	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="noticeMailListForm" method="post" style="height:auto">
+			服务器:<input class="easyui-combobox" id="queryNoticeMailZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					loadFilter:zoneFilterWithAll,
+					onLoadSuccess:selectQueryNoticeMailFirstZone
+				">	
+	    	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="queryNoticeMailList()" style="width:80px">查询</a>
+	    	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="sendNoticeMailWindow()">发送邮件</a>
+	    	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="sendNoticeMailToNewZone()">同步邮件至新开服务器</a>
+	    	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="deleteExpireNoticeMail()">删除过期邮件</a>
+	    </form>
+	    </div>
+	<table id="noticeMailListGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'noticeMailType',width:70,formatter:formatNoticeMailSendType">发送方式</th>
+				<th data-options="field:'zoneTag',width:80">服务器标识</th>
+				<th data-options="field:'zones',width:120,formatter:formatNoticeMailZones">服务器</th>
+				<th data-options="field:'mailTabType',width:60,formatter:formatNoticeMailTabType">类型</th>
+				<th data-options="field:'subType',width:80,formatter:formatNoticeMailSubType">子类型</th>
+				<th data-options="field:'items',width:120,formatter:formatSendNoticeMailItems">道具</th>
+				<th data-options="field:'title',width:80,align:'left',formatter:formatNoticeMailTitle">标题</th>
+				<th data-options="field:'abs',width:80,align:'left',formatter:formatNoticeMailAbs">摘要</th>
+				<th data-options="field:'sender',width:60,align:'left',formatter:formatNoticeMailSender">发送者</th>
+				<th data-options="field:'content',width:270,align:'left',formatter:formatSendNoticeMailContent">内容</th>
+				<th data-options="field:'startTime',width:150,align:'center',halign:'center',formatter:formatNoticeMailTime">起止时间</th>
+				<th data-options="field:'weekDay',width:60,align:'center',formatter:formatNoticeMailWeekDay">星期</th>
+				<th data-options="field:'reason',width:60,align:'left'">原因</th>
+				<th data-options="field:'addPerson',width:60,align:'center'">添加人员</th>
+				<th data-options="field:'submitTime',width:150,align:'center'">提交时间</th>
+				<th data-options="field:'id',width:140,align:'center',halign:'center',formatter:formatHandleNoticeMail">操作</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<div id="sendNoticeMailDialog" class="easyui-dialog" title="发送系统邮件" data-options="closed:true,modal:true" style="width:800px;height:540px;padding:10px">
+		<form id="sendNoticeMailForm" method="post" style="text-align:center">
+	    	<table cellpadding="5" style="width:700px;text-align:left">
+	    		<tr>
+	    			<td>发送方式:</td>
+	    			<td>
+	    				<select id="sendNoticeMailType" class="easyui-combobox" data-options="onChange:sendNoticeMailTypeChange" style="width:160px;">
+							<option value=0 selected>服务器</option>
+							<option value=1>服务器标识</option>
+						</select>
+					</td>
+					<td id="tdZone" style="width:90px">服务器:</td>
+	    			<td>
+	    				<div id="divSendNoticeMailZone">
+	    				<input class="easyui-combobox" id="sendNoticeMailZone" style="width:160px;" data-options="
+							data:allZone,
+							valueField:'id',
+							textField:'name',
+							panelHeight:'500',
+							loadFilter:zoneFilterWithAll,
+							onSelect:sendNoticeMailZoneSelect
+						">
+						</div>
+						<div id="divSendNoticeMailZoneTag">
+						<input class="easyui-combobox" id="sendNoticeMailZoneTag" style="width:160px;" data-options="
+								data:allZoneTag,
+								valueField:'id',
+								textField:'name',
+								panelHeight:'auto',
+								loadFilter:zoneTagFilter,
+								onLoadSuccess:selectSendNoticeMailFirstZoneTag
+							">	
+						</div>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>开始时间：</td>
+	    			<td>
+	    				<input class="easyui-datebox" id="sendNoticeMailStartTime" style="width:160px">
+					</td>
+					<td>结束时间：</td>
+	    			<td>
+	    				<input class="easyui-datebox" id="sendNoticeMailEndTime" style="width:160px">	
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">邮件子类型：</td>
+	    			<td>
+	    				<select id="sendNoticeMailSubType" class="easyui-combobox" style="width:160px;" data-options="onChange:sendNoticeMailSubTypeChange">
+	    					<option value=3 selected>每日邮件</option>
+							<option value=2>星期邮件</option>
+							<option value=1>新玩家邮件</option>
+						</select>
+					</td>
+					<td id="tdSendNoticeMailWeekDay" style="vertical-align:top">发送星期：</td>
+	    			<td>
+	    				<div id="divSendNoticeMailWeekDay">
+	    				<select id="sendNoticeMailWeekDay" class="easyui-combobox" style="width:160px;" data-options="multiple:true">
+	    					<option value=1>星期一</option>
+							<option value=2>星期二</option>
+							<option value=3>星期三</option>
+							<option value=4>星期四</option>
+							<option value=5>星期五</option>
+							<option value=6>星期六</option>
+							<option value=7>星期日</option>
+						</select>
+						</div>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>邮件标题：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendNoticeMailTitle" value="系统赠送" style="width:200px">
+					</td>
+					<td>邮件摘要：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendNoticeMailAbs" value="" style="width:200px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>发送者：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendNoticeMailSender" value="游戏官方运营团队" style="width:200px">
+					</td>
+					<td style="">邮件类型：</td>
+	    			<td>
+	    				<select id="sendNoticeMailTabType" class="easyui-combobox" style="width:160px;" data-options="">
+	    					<option value=1 selected>公告</option>
+							<option value=2>奖励</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">邮件内容：</td>
+	    			<td style="vertical-align:top">
+	    				<input class="easyui-textbox" id="sendNoticeMailContent" data-options="multiline:true" value="" style="width:200px;height:100px">
+					</td>
+					<td style="vertical-align:top">原因：</td>
+	    			<td style="vertical-align:top">
+	    				<input class="easyui-textbox" id="sendNoticeMailReason" data-options="multiline:true" value="" style="width:200px;height:100px">
+					</td>
+					
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">道具：</td>
+	    			<td style="vertical-align:top">
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" sendNoticeMailOpenItemWindow()">添加道具</a>
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick=" sendNoticeMailClearItem()">清除道具</a><br/><br/>
+	    				<input class="easyui-textbox" id="sendNoticeMailTxtItems" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	</div>
+	 <div id="sendNoticeMailItemWindow" class="easyui-window" title="添加道具" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:800px;height:350px;padding:10px;">
+			<table id="sendNoticeMaildg" class="easyui-datagrid" title="" style="width:750px;height:auto"
+					data-options="
+						singleSelect: false,
+						url: '../config/item.json',
+						method:'get',
+						onDblClickCell: onNoticeMailClickCell,
+						collapsible:true,
+						onSelect:sendNoticeMailItemsChange,
+						onUnselect:sendNoticeMailItemsChange,
+						onSelectAll:sendNoticeMailItemsChange,
+						onUnselectAll:sendNoticeMailItemsChange
+					">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field:'name'" width="20%">名称</th>
+						<th data-options="field:'desc'" width="70%">描述</th>
+						<th data-options="field:'count',editor:'numberbox'" width="10%">数量</th>
+					</tr>
+				</thead>
+			</table>	
+		</div>
+		<div id="sendNoticeMailChooseZoneTagDialog" class="easyui-dialog" title="选择服务器标识" data-options="closed:true,modal:true" style="width:400px;height:250px;padding:10px;">
+			<form id="sendNoticeMailChooseZoneTagForm" method="post" style="height:auto">
+		    	<table cellpadding="5">
+		    		<tr>
+		    			<td>服务器标识：</td>
+		    			<td>
+		    				<input class="easyui-combobox" id="sendNoticeMailChooseZoneTag" style="width:160px;" data-options="
+								data:allZoneTag,
+								valueField:'id',
+								textField:'name',
+								panelHeight:'auto',
+								loadFilter:zoneTagFilter,
+								onLoadSuccess:selectSendNoticeMailChooseFirstZoneTag
+							">	
+						</td>
+		    		</tr>
+		    	</table>
+		    	<span id="spanNoticeMailZoneTagHint"></span>
+			</form>
+		</div>
+	<script>
+		var noticeMailItems;
+		var noticeMailItemNames;
+		var canSelectSendMailItem = true;
+		
+		$(function(){
+			loadItemsObj();
+			noticeMailItemNames = [];
+			noticeMailItems = [];
+			$("#divSendNoticeMailZoneTag").hide();
+			$("#divSendNoticeMailWeekDay").hide();
+			$("#tdSendNoticeMailWeekDay").html("");
+		});
+		
+		function sendNoticeMailTypeChange(){
+			if($("#sendNoticeMailType").combobox('getValue') == 0){
+				$("#tdZone").html("服务器：");
+				$("#divSendNoticeMailZone").show();
+				$("#divSendNoticeMailZoneTag").hide();
+				$("#sendNoticeMailZone").combobox({'multiple':true,data:allZone,loadFilter:zoneFilterWithAll});
+			}else{
+				$("#tdZone").html("服务器标识：");
+				$("#divSendNoticeMailZone").hide();
+				$("#divSendNoticeMailZoneTag").show();
+				$("#sendNoticeMailZoneTag").combobox({'multiple':false,data:allZoneTag,loadFilter:zoneTagFilter,onLoadSuccess:selectSendNoticeMailFirstZoneTag});
+			}
+		}
+		
+		function sendNoticeMailZoneSelect(r){
+			if($("#sendNoticeMailType").combobox('getValue') == 1) return;
+			if(r.id == "all"){
+				var data = $("#sendNoticeMailZone").combobox('getData');
+				var selectData = [];
+				for(var i = 1; i < data.length; i++){
+					selectData[i - 1] = data[i].id;
+				}
+				$("#sendNoticeMailZone").combobox('clear').combobox('setValues',selectData);
+			}
+		}
+		
+		function selectSendNoticeMailFirstZoneTag(){
+			var data = $("#sendNoticeMailZoneTag").combobox('getData');
+			$("#sendNoticeMailZoneTag").combobox('select',data[0].id);
+		}
+		
+		function selectSendNoticeMailChooseFirstZoneTag(){
+			var data = $("#sendNoticeMailChooseZoneTag").combobox('getData');
+			$("#sendNoticeMailChooseZoneTag").combobox('select',data[0].id);
+		}
+		
+		function sendNoticeMailSubTypeChange(){
+			if($("#sendNoticeMailSubType").combobox('getValue') == 2){
+				$("#divSendNoticeMailWeekDay").show();
+				$("#tdSendNoticeMailWeekDay").html("发送星期：");
+			}else{
+				$("#divSendNoticeMailWeekDay").hide();
+				$("#tdSendNoticeMailWeekDay").html("");
+			}
+		}
+		
+		function sendNoticeMailClearItem(){
+			noticeMailItemNames = [];
+			noticeMailItems = [];
+			$("#sendNoticeMailTxtItems").textbox('setValue',noticeMailItemNames.join('\n'));
+		}
+		
+		function sendNoticeMailItemsChange(){
+			if(canSelectSendMailItem){
+				noticeMailItems = [];
+				noticeMailItemNames = [];
+				var rows = $('#sendNoticeMaildg').datagrid('getSelections');
+				for(var i=0; i<rows.length; i++){
+				    noticeMailItems.push({ itemName: rows[i].itemName, count: rows[i].count });
+				    noticeMailItemNames.push(rows[i].name + "("+rows[i].count+"个)");
+				}
+				$("#sendNoticeMailTxtItems").textbox('setValue',noticeMailItemNames.join('\n'));
+			}
+		}
+		
+		function getSendNoticeMailZones(){
+			if($("#sendNoticeMailType").combobox('getValue') == 0 && $("#sendNoticeMailZone").combobox('getValue') != ""){
+				return $("#sendNoticeMailZone").combobox('getValues');
+			}
+			return [];
+		}
+		
+		function getSendNoticeMailZoneTag(){
+			if($("#sendNoticeMailType").combobox('getValue') == 1){
+				return $("#sendNoticeMailZoneTag").combobox('getValue');
+			}
+			return "";
+		}
+		
+		function getSendNoticeMailWeekDays(){
+			if($("#sendNoticeMailSubType").combobox('getValue') == 2){
+				return $("#sendNoticeMailWeekDay").combobox('getValues').join(',');
+			}
+			return "";
+		}
+		
+		function getSendNoticeMailData(){
+			var startTime = Date.parse(new Date($("#sendNoticeMailStartTime").datebox('getValue')+" 00:00:00"));
+			var endTime = Date.parse(new Date($("#sendNoticeMailEndTime").datebox('getValue')+" 23:59:59"));
+			if(isNaN(startTime)){
+				startTime = "";
+			}else if(isNaN(endTime)){
+				endTime = "";
+			}else{
+				startTime = $("#sendNoticeMailStartTime").datebox('getValue')+" 00:00:00";
+				endTime = $("#sendNoticeMailEndTime").datebox('getValue')+" 23:59:59";
+			}
+			var noticeMail = {
+				mailType : $('#sendNoticeMailTabType').combobox('getValue'),
+				subType : $('#sendNoticeMailSubType').combobox('getValue'),
+				sender : $('#sendNoticeMailSender').val(),
+				title : $('#sendNoticeMailTitle').val(),
+				abs : $('#sendNoticeMailAbs').val(),
+				content : $('#sendNoticeMailContent').textbox('getValue'),
+				startTime : startTime,
+				endTime : endTime,
+				weekDay : getSendNoticeMailWeekDays(),
+				items : noticeMailItems
+			};
+			var data = {
+				noticeMailType : $('#sendNoticeMailType').combobox('getValue'),
+				zoneTag : getSendNoticeMailZoneTag(),
+				zones : getSendNoticeMailZones(),
+				addPerson : getManagerInfo().username,
+				reason : $('#sendNoticeMailReason').textbox('getValue').trim(),
+				noticeMail : noticeMail,
+			};
+			return data; 
+		}
+	
+		function sendNoticeMail(){
+			 var data = getSendNoticeMailData();
+			 $('#sendNoticeMailForm').form('submit',submit("SendNoticeMail", data,
+			 	function () {  
+			 		if(data.noticeMailType == 0 && data.zones.length == 0){
+						showWarning("请选择对应服务器");
+						return false;
+					}
+					if(data.noticeMail.startTime == ""){
+						showWarning("请选择开始时间");
+						return false;
+					}
+					if(data.noticeMail.endTime == ""){
+						showWarning("请选择结束时间");
+						return false;
+					}
+					var now = Date.parse(Date());
+					var startTime = Date.parse(new Date(data.noticeMail.startTime));
+					var endTime = Date.parse(new Date(data.noticeMail.endTime));
+					if(endTime < now){
+						showWarning("结束时间必须大于当前时间");
+						return false;
+					}
+					if(endTime <= startTime){
+						showWarning("结束时间必须大于开始时间");
+						return false;
+					}
+					if(data.noticeMail.subType == 2 && data.noticeMail.weekDay == ""){
+						showWarning("请选择星期");
+						return false;
+					}
+					if(data.reason == ""){
+						showWarning("请输入原因");
+						return false;
+					}
+					return true;
+                },  
+                function (data) {
+			        if(data.status == 1){
+			            showMessageF("发送成功",function(){
+				        	$("#sendNoticeMailDialog").dialog('close');
+			            	queryNoticeMailList();
+				        });
+			        }
+			   }
+            ));  
+		}
+		
+		function changeNoticeMail(row){
+			 var newData = getSendNoticeMailData();
+			 newData.noticeMail.id = row.noticeMail.id;
+			 var data = {
+			 	noticeMailType : row.noticeMailType,
+				zoneTag : row.zoneTag,
+				zones : row.zones,
+				addPerson : newData.addPerson,
+				reason : newData.reason,
+				noticeMail : newData.noticeMail,
+			 };
+			 var req = {
+			 	handleType : 0,
+			 	mail : data
+			 };
+			 $('#sendNoticeMailForm').form('submit',submit("HandleNoticeMail", req,
+			 	function () {  
+			 		if(data.noticeMailType == 0 && data.zones.length == 0){
+						showWarning("请选择对应服务器");
+						return false;
+					}
+					if(data.noticeMail.startTime == ""){
+						showWarning("请选择开始时间");
+						return false;
+					}
+					if(data.noticeMail.endTime == ""){
+						showWarning("请选择结束时间");
+						return false;
+					}
+					var now = Date.parse(Date());
+					var startTime = Date.parse(new Date(data.noticeMail.startTime));
+					var endTime = Date.parse(new Date(data.noticeMail.endTime));
+					if(endTime < now){
+						showWarning("结束时间必须大于当前时间");
+						return false;
+					}
+					if(endTime <= startTime){
+						showWarning("结束时间必须大于开始时间");
+						return false;
+					}
+					if(data.noticeMail.subType == 2 && data.noticeMail.weekDay == ""){
+						showWarning("请选择星期");
+						return false;
+					}
+					if(data.reason == ""){
+						showWarning("请输入原因");
+						return false;
+					}
+					return true;
+                },  
+                function (data) {
+			        if(data.status == 1){
+			        	showMessageF("修改成功",function(){
+				        	$("#sendNoticeMailDialog").dialog('close');
+			            	queryNoticeMailList();
+				        });
+			        }
+			   }
+            ));  
+		}
+		
+		function deleteNoticeMail(index){
+			$('#noticeMailListGrid').datagrid('selectRow',index);
+		    var row = $('#noticeMailListGrid').datagrid('getSelected');
+			showConfirm("确定删除邮件吗？",function(){
+				var data = {
+					handleType : 1,
+			 		mail : row
+				};
+			    submitData("HandleNoticeMail",data,
+	                function (result) {
+				        if(result.status == 1){
+				        	showMessageF("删除成功",function(){
+				        		queryNoticeMailList();
+				        	});
+				        }
+				    }    
+	            );  
+			});
+		}
+		
+		var noticeMailEditIndex = undefined;
+		function NoticeMailEndEditing(){
+			if (noticeMailEditIndex == undefined){return true;}
+			if ($('#sendNoticeMaildg').datagrid('validateRow', noticeMailEditIndex)){
+				$('#sendNoticeMaildg').datagrid('endEdit', noticeMailEditIndex);
+				noticeMailEditIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onNoticeMailClickCell(index, field){
+			if (NoticeMailEndEditing()){
+				$('#sendNoticeMaildg').datagrid('selectRow', index)
+						.datagrid('editCell', {index:index,field:field});
+				noticeMailEditIndex = index;
+			}
+		}
+		
+		function sendNoticeMailOpenItemWindow(){
+			$('#sendNoticeMailItemWindow').window('open');
+		}
+		
+		function selectQueryNoticeMailFirstZone(){
+			var data = $("#queryNoticeMailZoneCombo").combobox('getData');
+			$("#queryNoticeMailZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function formatSendNoticeMailItems(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return transItems(row.noticeMail.items);
+		}
+		
+		function formatNoticeMailTitle(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return row.noticeMail.title;
+		}
+		
+		function formatNoticeMailAbs(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return row.noticeMail.abs;
+		}
+		
+		function formatNoticeMailSender(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return row.noticeMail.sender;
+		}
+		
+		function formatSendNoticeMailContent(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return formatContent(row.noticeMail.content);
+		}
+		
+		function formatNoticeMailReason(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return formatContent(row.noticeMail.reason);
+		}
+		
+		function formatNoticeMailWeekDay(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			return row.noticeMail.weekDay;
+		}
+		
+		function formatNoticeMailSendType(val, row){
+			if(val == 0) return "服务器";
+			return "服务器标识";
+		}
+		
+		function formatNoticeMailTabType(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			if(row.noticeMail.mailType == 1) return "公告";
+			if(row.noticeMail.mailType == 2) return "奖励";
+			return "";
+		}
+		
+		function formatNoticeMailSubType(val, row){
+			if(row == null || row.noticeMail == null) return "";
+			if(row.noticeMail.subType == 1) return "新玩家邮件";
+			if(row.noticeMail.subType == 2) return "星期邮件";
+			if(row.noticeMail.subType == 3) return "每日邮件";
+			return "";
+		}
+		
+		function formatNoticeMailTime(val,row){		
+			if(row == null || row.noticeMail == null) return "";
+			return row.noticeMail.startTime + "<br>-<br>" + row.noticeMail.endTime;
+		}
+		
+		function formatNoticeMailZones(val,row){
+			return transZones(val);
+		}
+		
+		function formatHandleNoticeMail(val, row, index){
+			return '<a href="#" class="noticeMailEditcls" onclick="changeNoticeMailWindow(\''+index+'\')"></a>' + '&nbsp;&nbsp;&nbsp;&nbsp;' +
+				   '<a href="#" class="noticeMailDelcls" onclick="deleteNoticeMail(\''+index+'\')"></a>'; 
+		}
+		
+		function queryNoticeMailList(){
+			var data = {
+				zones : getSelectedZone("queryNoticeMailZoneCombo")
+			};
+		    submitData("QueryNoticeMailList",data,function (result) {
+		   			$('#noticeMailListGrid').datagrid({loadFilter:pagerFilter}).datagrid({
+				        data: getListData(result.mails),
+				        onLoadSuccess:function(data){ 
+				        				$('.noticeMailEditcls').linkbutton({text:'修改',iconCls:'icon-edit'});  
+	        							$('.noticeMailDelcls').linkbutton({text:'删除',iconCls:'icon-cancel'}); 
+	    							  } 
+				    });
+		    		if(result.mails.length == 0){
+                		showMessage("未查询到系统邮件数据");
+                	}
+			    }    
+            );
+		}
+		
+		function sendNoticeMailWindow(){
+			$("#sendNoticeMailType").combobox('select',0);
+		    $("#sendNoticeMailType").combobox('enable',true);
+		    $("#sendNoticeMailZone").combobox({'multiple':true,data:allZone,loadFilter:zoneFilterWithAll});
+		    $("#sendNoticeMailZone").combobox('setValues',[]);
+		    $("#sendNoticeMailZone").combobox('enable',true);
+		    $("#sendNoticeMailTabType").combobox('select',1);
+		    $("#sendNoticeMailSubType").combobox('select',3);
+		    $("#sendNoticeMailWeekDay").combobox('clear');
+		    $("#divSendNoticeMailWeekDay").hide();
+			$("#tdSendNoticeMailWeekDay").html("");
+		    $("#sendNoticeMailStartTime").datebox('clear');
+		    $("#sendNoticeMailEndTime").datebox('clear');
+		    $("#sendNoticeMailTitle").textbox('setValue',"系统赠送");
+		    $("#sendNoticeMailAbs").textbox('setValue',"");
+		    $("#sendNoticeMailSender").textbox('setValue',"管理员");
+		    $("#sendNoticeMailContent").textbox('setValue',"");
+		    $("#sendNoticeMailReason").textbox('setValue',"");
+		    sendNoticeMailClearItem();
+		    $("#sendNoticeMaildg").datagrid({onLoadSuccess : function(data){}});
+			$("#sendNoticeMailDialog").dialog({iconCls:'icon-add',buttons:[{
+					text:'发送',
+					iconCls:'icon-add',
+					handler:function(){
+						sendNoticeMail();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$("#sendNoticeMailDialog").dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','发送邮件');
+		}
+		
+		function changeNoticeMailWindow(index){
+			$('#noticeMailListGrid').datagrid('selectRow',index);
+		    var row = $('#noticeMailListGrid').datagrid('getSelected');  
+		    if (row){  
+		    	$("#sendNoticeMailType").combobox('select',row.noticeMailType);
+		    	$("#sendNoticeMailType").combobox('disable',true);
+		    	if(row.noticeMailType == 0){
+		    		$("#sendNoticeMailZone").combobox('setValues',row.zones);
+		    		$("#sendNoticeMailZone").combobox('disable',true);
+		    	}else{
+		    		$("#sendNoticeMailZoneTag").combobox('select',row.zoneTag);
+		    		$("#sendNoticeMailZoneTag").combobox('disable',true);
+		    	}
+		    	$("#sendNoticeMailTabType").combobox('select',row.noticeMail.mailType);
+		    	$("#sendNoticeMailSubType").combobox('select',row.noticeMail.subType);
+		    	if(row.noticeMail.subType == 2){
+					$("#divSendNoticeMailWeekDay").show();
+					$("#tdSendNoticeMailWeekDay").html("发送星期：");
+					$("#sendNoticeMailWeekDay").combobox('clear').combobox('setValues',row.noticeMail.weekDay.split(','));
+				}else{
+					$("#divSendNoticeMailWeekDay").hide();
+					$("#tdSendNoticeMailWeekDay").html("");
+				}
+		    	$("#sendNoticeMailStartTime").datebox('setValue',row.noticeMail.startTime.replaceAll(" 00:00:00",""));
+		    	$("#sendNoticeMailEndTime").datebox('setValue',row.noticeMail.endTime.replaceAll(" 23:59:59",""));
+		    	$("#sendNoticeMailTitle").textbox('setValue',row.noticeMail.title);
+		    	$("#sendNoticeMailAbs").textbox('setValue',row.noticeMail.abs);
+		    	$("#sendNoticeMailSender").textbox('setValue',row.noticeMail.sender);
+		    	$("#sendNoticeMailContent").textbox('setValue',row.noticeMail.content);
+		    	$("#sendNoticeMailReason").textbox('setValue',row.reason);
+		    	noticeMailItems = row.noticeMail.items;
+		    	noticeMailItemNames = [];
+		    	for(var node in noticeMailItems){
+		    		var item = findItem(noticeMailItems[node].itemName);
+					if(item != null){
+						noticeMailItemNames.push(item.name+"("+noticeMailItems[node].count+"个)");
+					}
+				}
+				$("#sendNoticeMailTxtItems").textbox('setValue',noticeMailItemNames.join('\n'));
+				var noticeMailGridSelectIndexs = [];
+				$("#sendNoticeMaildg").datagrid({onLoadSuccess : function(data){
+					var rows = data.rows;
+					canSelectSendMailItem = false;
+					for(var i = 0; i < rows.length; i++){
+						for(var j = 0; j < noticeMailItems.length; j++){
+							if(rows[i].itemName == noticeMailItems[j].itemName){
+								rows[i].count = noticeMailItems[j].count;
+								$("#sendNoticeMaildg").datagrid('selectRow',i);
+							}
+						}
+					}
+					canSelectSendMailItem = true;
+				}});
+				$("#sendNoticeMailDialog").dialog({iconCls:'icon-edit',buttons:[{
+					text:'修改',
+					iconCls:'icon-edit',
+					handler:function(){						
+						changeNoticeMail(row);
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$("#sendNoticeMailDialog").dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','修改邮件');  
+		    }  
+		}
+		
+		function sendNoticeMailToNewZone(){
+			$("#spanNoticeMailZoneTagHint").html("同步邮件至新开服务器只针对邮件类型为【服务器标识】的邮件，该操作会向所有服务器标识为选择标识的游戏服发送同步请求，如果游戏服已存在该邮件则忽略");
+			$("#sendNoticeMailChooseZoneTagDialog").dialog({iconCls:'icon-add',buttons:[{
+					text:'同步',
+					iconCls:'icon-add',
+					handler:function(){
+						doSendNoticeMailToNewZone();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$("#sendNoticeMailChooseZoneTagDialog").dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','同步邮件至新开服务器');
+		}
+		
+		function doSendNoticeMailToNewZone(){
+			var data = { zoneTag : $('#sendNoticeMailChooseZoneTag').combobox('getValue')};
+			submitData("SendNoticeMailToNewZone",data,function (result) {
+		    		if(result.status == 1){
+                		showMessageF("同步成功",function(){
+				        	queryNoticeMailList();
+				        	$("#sendNoticeMailChooseZoneTagDialog").dialog('close');
+				        });
+                	}
+			        
+			    }    
+            );
+		}
+		
+		function deleteExpireNoticeMail(){
+			$("#spanNoticeMailZoneTagHint").html("如果邮件类型为【服务器标识】，则与所选服务器标识匹配且邮件过期则会删除<br>如果邮件类型为【服务器】，则邮件已选择的服务器包含任意一个所选服务器标识且邮件过期则会删除");
+			$("#sendNoticeMailChooseZoneTagDialog").dialog({iconCls:'icon-ok',buttons:[{
+					text:'删除',
+					iconCls:'icon-ok',
+					handler:function(){
+						doDeleteExpireNoticeMail();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$("#sendNoticeMailChooseZoneTagDialog").dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','删除过期邮件');
+		}
+		
+		function doDeleteExpireNoticeMail(){
+			showConfirm("确定删除所有过期邮件吗？",function(){
+				var data = { zoneTag : $('#sendNoticeMailChooseZoneTag').combobox('getValue')};
+			    submitData("DeleteExpireNoticeMail",data,
+	                function (result) {
+				        if(result.status == 1){
+				        	showMessageF("删除成功",function(){
+				        		queryNoticeMailList();
+				        		$("#sendNoticeMailChooseZoneTagDialog").dialog('close');
+				        	});
+				        }
+				    }    
+	            );  
+			});
+		}
+	</script>
+	</div>
+  </body>
+</html>

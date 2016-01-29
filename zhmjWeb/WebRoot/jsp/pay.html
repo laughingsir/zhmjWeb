@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>充值</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+   
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%,height:auto">
+		<div style="padding:10px 60px 20px 60px">
+	    <form id="payForm" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>服务器:</td>
+	    			<td>
+	    				<input class="easyui-combobox" id="payType" data-options="
+							data:allZone,
+							valueField:'id',
+							textField:'name',
+							panelHeight:'500',
+							loadFilter:zoneFilter,
+							onChange:payTypeChange,
+							onLoadSuccess:selectpayFirstZone
+						">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="vertical-align:top">玩家：</td>
+	    			<td style="vertical-align:top">
+	    				<a href="#" id = "payAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" payOpenPlayerWindow()">添加玩家</a>
+	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick=" payClearPlayer()">清除玩家</a><br/><br/>
+	    				<input class="easyui-textbox" id="payTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
+	    				
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td>充值物品:</td>
+	    			<td>
+	    				<input class="easyui-combobox" id="payItemsCombo" data-options="
+							url:'../config/pay.json',
+							valueField:'id',
+							textField:'name',
+							panelHeight:'500',
+							onLoadSuccess:selectFirstPayItemsCombo
+						">
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan = 2 style = "text-align:center">
+	    				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitpayForm()">提交</a>
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    </div>
+	</div>
+		<div id="payPlayerWindow" class="easyui-window" title="添加玩家" data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false" style="width:700px;height:400px;padding:10px;">
+			<form id="payQueryPlayerForm" method="post" style="height:auto">
+	    	查询类型:<select id="payQueryType" class="easyui-combobox" style="width:100px;">
+							<option value="0" selected>玩家账号</option>
+						</select>
+			关键字:<input id="payKeyWord" class="easyui-textbox" type="text" >			
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="payQueryPlayers()" style="width:80px">查询</a>
+		</form>
+			<table id="payQueryPlayerGrid"  class="easyui-datagrid" title="" style="width:650px;height:auto;"
+					data-options="singleSelect:false,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,
+										onSelect:payPlayersChange,
+										onUnselect:payPlayersChange,
+										onSelectAll:payPlayersChange,
+										onUnselectAll:payPlayersChange,
+										">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field:'playerId'" width="45%">玩家账号</th>
+						<th data-options="field:'nickName'" width="45%">昵称</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		
+	<script>
+		var payPlayers;
+		
+		$(function(){
+			payPlayerNames = [];
+			payPlayers = [];
+		});
+		
+		function selectFirstPayItemsCombo(){
+			var data = $("#payItemsCombo").combobox('getData');
+			$("#payItemsCombo").combobox('select',data[0].id);
+		}
+		
+		function payTypeChange(){
+			payPlayerNames = [];
+			payPlayers = [];
+			$("#payTxtPlayers").textbox('setValue','');			
+			if($("#payType").combobox('getValue') == "all"){
+				$("#payAddPlayerBtn").linkbutton('disable',true);
+			}else{
+				$("#payAddPlayerBtn").linkbutton('enable',true);
+			}
+		}
+		
+		function payClearPlayer(){
+			payPlayerNames = [];
+			payPlayers = [];
+			$("#payTxtPlayers").textbox('setValue',payPlayerNames.join('\n'));
+		}
+		
+		function selectpayFirstZone(){
+			var data = $("#payType").combobox('getData');
+			$("#payType").combobox('select',data[0].id);
+		}
+		
+		function payQueryPlayers(){
+			var data = {
+				zone : $('#payType').combobox('getValue'),
+				queryType : $('#payQueryType').combobox('getValue'),
+				keyWord : $('#payKeyWord').val(),
+			};
+		    $('#payQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
+				function () {  
+                    if($("#payKeyWord").val().trim()==""){
+						showMessage("请输入玩家账号");
+						$("#payKeyWord").focus();
+						return false;
+					}
+                },function (result) {
+					if(result.players.length > 0){
+                		$("#payQueryPlayerGrid").datagrid({loadFilter:pagerFilter}).datagrid({
+							data: getListData(result.players)
+						});
+                	}else{
+                		showMessage("未查询到玩家数据");
+                	}
+			    }    
+            ));  
+		}
+		
+		
+		function payPlayersChange(){
+			var rows = $("#payQueryPlayerGrid").datagrid('getSelections');
+			for(var i=0; i<rows.length; i++){
+				var exist = false;
+				for(var j=0; j<payPlayers.length; j++){
+					if(payPlayers[j] == rows[i].playerId){
+						exist = true;
+						break;
+					}
+				}
+				if(!exist){
+					payPlayers.push(rows[i].playerId);
+			    	payPlayerNames.push(rows[i].nickName + "("+rows[i].playerId+")");
+				}
+			}
+			$("#payTxtPlayers").textbox('setValue',payPlayerNames.join('\n'));
+		}
+	
+		function submitpayForm(){
+			showConfirm("操作不可恢复，请谨慎操作，确定提交吗？",function(){
+				var data = {
+					zone :  $('#payType').combobox('getValue'),
+					players : payPlayers,
+					itemId : $("#payItemsCombo").combobox('getValue')
+				};
+				 $('#payForm').form('submit',submit("WebPay", data,
+				 	function () {  
+	                    if(payPlayers.length == 0){
+							showWarning("请选择服务器对应的玩家");
+							return false;
+						}
+	                },  
+	                function (data) {
+				        if(data.status == 1){
+				            showMessage("充值成功");
+				        }
+				   }
+	            ));  
+			});
+		}
+		function payOpenPlayerWindow(){
+			$("#payKeyWord").textbox('setValue','');	
+			$("#payQueryPlayerGrid").datagrid('loadData',{total:0,rows:[]});
+			$('#payPlayerWindow').window('open');
+		}
+	</script>
+	</div>
+  </body>
+</html>

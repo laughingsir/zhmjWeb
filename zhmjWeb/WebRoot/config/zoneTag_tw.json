@@ -1,0 +1,14 @@
+[
+    {
+        "id": "hunfu",
+        "name": "Google官方"
+    },
+    {
+        "id": "ios",
+        "name": "ios"
+    },
+    {
+        "id": "qq",
+        "name": "第三方apk"
+    }
+]

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>剩余元宝数</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="remainGoldForm" method="post" style="height:auto">
+	    	服务器:<input class="easyui-combobox" id="remainGoldZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					loadFilter:zoneFilterWithAll,
+					onLoadSuccess:selectRemainGoldFirstZone
+				">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitRemainGoldForm()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="remainGoldGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'zone',width:120,align:'center'">服务器</th>
+				<th data-options="field:'totalGold',width:150,align:'center'">剩余总元宝</th>
+				<th data-options="field:'personCount',width:150,align:'center'">统计玩家数</th>
+				<th data-options="field:'averageGold',width:150,align:'center'">平均剩余元宝</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+		});
+		
+		function selectRemainGoldFirstZone(){
+			var data = $("#remainGoldZoneCombo").combobox('getData');
+			$("#remainGoldZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function submitRemainGoldForm(){
+			var remainGoldZone = $("#remainGoldZoneCombo").combobox('getValue');
+			var data = {
+				method : "RemainGold",
+				json : remainGoldZone =="all" ? "" :remainGoldZone,
+			};
+		    $('#remainGoldForm').form('submit', submit("DIInvoke",data,
+				function () {  
+					return true;
+                },function (result) {
+                	result = $.parseJSON(result);
+                	$("#remainGoldGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result)});
+                	if(result.length == 0){
+                		showMessage("未查询到数据");
+                	}
+			    }    
+            ));  
+		}
+	</script>
+	</div>
+  </body>
+</html>

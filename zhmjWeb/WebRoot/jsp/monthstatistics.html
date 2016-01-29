@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>查询月运营数据</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="monthStatisticsForm" method="post" style="height:auto">
+	   		 渠道:<input class="easyui-combobox" id="monthStatisticsChannelCombo" data-options="
+					url:'../config/channel.json',
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					onLoadSuccess:selectMonthStatisticsFirstChannel
+				">
+	    	服务器:<input class="easyui-combobox" id="monthStatisticsZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					loadFilter:zoneFilterWithAll,
+					onLoadSuccess:selectMonthStatisticsFirstZone
+				">
+			开始时间:<input class="easyui-combobox" id="monthStatisticsStartTime" style="width:160px">
+	    	结束时间:<input class="easyui-combobox" id="monthStatisticsEndTime" style="width:160px">		
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitMonthStatisticsForm()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="monthStatisticsGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'createtime',width:150,align:'center',formatter:formatDateToMonth">统计时间</th>
+				<th data-options="field:'channel',width:80,align:'center'">渠道</th>
+				<th data-options="field:'serverId',width:80,align:'center'">服务器</th>
+				<th data-options="field:'au',width:120,align:'center'">活跃玩家</th>
+				<th data-options="field:'pu',width:120,align:'center'">付费玩家</th>
+				<th data-options="field:'pr',width:120,align:'center',formatter:formatPercent">付费率</th>
+				<th data-options="field:'r',width:120,align:'center'">营收</th>
+				<th data-options="field:'arppu',width:120,align:'center',formatter:formatDouble">ARPPU</th>
+				<th data-options="field:'arpau',width:120,align:'center',formatter:formatDouble">ARPAU</th>
+				<th data-options="field:'remaingold',width:150,align:'center'">剩余充值元宝</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+			$("#monthStatisticsStartTime").combobox('yearandmonth');
+			$("#monthStatisticsEndTime").combobox('yearandmonth');
+		});
+		
+		function selectMonthStatisticsFirstZone(){
+			var data = $("#monthStatisticsZoneCombo").combobox('getData');
+			$("#monthStatisticsZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function selectMonthStatisticsFirstChannel(){
+			var data = $("#monthStatisticsChannelCombo").combobox('getData');
+			$("#monthStatisticsChannelCombo").combobox('select',data[0].id);
+		}
+		
+		function submitMonthStatisticsForm(){
+			var monthStatisticsZone = $("#monthStatisticsZoneCombo").combobox('getValue');
+			var data = {
+				channel : $("#monthStatisticsChannelCombo").combobox('getValue'),
+				zone : monthStatisticsZone=="all" ? "" :monthStatisticsZone,
+				start : $("#monthStatisticsStartTime").combobox('getValue')+"-01 00:00:00",
+				end : $("#monthStatisticsEndTime").combobox('getValue')+"-01 23:59:59"
+			};
+		    $('#monthStatisticsForm').form('submit', submit('QueryMonthStatistics',data,
+				function () {  
+					var startTime = Date.parse(new Date($("#monthStatisticsStartTime").combobox('getValue')+"-01 00:00:00"));
+					var endTime = Date.parse(new Date($("#monthStatisticsEndTime").combobox('getValue')+"-01 23:59:59"));
+					if(isNaN(startTime)){
+						showWarning("请选择开始时间");
+						return false;
+					}
+					if(isNaN(endTime)){
+						showWarning("请选择结束时间");
+						return false;
+					}
+					if(startTime >= endTime){
+						showWarning("结束时间必须大于开始时间");
+						return false;
+					}
+                },function (result) {
+                	$("#monthStatisticsGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.statistics)});
+                	if(result.statistics.length == 0){
+                		showMessage("未查询到运营数据");
+                	}
+			    }    
+            ));  
+		}
+	</script>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>查询日运营数据</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="statisticsForm" method="post" style="height:auto">
+	   		 渠道:<input class="easyui-combobox" id="statisticsChannelCombo" data-options="
+					url:'../config/channel.json',
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					onLoadSuccess:selectStatisticsFirstChannel
+				">
+	    	服务器:<input class="easyui-combobox" id="statisticsZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					loadFilter:zoneFilterWithAll,
+					onLoadSuccess:selectStatisticsFirstZone
+				">
+			开始时间:<input class="easyui-datebox" id="statisticsStartTime" style="width:160px">
+	    	结束时间:<input class="easyui-datebox" id="statisticsEndTime" style="width:160px">		
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitStatisticsForm()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="statisticsGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'createtime',width:150,align:'center',formatter:formatDateToDay">统计时间</th>
+				<th data-options="field:'channel',width:80,align:'center'">渠道</th>
+				<th data-options="field:'serverId',width:80,align:'center'">服务器</th>
+				<th data-options="field:'createrole',width:80,align:'center'">创建角色</th>
+				<th data-options="field:'dau',width:80,align:'center'">活跃玩家</th>
+				<th data-options="field:'dpu',width:80,align:'center'">付费玩家</th>
+				<th data-options="field:'dpr',width:80,align:'center',formatter:formatPercent">付费率</th>
+				<th data-options="field:'dr',width:80,align:'center'">营收</th>
+				<th data-options="field:'arppu',width:80,align:'center',formatter:formatDouble">ARPPU</th>
+				<th data-options="field:'arpau',width:80,align:'center',formatter:formatDouble">ARPAU</th>
+				<th data-options="field:'plus1',width:80,align:'center',formatter:formatPlus1">次日留存</th>
+				<th data-options="field:'plus3',width:80,align:'center',formatter:formatPlus3">3日留存</th>
+				<th data-options="field:'plus7',width:80,align:'center',formatter:formatPlus7">7日留存</th>
+				<th data-options="field:'plus14',width:80,align:'center',formatter:formatPlus14">14日留存</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+		});
+		
+		function selectStatisticsFirstZone(){
+			var data = $("#statisticsZoneCombo").combobox('getData');
+			$("#statisticsZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function selectStatisticsFirstChannel(){
+			var data = $("#statisticsChannelCombo").combobox('getData');
+			$("#statisticsChannelCombo").combobox('select',data[0].id);
+		}
+		
+		function submitStatisticsForm(){
+			var statisticsZone = $("#statisticsZoneCombo").combobox('getValue');
+			var data = {
+				channel : $("#statisticsChannelCombo").combobox('getValue'),
+				zone : statisticsZone=="all" ? "" :statisticsZone,
+				start : $("#statisticsStartTime").datebox('getValue')+" 00:00:00",
+				end : $("#statisticsEndTime").datebox('getValue')+" 23:59:59"
+			};
+		    $('#statisticsForm').form('submit', submit('QueryStatistics',data,
+				function () {  
+					var startTime = Date.parse(new Date($("#statisticsStartTime").datebox('getValue')+" 00:00:00"));
+					var endTime = Date.parse(new Date($("#statisticsEndTime").datebox('getValue')+" 23:59:59"));
+					if(isNaN(startTime)){
+						showWarning("请选择开始时间");
+						return false;
+					}
+					if(isNaN(endTime)){
+						showWarning("请选择结束时间");
+						return false;
+					}
+					if(startTime >= endTime){
+						showWarning("结束时间必须大于开始时间");
+						return false;
+					}
+                },function (result) {
+                	$("#statisticsGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.statistics)});
+                	if(result.statistics.length == 0){
+                		showMessage("未查询到运营数据");
+                	}
+			    }    
+            ));  
+		}
+		
+		function formatPlus1(val, row, index){
+			if(row == null || row.plus1 == null) return "";
+			return formatPercent(row.plus1.rate);
+		}
+		function formatPlus3(val, row, index){
+			if(row == null || row.plus3 == null) return "";
+			return formatPercent(row.plus3.rate);
+		}
+		function formatPlus7(val, row, index){
+			if(row == null || row.plus7 == null) return "";
+			return formatPercent(row.plus7.rate);
+		}
+		function formatPlus14(val, row, index){
+			if(row == null || row.plus14 == null) return "";
+			return formatPercent(row.plus14.rate);
+		}
+	</script>
+	</div>
+  </body>
+</html>

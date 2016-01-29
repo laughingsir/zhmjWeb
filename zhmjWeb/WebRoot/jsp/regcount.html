@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>注册玩家数</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+  	<div style="padding:10px">
+	<div class="easyui-panel" title="" style="width:100%">
+		<div style="padding:10px">
+	    <form id="regCountForm" method="post" style="height:auto">
+	    	服务器:<input class="easyui-combobox" id="regCountZoneCombo" data-options="
+					data:allZone,
+					valueField:'id',
+					textField:'name',
+					panelHeight:'500',
+					loadFilter:zoneFilterWithAll,
+					onLoadSuccess:selectRegCountFirstZone
+				">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitRegCountForm()" style="width:80px">查询</a>
+	    </form>
+	    </div>
+	<table id="regCountGrid"  class="easyui-datagrid" title="查询结果" style="width:100%;height:auto"
+			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true">
+		<thead>
+			<tr>
+				<th data-options="field:'zoneId',width:120,align:'center'">服务器</th>
+				<th data-options="field:'count',width:120,align:'center'">注册玩家</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	<script>
+		$(function(){
+		});
+		
+		function selectRegCountFirstZone(){
+			var data = $("#regCountZoneCombo").combobox('getData');
+			$("#regCountZoneCombo").combobox('select',data[0].id);
+		}
+		
+		function submitRegCountForm(){
+			var regCountZone = $("#regCountZoneCombo").combobox('getValue');
+			var data = {
+				method : "GetRegCount",
+				json : regCountZone =="all" ? "" :regCountZone,
+			};
+		    $('#regCountForm').form('submit', submit("DIInvoke",data,
+				function () {  
+					return true;
+                },function (result) {
+                	result = $.parseJSON(result);
+                	$("#regCountGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result)});
+                	if(result.length == 0){
+                		showMessage("未查询到数据");
+                	}
+			    }    
+            ));  
+		}
+	</script>
+	</div>
+  </body>
+</html>
