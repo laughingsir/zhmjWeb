@@ -17,15 +17,35 @@
     },
     {
         "right": "SendMail",
-        "name": "添加邮件"
+        "name": "发送私人邮件"
     },
     {
         "right": "AuditMail",
-        "name": "审核邮件"
+        "name": "审核私人邮件"
     },
     {
         "right": "QueryMailList",
-        "name": "查询邮件列表"
+        "name": "查询私人邮件列表"
+    },
+    {
+        "right": "QueryNoticeMailList",
+        "name": "查询系统邮件列表"
+    },
+    {
+        "right": "SendNoticeMail",
+        "name": "发送系统邮件"
+    },
+     {
+        "right": "HandleNoticeMail",
+        "name": "处理系统邮件"
+    },
+    {
+        "right": "DeleteExpireNoticeMail",
+        "name": "删除过期系统邮件"
+    },
+    {
+        "right": "SendNoticeMailToNewZone",
+        "name": "同步新服系统邮件(按服务器标识)"
     },
     {
         "right": "QueryPlayerInfo",
@@ -68,6 +88,10 @@
         "name": "补偿充值玩家"
     },
     {
+        "right": "WebPay",
+        "name": "充值"
+    },
+    {
         "right": "AddWuJiang",
         "name": "添加武将"
     },
@@ -90,5 +114,17 @@
     {
         "right": "QueryPlayerConsume",
         "name": "查询消费元宝信息"
+    },
+    {
+        "right": "QueryStatistics",
+        "name": "查询日运营数据"
+    },
+    {
+        "right": "QueryMonthStatistics",
+        "name": "查询月运营数据"
+    },
+    {
+        "right": "DIInvoke",
+        "name": "运行DI脚本"
     }
 ]

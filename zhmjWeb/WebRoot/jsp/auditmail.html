@@ -13,7 +13,7 @@
 					data:allZone,
 					valueField:'id',
 					textField:'name',
-					panelHeight:'auto',
+					panelHeight:'500',
 					loadFilter:zoneFilterWithAll,
 					onLoadSuccess:selectAuditMailFirstZone
 				">
@@ -24,10 +24,15 @@
 			data-options="singleSelect:true,collapsible:false,loadMsg:'数据加载中请稍后……',pagination: true,rownumbers: true,onLoadSuccess:auditMailGridLoadSuccess">
 		<thead>
 			<tr>
+				<th data-options="field:'sendType',width:120,formatter:formatMailSendType">发送方式</th>
 				<th data-options="field:'zones',width:120,formatter:formatMailZones">分区</th>
 				<th data-options="field:'players',width:150,formatter:formatMailPlayers">对象</th>
-				<th data-options="field:'items',width:200,formatter:formatMailItems">道具</th>
-				<th data-options="field:'reason',width:200,align:'center'">原因</th>
+				<th data-options="field:'items',width:150,formatter:formatItems">道具</th>
+				<th data-options="field:'title',width:80,align:'left'">标题</th>
+				<th data-options="field:'abs',width:80,align:'left'">摘要</th>
+				<th data-options="field:'sender',width:80,align:'left'">发送者</th>
+				<th data-options="field:'content',width:300,align:'left',formatter:formatContent">内容</th>
+				<th data-options="field:'reason',width:100,align:'left',formatter:formatContent">原因</th>
 				<th data-options="field:'addPerson',width:80,align:'center'">添加人员</th>
 				<th data-options="field:'auditTime',width:150,align:'center'">审核时间</th>
 				<th data-options="field:'mailId',width:200,align:'center',halign:'center',formatter:formatAuditMailOper">操作</th>
@@ -54,7 +59,7 @@
 			        if(result.mails.length > 0){
                 		$('#auditMailGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.mails)});
                 	}else{
-                		alert("未查询到邮件数据");
+                		showMessage("未查询到邮件数据");
                 	}
 			    }    
             );  
@@ -65,19 +70,36 @@
 			$("#auditMailZoneCombo").combobox('select',data[0].id);
 		}
 		
+		function formatMailSendType(val, row){
+			if(val == 0) return "全服";
+			return "单服部分玩家";
+		}
+		
 		function formatMailZones(val,row){
 			return transZones(val);
 		}
 		
 		function formatMailPlayers(val,row){
-			var result = transPlayers(val);
-			if(result == "") return "全服";
+			if(val == undefined) return '';
+			var result = transAuditMailPlayers(val);
+			if(result == "") return "全服所有玩家";
 			return result;
 		}
 		
-		
-		function formatMailItems(val,row){
-			return transItems(val);
+		function transAuditMailPlayers(val){
+			var result = '';
+			if(val.length > 50){
+				for(var i = 0; i < 50; i++){
+					result += (i+1)+" : "+val[i] + "<br>";
+				}
+				result += "......<br>";
+				result += (val.length)+" : "+val[val.length - 1] + "<br>";
+			}else{
+				for(var i = 0; i < val.length; i++){
+					result += (i+1)+" : "+val[i] + "<br>";
+				}
+			}
+			return result;
 		}
 		
 		function formatAuditMailOper(val, row){

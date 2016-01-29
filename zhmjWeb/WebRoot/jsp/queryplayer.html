@@ -13,7 +13,7 @@
 					data:allZone,
 					valueField:'id',
 					textField:'name',
-					panelHeight:'auto',
+					panelHeight:'500',
 					loadFilter:zoneFilter,
 					onLoadSuccess:selectQueryPlayerFirstZone
 				">
@@ -33,6 +33,7 @@
 				<th data-options="field:'nickName',width:100,align:'center'">昵称</th>
 				<th data-options="field:'vipLevel',width:60,align:'center'">VIP等级</th>
 				<th data-options="field:'level',width:60,align:'center'">等级</th>
+				<th data-options="field:'payMoney',width:60,align:'center'">充值金额</th>
 				<th data-options="field:'payGold',width:60,align:'center'">充值元宝</th>
 				<th data-options="field:'bindingGold',width:60,align:'center'">绑定元宝</th>
 				<th data-options="field:'silver',width:100,align:'center'">银币</th>
@@ -105,7 +106,7 @@
                 	if(result.players.length > 0){
                 		$('#queryPlayerGrid').datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.players)});
                 	}else{
-                		alert("未查询到玩家数据");
+                		showMessage("未查询到玩家数据");
                 	}
 			    }    
             ));  

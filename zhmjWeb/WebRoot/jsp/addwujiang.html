@@ -18,7 +18,7 @@
 							data:allZone,
 							valueField:'id',
 							textField:'name',
-							panelHeight:'auto',
+							panelHeight:'500',
 							loadFilter:zoneFilter,
 							onChange:addWuJiangTypeChange,
 							onLoadSuccess:selectaddWuJiangFirstZone
@@ -346,7 +346,7 @@
 		    $('#addWuJiangQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
 				function () {  
                     if($("#addWuJiangKeyWord").val().trim()==""){
-						alert("请输入玩家账号");
+						showMessage("请输入玩家账号");
 						$("#addWuJiangKeyWord").focus();
 						return false;
 					}
@@ -356,7 +356,7 @@
 							data: getListData(result.players)
 						});
                 	}else{
-                		alert("未查询到玩家数据");
+                		showMessage("未查询到玩家数据");
                 	}
 			    }    
             ));  
@@ -465,7 +465,7 @@
 			    addWuJiangFightSoulNames.push("位置" + data.pos + " " + $('#addWuJiangFightSoulType').combobox('getText') + " " + $('#addWuJiangFightSoulStar').combobox('getText') + " " + data.level + "级");
 				$("#addWuJiangFightSoulText").textbox('setValue',addWuJiangFightSoulNames.join('\n'));
 			}else{
-				alert("位置" + data.pos + "已添加！");
+				showMessage("位置" + data.pos + "已添加！");
 			}
 		}
 	</script>

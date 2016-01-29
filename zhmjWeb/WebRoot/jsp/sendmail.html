@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>发送邮件</title>
+    <title>发送私人邮件</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   </head>
   <body>
@@ -14,21 +14,31 @@
 	    		<tr>
 	    			<td>发送方式:</td>
 	    			<td>
-	    				<input class="easyui-combobox" id="sendMailType" data-options="
+	    				<select id="sendMailType" class="easyui-combobox" data-options="onChange:sendMailTypeChange" style="width:100px;">
+							<option value=0>全服</option>
+							<option value=1 selected>单服部分玩家</option>
+						</select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>服务器:</td>
+	    			<td>
+	    				<input class="easyui-combobox" id="sendMailZone" data-options="
 							data:allZone,
 							valueField:'id',
 							textField:'name',
-							panelHeight:'auto',
-							loadFilter:zoneFilterWithAll,
-							onChange:sendMailTypeChange,
+							panelHeight:'500',
+							loadFilter:zoneFilter,
+							onSelect:sendMailZoneSelect,
 							onLoadSuccess:selectSendMailFirstZone
 						">
 					</td>
 	    		</tr>
-	    		<tr>
+	    		<tr id="trSendMailPlayer">
 	    			<td style="vertical-align:top">发送玩家：</td>
 	    			<td style="vertical-align:top">
 	    				<a href="#" id = "sendMailAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" sendMailOpenPlayerWindow()">添加玩家</a>
+	    				<a href="#" id = "sendMailBatchAddPlayerBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick=" sendMailOpenBatchPlayerWindow()">批量添加</a>
 	    				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick=" sendMailClearPlayer()">清除玩家</a><br/><br/>
 	    				<input class="easyui-textbox" id="sendMailTxtPlayers" data-options="multiline:true,disabled:true" value="" style="width:200px;height:100px">
 	    				
@@ -45,13 +55,19 @@
 	    		<tr>
 	    			<td  style="vertical-align:top">发送者：</td>
 	    			<td>
-	    				<input class="easyui-textbox" id="sendMailSender" value="管理员" style="width:200px">
+	    				<input class="easyui-textbox" id="sendMailSender" value="游戏官方运营团队" style="width:200px">
 					</td>
 	    		</tr>
 	    		<tr>
 	    			<td  style="vertical-align:top">邮件标题：</td>
 	    			<td>
 	    				<input class="easyui-textbox" id="sendMailTitle" value="系统赠送" style="width:200px">
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td  style="vertical-align:top">邮件摘要：</td>
+	    			<td>
+	    				<input class="easyui-textbox" id="sendMailAbs" value="" style="width:200px">
 					</td>
 	    		</tr>
 	    		<tr>
@@ -122,27 +138,45 @@
 				</thead>
 			</table>
 		</div>
+	    <div id="sendMailBatchPlayerDialog" class="easyui-dialog" title="批量添加玩家" data-options="closed:true,modal:true" style="width:400px;height:300px;padding:10px;">
+	    	玩家账号(一行一个账号):<input class="easyui-textbox" id="sendMailBatchPlayerText" data-options="multiline:true" value="" style="width:280px;height:180px">
+		</div>
 		
 	<script>
 		var mailPlayerNames;
 		var mailPlayers;
 		var mailItems;
+		var mailItemNames;
 		
 		$(function(){
 			mailPlayerNames = [];
 			mailPlayers = [];
-			itemNames = [];
+			mailItemNames = [];
 			mailItems = [];
 		});
 		
 		function sendMailTypeChange(){
 			mailPlayerNames = [];
 			mailPlayers = [];
-			$("#sendMailTxtPlayers").textbox('setValue','');			
-			if($("#sendMailType").combobox('getValue') == "all"){
-				$("#sendMailAddPlayerBtn").linkbutton('disable',true);
+			$("#sendMailTxtPlayers").textbox('setValue','');	
+			if($("#sendMailType").combobox('getValue') == 0){
+				$("#sendMailZone").combobox({'multiple':true,data:allZone,loadFilter:zoneFilterWithAll});
+				$("#trSendMailPlayer").hide();
 			}else{
-				$("#sendMailAddPlayerBtn").linkbutton('enable',true);
+				$("#sendMailZone").combobox({'multiple':false,data:allZone,loadFilter:zoneFilter,onLoadSuccess:selectSendMailFirstZone});
+				$("#trSendMailPlayer").show();
+			}
+		}
+		
+		function sendMailZoneSelect(r){
+			if($("#sendMailType").combobox('getValue') == 1) return;
+			if(r.id == "all"){
+				var data = $("#sendMailZone").combobox('getData');
+				var selectData = [];
+				for(var i = 1; i < data.length; i++){
+					selectData[i - 1] = data[i].id;
+				}
+				$("#sendMailZone").combobox('clear').combobox('setValues',selectData);
 			}
 		}
 		
@@ -153,26 +187,28 @@
 		}
 		
 		function sendMailClearItem(){
-			itemNames = [];
+			mailItemNames = [];
 			mailItems = [];
-			$("#sendMailTxtItems").textbox('setValue',itemNames.join('\n'));
+			$("#sendMailTxtItems").textbox('setValue',mailItemNames.join('\n'));
 		}
 		
 		function selectSendMailFirstZone(){
-			var data = $("#sendMailType").combobox('getData');
-			$("#sendMailType").combobox('select',data[0].id);
+			if($("#sendMailType").combobox('getValue') == 1){
+				var data = $("#sendMailZone").combobox('getData');
+				$("#sendMailZone").combobox('select',data[0].id);
+			}
 		}
 		
 		function sendMailQueryPlayers(){
 			var data = {
-				zone : $('#sendMailType').combobox('getValue'),
+				zone : $('#sendMailZone').combobox('getValue'),
 				queryType : $('#sendMailQueryType').combobox('getValue'),
 				keyWord : $('#sendMailKeyWord').val(),
 			};
 		    $('#sendMailQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
 				function () {  
                     if($("#sendMailKeyWord").val().trim()==""){
-						alert("请输入玩家账号");
+						showMessage("请输入玩家账号");
 						$("#sendMailKeyWord").focus();
 						return false;
 					}
@@ -182,7 +218,7 @@
 							data: getListData(result.players)
 						});
                 	}else{
-                		alert("未查询到玩家数据");
+                		showMessage("未查询到玩家数据");
                 	}
 			    }    
             ));  
@@ -191,82 +227,92 @@
 		
 		function sendMailPlayersChange(){
 			var rows = $("#sendmailQueryPlayerGrid").datagrid('getSelections');
+			var playerIds = [];
 			for(var i=0; i<rows.length; i++){
+				playerIds.push(rows[i].playerId);
+			}
+			sendMialAddPlayerIds(playerIds);
+		}
+		
+		function sendMialAddPlayerIds(playerIds){
+			for(var i=0; i<playerIds.length; i++){
+				playerIds[i] = playerIds[i].trim();
+				if(playerIds[i] == '') continue;
 				var exist = false;
 				for(var j=0; j<mailPlayers.length; j++){
-					if(mailPlayers[j].playerId == rows[i].playerId){
+					if(mailPlayers[j] == playerIds[i]){
 						exist = true;
 						break;
 					}
 				}
 				if(!exist){
-					mailPlayers.push({ playerId: rows[i].playerId, nickName: rows[i].nickName });
-			    	mailPlayerNames.push(rows[i].nickName + "("+rows[i].playerId+")");
+					mailPlayers.push(playerIds[i]);
+			    	mailPlayerNames.push(playerIds[i]);
 				}
 			}
-			$("#sendMailTxtPlayers").textbox('setValue',mailPlayerNames.join('\n'));
+			var mailPlayerNameVal = '';
+			for(var i=0; i<mailPlayerNames.length; i++){
+				mailPlayerNameVal += (i + 1) + " : " + mailPlayerNames[i] + "\n";
+			}
+			$("#sendMailTxtPlayers").textbox('setValue',mailPlayerNameVal);
 		}
 		
 		
 		function sendMailItemsChange(){
 			mailItems = [];
-			itemNames = [];
+			mailItemNames = [];
 			var rows = $('#sendmaildg').datagrid('getSelections');
 			for(var i=0; i<rows.length; i++){
 			    mailItems.push({ itemName: rows[i].itemName, count: rows[i].count });
-			    itemNames.push(rows[i].name + "("+rows[i].count+"个)");
+			    mailItemNames.push(rows[i].name + "("+rows[i].count+"个)");
 			}
-			$("#sendMailTxtItems").textbox('setValue',itemNames.join('\n'));
+			$("#sendMailTxtItems").textbox('setValue',mailItemNames.join('\n'));
 			//alert(items.join('\n'));
+		}
+		
+		function getSendMailZones(){
+			if($("#sendMailType").combobox('getValue') == 0){
+				return $("#sendMailZone").combobox('getValues');
+			}
+			return $("#sendMailZone").combobox('getValues');
 		}
 	
 		function submitSendMailForm(){
 			var sendType = $('#sendMailType').combobox('getValue');
 			var data = {
-				sendType : sendType == "all" ? 0 : 1,
-				zones : getSelectedZone("sendMailType"),
+				sendType : $('#sendMailType').combobox('getValue'),
+				zones : getSendMailZones(),
 				players : mailPlayers,
 				items : mailItems,
 				addPerson : getManagerInfo().username,
-				reason : $('#sendMailReason').textbox('getValue'),
+				reason : $('#sendMailReason').textbox('getValue').trim(),
 				sender : $('#sendMailSender').val(),
 				title : $('#sendMailTitle').val(),
+				abs : $('#sendMailAbs').val(),
 				content : $('#sendMailContent').textbox('getValue')
 			};
 			 $('#sendMailForm').form('submit',submit("sendmail", data,
 			 	function () {  
-                    if(data.sendType != 0 && mailPlayers.length == 0){
-						showWarning("非全服发送时需选择服务器对应的玩家");
+			 		if(data.reason == ""){
+						showWarning("请输入原因");
+						return false;
+					}
+			 		if(data.sendType == 0 && data.zones.length == 0){
+						showWarning("请选择对应服务器");
+						return false;
+					}
+                    if(data.sendType == 1 && mailPlayers.length == 0){
+						showWarning("请选择服务器对应的玩家");
 						return false;
 					}
                 },  
                 function (data) {
 			        if(data.status == 1){
-			            showMessage("发送成功");
+			            showMessage("发送成功,请等待管理员审核");
 			        }
 			   }
             ));  
 		}
-		$.extend($.fn.datagrid.methods, {
-			editCell: function(jq,param){
-				return jq.each(function(){
-					var opts = $(this).datagrid('options');
-					var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
-					for(var i=0; i<fields.length; i++){
-						var col = $(this).datagrid('getColumnOption', fields[i]);
-						col.editor1 = col.editor;
-						if (fields[i] != param.field){
-							col.editor = null;
-						}
-					}
-					$(this).datagrid('beginEdit', param.index);
-					for(var i=0; i<fields.length; i++){
-						var col = $(this).datagrid('getColumnOption', fields[i]);
-						col.editor = col.editor1;
-					}
-				});
-			}
-		});
 		
 		var editIndex = undefined;
 		function endEditing(){
@@ -291,8 +337,32 @@
 			$("#sendmailQueryPlayerGrid").datagrid('loadData',{total:0,rows:[]});
 			$('#sendMailPlayerWindow').window('open');
 		}
+		
+		function sendMailOpenBatchPlayerWindow(){
+			$("#sendMailBatchPlayerText").textbox('setValue','');	
+			$('#sendMailBatchPlayerDialog').dialog({iconCls:'icon-add',buttons:[{
+					text:'添加',
+					iconCls:'icon-add',
+					handler:function(){
+						sendMailBatchAddPlayer();
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#sendMailBatchPlayerDialog').dialog('close');
+					}
+				}]}).dialog('open').dialog('setTitle','批量添加');  
+		}
+		
 		function sendMailOpenItemWindow(){
 			$('#sendMailItemWindow').window('open');
+		}
+		
+		function sendMailBatchAddPlayer(){
+			var playerIds = $("#sendMailBatchPlayerText").textbox('getValue').split("\n");
+			sendMialAddPlayerIds(playerIds);
+			$('#sendMailBatchPlayerDialog').dialog('close');
 		}
 	</script>
 	</div>

@@ -13,7 +13,7 @@
 					data:allZone,
 					valueField:'id',
 					textField:'name',
-					panelHeight:'auto',
+					panelHeight:'500',
 					loadFilter:zoneFilter,
 					onLoadSuccess:selectPlayerConsumeFirstZone
 				">
@@ -86,7 +86,7 @@
                 	if(result.consumes.length > 0){
                 		$("#playerConsumeGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.consumes)});
                 	}else{
-                		alert("未查询到消费元宝信息");
+                		showMessage("未查询到消费元宝信息");
                 	}
 			    }    
             ));  

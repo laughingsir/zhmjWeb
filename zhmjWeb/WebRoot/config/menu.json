@@ -17,7 +17,7 @@
             },
             {
                 "id": 12,
-                "text": "添加邮件",
+                "text": "发送私人邮件",
                 "attributes": {
                     "target": "sendmail.html",
                     "right": "0102"
@@ -25,10 +25,18 @@
             },
             {
                 "id": 13,
-                "text": "审核邮件",
+                "text": "审核私人邮件",
                 "attributes": {
                     "target": "auditmail.html",
                     "right": "0103"
+                }
+            },
+            {
+                "id": 18,
+                "text": "发送系统邮件",
+                "attributes": {
+                    "target": "sendnoticemail.html",
+                    "right": "0108"
                 }
             },
             {
@@ -45,6 +53,14 @@
                 "attributes": {
                     "target": "repay.html",
                     "right": "0105"
+                }
+            },
+            {
+                "id": 19,
+                "text": "充值",
+                "attributes": {
+                    "target": "pay.html",
+                    "right": "0109"
                 }
             },
             {
@@ -129,6 +145,30 @@
                 "attributes": {
                     "target": "playerconsume.html",
                     "right": "0303"
+                }
+            },
+            {
+                "id": 34,
+                "text": "日运营数据",
+                "attributes": {
+                    "target": "statistics.html",
+                    "right": "0304"
+                }
+            },
+            {
+                "id": 35,
+                "text": "月运营数据",
+                "attributes": {
+                    "target": "monthstatistics.html",
+                    "right": "0305"
+                }
+            },
+            {
+                "id": 36,
+                "text": "注册玩家数",
+                "attributes": {
+                    "target": "regcount.html",
+                    "right": "0306"
                 }
             }
         ]

@@ -18,7 +18,7 @@
 							data:allZone,
 							valueField:'id',
 							textField:'name',
-							panelHeight:'auto',
+							panelHeight:'500',
 							loadFilter:zoneFilter,
 							onChange:repayTypeChange,
 							onLoadSuccess:selectrepayFirstZone
@@ -49,7 +49,7 @@
 	    		<tr>
 	    			<td  style="vertical-align:top">元宝：</td>
 	    			<td>
-	    				<input class="easyui-numberbox" id="repayGold" data-options="min:0" value="" style="width:200px">  (增加元宝，负数为减)
+	    				<input class="easyui-numberbox" id="repayGold" data-options="" value="" style="width:200px">  (增加元宝，负数为减)
 					</td>
 	    		</tr>
 	    		<tr>
@@ -179,7 +179,7 @@
 		    $('#repayQueryPlayerForm').form('submit', submit('QueryPlayerInfoList',data,
 				function () {  
                     if($("#repayKeyWord").val().trim()==""){
-						alert("请输入玩家账号");
+						showMessage("请输入玩家账号");
 						$("#repayKeyWord").focus();
 						return false;
 					}
@@ -189,7 +189,7 @@
 							data: getListData(result.players)
 						});
                 	}else{
-                		alert("未查询到玩家数据");
+                		showMessage("未查询到玩家数据");
                 	}
 			    }    
             ));  

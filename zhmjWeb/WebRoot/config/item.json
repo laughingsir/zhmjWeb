@@ -32,6 +32,12 @@
         },
         {
             "count": 1,
+            "desc": "春节的兑换货币",
+            "itemName": "money_kmd",
+            "name": "孔明灯"
+        },
+        {
+            "count": 1,
             "desc": "卖钱吧，有商人在收集这个,使用或出售可获得1000银币",
             "itemName": "item_xiaohao_huanqian1",
             "name": "玉胚"
@@ -125,6 +131,18 @@
             "desc": "增加100点体力",
             "itemName": "item_xiaohao_tili3",
             "name": "烤乳猪"
+        },
+        {
+            "count": 1,
+            "desc": "增加30点体力",
+            "itemName": "item_xiaohao_tili4",
+            "name": "腊八粥"
+        },
+        {
+            "count": 1,
+            "desc": "增加30点体力",
+            "itemName": "item_xiaohao_tili5",
+            "name": "元宵"
         },
         {
             "count": 1,
@@ -602,27 +620,39 @@
         },
         {
             "count": 1,
-            "desc": "封印灵魂的咒符，使用后获得100点斩杀数",
+            "desc": "地方官员使用的官印，使用后获得100点斩杀数",
             "itemName": "item_xiaohao_zhanqian_1",
-            "name": "初级斩魂符"
+            "name": "官印"
         },
         {
             "count": 1,
-            "desc": "封印灵魂的咒符，使用后获得500点斩杀数",
+            "desc": "皇帝调兵遣将用的兵符，使用后获得500点斩杀数",
             "itemName": "item_xiaohao_zhanqian_2",
-            "name": "中级斩魂符"
+            "name": "虎符"
         },
         {
             "count": 1,
-            "desc": "封印灵魂的咒符，使用后获得1000点斩杀数",
+            "desc": "帝王的玉印，使用后获得1000点斩杀数",
             "itemName": "item_xiaohao_zhanqian_3",
-            "name": "高级斩魂符"
+            "name": "玉玺"
         },
         {
             "count": 1,
-            "desc": "随机获得大量道具",
+            "desc": "装满福气的袋子，随机获得大量道具",
             "itemName": "box_thanksgiving",
-            "name": "感恩节宝箱"
+            "name": "福袋"
+        },
+        {
+            "count": 1,
+            "desc": "打开获得一定数量的元宝",
+            "itemName": "box_gold_1",
+            "name": "红包"
+        },
+        {
+            "count": 1,
+            "desc": "打开获得一定数量的元宝",
+            "itemName": "box_gold_2",
+            "name": "小红包"
         },
         {
             "count": 1,
@@ -1015,5 +1045,5 @@
             "name": "孟获将魂"
         }
     ],
-    "total": 169
+    "total": 174
 }

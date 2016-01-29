@@ -13,7 +13,7 @@
 					data:allZone,
 					valueField:'id',
 					textField:'name',
-					panelHeight:'auto',
+					panelHeight:'500',
 					loadFilter:zoneFilter,
 					onLoadSuccess:selectPlayerGemGainFirstZone
 				">
@@ -86,7 +86,7 @@
                 	if(result.gemGains.length > 0){
                 		$("#playerGemGainGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.gemGains)});
                 	}else{
-                		alert("未查询到玩家获得元宝信息");
+                		showMessage("未查询到玩家获得元宝信息");
                 	}
 			    }    
             ));  
@@ -105,6 +105,7 @@
 			if(val.startWith("SysMail_")) return val.replace("SysMail","系统邮件");
 			if(val.startWith("Task_")) return val.replace("Task","领取任务奖励");
 			if(val.startWith("DaGuanReward_")) return val.replace("DaGuanReward","主线大关奖励");
+			if(val.startWith("PassReward_")) return val.replace("PassReward","主线通关奖励");
 			if(val.startWith("Sign_")) return val.replace("Sign","签到");
 			if(val.startWith("HuBao_")) return val.replace("HuBao","护宝收获");
 			if(val.startWith("LueDuo_")) return val.replace("LueDuo","护宝掠夺");

@@ -57,8 +57,9 @@ function checkSession () {
 	var session = $.cookie('sessionId');
 	if (session == null || session == ""){
 		clearSession();
-		alert("session过期，请重新登录！");
-		location = '../login.jsp';
+		showWarningF("session过期，请重新登录！",function(){
+			location = '../login.html';
+        });
 		return false;
 	}
 	return true;
@@ -73,8 +74,19 @@ function getManagerInfo(){
 	return $.parseJSON($.cookie('managerInfo'));
 }
 
+function submitDI(method,jsonData,validFunc,successFunc){
+	var data = {
+		method : method,
+		json : jsonData
+	};
+	submit('DIInvoke',data,validFunc,function (result) {
+				successFunc($.parseJSON(result));
+		}    
+	);
+}
+
 function submit (controller,data,validFunc,successFunc) {
-	//alert(JSON.stringify(getParameter(controller,data)));
+	//showMessage(JSON.stringify(getParameter(controller,data)));
 	return {    
                 url: serverUrl,  
                 queryParams: getParameter(controller,data),
@@ -88,7 +100,7 @@ function submit (controller,data,validFunc,successFunc) {
                 	commonSuccessFunc(data, successFunc);
                 },
 			    onLoadError:function(){
-			    	alert("未知错误");
+			    	showError("未知错误");
                 }
             };
 }
@@ -105,12 +117,13 @@ function submitData (controller,data,successFunc){
 }
 
 function commonSuccessFunc(data, successFunc){
-	if(data == "session过期，请重新登录！"){
+	if(data == "error:session过期，请重新登录！"){
 		clearSession();
-		alert("session过期，请重新登录！");
-        location = '../login.jsp';
-	}else if(data == "您没有此权限，请联系管理员！"){
-		alert("您没有此权限，请联系管理员！");
+		showWarningF("session过期，请重新登录！",function(){
+			location = '../login.html';
+        });
+	}else if(data == "error:您没有此权限，请联系管理员！"){
+		showWarning("您没有此权限，请联系管理员！");
 	}else if(data.substr(0,5) == ("error")){
 		alert(data);
 	}else{
@@ -130,12 +143,12 @@ function loadGrid (controller,data,successFunc,errorFunc) {
                 url: serverUrl,  
                 queryParams: getParameter(controller,data),
                 onLoadSuccess: function () {
-					if(data == "session过期，请重新登录！"){
+					if(data == "error:session过期，请重新登录！"){
 						clearSession();
-						alert("session过期，请重新登录！");
-		                location = '../login.jsp';
+						showWarningF("session过期，请重新登录！",function(){
+							location = '../login.html';
+				        });
 					}
-					alert(data);
 					result = $.parseJSON(data);
 					successFunc(result);
 		        },   
@@ -288,6 +301,11 @@ function findZone(zoneId){
 	return null;
 }
 
+function zoneTagFilter(data){
+	var zones = [];
+	return getFilterZoneTags(data,zones);
+}
+
 function zoneTagFilterWithAll(data){
 	var zones = [{id:"all",name:"全部"}];
 	return getFilterZoneTags(data,zones);
@@ -354,6 +372,33 @@ function findItem(itemName){
 	return null;
 }
 
+function formatItems(val,row){
+	return transItems(val);
+}
+
+function formatContent(val,row){
+	if(val == undefined) return '';
+	return val.replaceAll("\n", "<br>");
+}
+
+function formatDouble(val){
+	if(val == undefined) return '';
+	return val.toFixed(2);
+}
+
+function formatPercent(val){
+	if(val == undefined) return '';
+	return (val*100).toFixed(2) + "%";
+}
+
+function formatDateToDay(val, row, index){
+	return new Date(val).format("yyyy-MM-dd"); 
+}
+
+function formatDateToMonth(val, row, index){
+	return new Date(val).format("yyyy-MM"); 
+}
+
 function formatDate(val, row, index){
 	return new Date(val).format("yyyy-MM-dd HH:mm:ss"); 
 }
@@ -390,3 +435,90 @@ String.prototype.startWith=function(str){
 String.prototype.replaceAll  = function(s1,s2){     
     return this.replace(new RegExp(s1,"gm"),s2);     
 };
+
+$.extend($.fn.datagrid.methods, {
+	editCell: function(jq,param){
+		return jq.each(function(){
+			var opts = $(this).datagrid('options');
+			var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
+			for(var i=0; i<fields.length; i++){
+				var col = $(this).datagrid('getColumnOption', fields[i]);
+				col.editor1 = col.editor;
+				if (fields[i] != param.field){
+					col.editor = null;
+				}
+			}
+			$(this).datagrid('beginEdit', param.index);
+			for(var i=0; i<fields.length; i++){
+				var col = $(this).datagrid('getColumnOption', fields[i]);
+				col.editor = col.editor1;
+			}
+		});
+	}
+});
+
+$.extend($.fn.combobox.methods, {
+    yearandmonth: function (jq) {
+        return jq.each(function () {
+            var obj = $(this).combobox();
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var table = $('<table>');
+            var tr1 = $('<tr>');
+            var tr1td1 = $('<td>', {
+                text: '-',
+                click: function () {
+                    var y = $(this).next().html();
+                    y = parseInt(y) - 1;
+                    $(this).next().html(y);
+                }
+            });
+            tr1td1.appendTo(tr1);
+            var tr1td2 = $('<td>', {
+                text: year
+            }).appendTo(tr1);
+
+            var tr1td3 = $('<td>', {
+                text: '+',
+                click: function () {
+                    var y = $(this).prev().html();
+                    y = parseInt(y) + 1;
+                    $(this).prev().html(y);
+                }
+            }).appendTo(tr1);
+            tr1.appendTo(table);
+
+            var n = 1;
+            for (var i = 1; i <= 4; i++) {
+                var tr = $('<tr>');
+                for (var m = 1; m <= 3; m++) {
+                    var td = $('<td>', {
+                        text: n,
+                        click: function () {
+                            var yyyy = $(table).find("tr:first>td:eq(1)").html();
+                            var cell = $(this).html();
+                            var v = yyyy + '-' + (cell.length < 2 ? '0' + cell : cell);
+                            obj.combobox('setValue', v).combobox('hidePanel');
+
+                        }
+                    });
+                    if (n == month) {
+                        td.addClass('tdbackground');
+                    }
+                    td.appendTo(tr);
+                    n++;
+                }
+                tr.appendTo(table);
+            }
+            table.addClass('mytable cursor');
+            table.find('td').hover(function () {
+                $(this).addClass('tdbackground');
+            }, function () {
+                $(this).removeClass('tdbackground');
+            });
+            table.appendTo(obj.combobox("panel"));
+
+        });
+    }
+});

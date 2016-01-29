@@ -13,7 +13,7 @@
 					data:allZone,
 					valueField:'id',
 					textField:'name',
-					panelHeight:'auto',
+					panelHeight:'500',
 					loadFilter:zoneFilter,
 					onLoadSuccess:selectPlayerPayFirstZone
 				">
@@ -84,7 +84,7 @@
                 	if(result.payInfos.length > 0){
                 		$("#playerPayGrid").datagrid({loadFilter:pagerFilter}).datagrid({data: getListData(result.payInfos)});
                 	}else{
-                		alert("未查询到玩家充值信息");
+                		showMessage("未查询到玩家充值信息");
                 	}
 			    }    
             ));  

@@ -13,7 +13,7 @@
 					data:allZone,
 					valueField:'id',
 					textField:'name',
-					panelHeight:'auto',
+					panelHeight:'500',
 					loadFilter:zoneFilterWithAll,
 					onLoadSuccess:selectQueryNoticeFirstZone
 				">	
@@ -54,7 +54,7 @@
 							data:allZone,
 							valueField:'id',
 							textField:'name',
-							panelHeight:'auto',
+							panelHeight:'500',
 							loadFilter:zoneFilterWithAll,
 							onLoadSuccess:selectAddNoticeFirstZone
 						">
@@ -255,13 +255,17 @@
 				zones : getSelectedZone("queryNoticeZoneCombo")
 			};
 		    submitData('QueryNoticeList',data,function (result) {
-			        $('#noticeListGrid').datagrid({loadFilter:pagerFilter}).datagrid({
-			        	data: getListData(result.notices),
-			        	onLoadSuccess:function(data){  
-        								$('.noticeEditcls').linkbutton({text:'修改公告',iconCls:'icon-edit'});  
-        								$('.noticeDelcls').linkbutton({text:'删除',iconCls:'icon-cancel'}); 
-    								  } 
-			        });
+		    		if(result.notices.length > 0){
+                		$('#noticeListGrid').datagrid({loadFilter:pagerFilter}).datagrid({
+				        	data: getListData(result.notices),
+				        	onLoadSuccess:function(data){  
+	        								$('.noticeEditcls').linkbutton({text:'修改公告',iconCls:'icon-edit'});  
+	        								$('.noticeDelcls').linkbutton({text:'删除',iconCls:'icon-cancel'}); 
+	    								  } 
+				        });
+                	}else{
+                		showMessage("未查询到公告数据");
+                	}
 			    }    
             );
 		}
